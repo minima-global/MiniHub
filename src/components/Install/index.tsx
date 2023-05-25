@@ -23,7 +23,7 @@ export function Install({ display, dismiss }: Props) {
     }
   };
 
-  const handleOnSubmit = async (evt) => {
+  const handleOnSubmit = async (evt: React.FormEvent) => {
     evt.preventDefault();
 
     if (file) {
