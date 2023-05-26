@@ -14,6 +14,13 @@ export function saveFile(fileName: string, hexData: any): Promise<any> {
   });
 }
 
+export function getHost(): string {
+  const extractedPort = (window as any).MDS.mainhost.match(/(?<port>[0-9]+)/);
+  const portAsNumber = Number(extractedPort[0]) - 1;
+
+  return `https://localhost:${portAsNumber}`;
+}
+
 export function getPath(fileName: string): Promise<string> {
   return new Promise((resolve, reject) => {
     (window as any).MDS.file.getpath(fileName, function (response: any) {
@@ -30,7 +37,7 @@ export function install(filePath: string) {
   return new Promise((resolve, reject) => {
     (window as any).MDS.cmd(`mds action:install file:${filePath}`, function (response: any) {
       if (response.status) {
-        return resolve(true);
+        return resolve(response.response.installed);
       }
 
       return reject();

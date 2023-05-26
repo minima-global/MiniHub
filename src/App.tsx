@@ -2,6 +2,7 @@ import "./index.css";
 import { useState } from "react";
 import Install from "./components/Install";
 import AppProvider from "./AppContext";
+import AppIsInReadMode from "./components/AppIsInReadMode";
 
 function App() {
   const [showInstall, setShowInstall] = useState(false);
@@ -9,6 +10,7 @@ function App() {
   return (
     <AppProvider>
       <div className="app bg">
+        <AppIsInReadMode />
         <Install display={showInstall} dismiss={() => setShowInstall(false)} />
         <div className="flex flex-col h-full">
           <div className="title-bar p-4">

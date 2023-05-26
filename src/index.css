@@ -175,6 +175,10 @@ body {
     border-radius: 0 0.25rem 0.25rem 0;
 }
 
+.file-custom:hover:before {
+    background-color: #dedede;
+}
+
 .file-label {
     position: absolute;
     z-index: 10;
