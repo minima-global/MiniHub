@@ -1,12 +1,14 @@
 import * as React from "react";
 import { createContext, useEffect, useState } from "react";
-import { isWriteMode } from "./lib";
+import { isWriteMode, mds } from "./lib";
 
 export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [loaded, setLoaded] = useState(false);
-  const [appIsInWriteMode, setAppIsInWriteMode] = useState(null);
+  const [appList, setAppList] = useState([]);
+  const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
+  const [query, setQuery] = useState('');
 
   // init mds
   useEffect(() => {
@@ -18,6 +20,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           isWriteMode().then((appIsInWriteMode) => {
             setAppIsInWriteMode(appIsInWriteMode);
           });
+
+          mds().then((response) => {
+            setAppList(response.minidapps)
+          });
         }
       });
 
@@ -26,6 +32,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [loaded]);
 
   const value = {
+    appList,
+    query,
+    setQuery,
     appIsInWriteMode,
   };
 

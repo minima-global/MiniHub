@@ -64,7 +64,7 @@ export function Install({ display, dismiss }: Props) {
           {display && (
             <div className="mx-auto absolute w-full h-full z-10 flex items-center justify-center text-black">
               {display && (
-                <div className="relative z-10 w-full max-w-md mx-8">
+                <div className="relative z-10 w-full max-w-md px-5">
                   <animated.div
                     style={style}
                     className="modal bg-white box-shadow-lg rounded-xl p-8 mx-auto relative overflow-hidden"

@@ -45,6 +45,19 @@ export function install(filePath: string) {
   });
 }
 
+export function mds() {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.cmd('mds', function (response: any) {
+      if (response.status) {
+        return resolve(response.response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+
 export function deleteFile(fileName: string) {
   return new Promise((resolve, reject) => {
     (window as any).MDS.file.delete(fileName, function (response: any) {
@@ -62,6 +75,18 @@ export function isWriteMode(): Promise<boolean> {
     (window as any).MDS.cmd(`checkmode`, function (response: any) {
       if (response.status) {
         return resolve(response.response.mode === 'WRITE');
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function dAppLink(dAppName: string) {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.dapplink(dAppName, function (response: any) {
+      if (response.status) {
+        return resolve(response);
       }
 
       return reject();

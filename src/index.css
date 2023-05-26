@@ -72,22 +72,35 @@ body {
 }
 
 .icon {
-    width: 64px;
-    height: 64px;
+    width: 58px;
+    height: 58px;
     background-size: contain;
     border-radius: 10px;
-    transition: 0.2s all;
+    transition: 0.1s all;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.item:active {
+    transform: scale(1.1);
+    opacity: 0.8;
 }
 
 .item {
     color: white;
     text-align: center;
     font-weight: 700;
-    font-size: 14px;
-    width: fit-content;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     text-shadow: 0 1px 2px rgb(0,0,0,0.6);
+}
+
+.grid > .item {
+    min-width: 108px;
+    min-height: 108px;
 }
 
 .icon:hover {
@@ -96,6 +109,22 @@ body {
 
 .icon:active {
     transform: scale(0.98);
+}
+
+@media screen and (min-width: 768px) {
+    .icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .item {
+        font-size: 14px;
+    }
+
+    .grid > .item {
+        min-width: 148px;
+        margin-bottom: 5px;
+    }
 }
 
 .dot {
@@ -188,6 +217,7 @@ body {
     color: #282828;
     text-align: left;
     padding: 0 105px 0 15px;
+    pointer-events: none;
 }
 
 @keyframes spinner {
@@ -204,4 +234,18 @@ body {
     border-radius: 50%;
     -webkit-animation: spinner .75s linear infinite;
     animation: spinner .75s linear infinite;
+}
+
+.embla {
+    margin: 8px;
+    overflow: hidden;
+}
+
+.embla__container {
+    display: flex;
+}
+
+.embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
 }

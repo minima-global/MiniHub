@@ -15,7 +15,10 @@
     "src:zip": "bash create-minima-app/zip.sh"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.195",
     "axios": "^1.4.0",
+    "embla-carousel-react": "^8.0.0-rc05",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",
     "react-dom": "^18.2.0",

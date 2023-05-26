@@ -411,6 +411,11 @@
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
 
+"@types/lodash@^4.14.195":
+  version "4.14.195"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.195.tgz#bafc975b252eb6cea78882ce8a7b6bf22a6de632"
+  integrity sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==
+
 "@types/prop-types@*":
   version "15.7.5"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz"
@@ -932,6 +937,24 @@ electron-to-chromium@^1.4.284:
   version "1.4.396"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.396.tgz"
   integrity sha512-pqKTdqp/c5vsrc0xUPYXTDBo9ixZuGY8es4ZOjjd6HD6bFYbu5QA09VoW3fkY4LF1T0zYk86lN6bZnNlBuOpdQ==
+
+embla-carousel-react@^8.0.0-rc05:
+  version "8.0.0-rc05"
+  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.0.0-rc05.tgz#ef0e925070b5c5a95a795d9ad2610cdf93060fe1"
+  integrity sha512-4N6RSLUdgWhS3aTUv7T50yJ8uBcVQ+MwOqWL3lv1NJiWPPZ0fJHrvQieaerHZsJrdXf73fWGYqJlwuyVzqlvHQ==
+  dependencies:
+    embla-carousel "8.0.0-rc05"
+    embla-carousel-reactive-utils "8.0.0-rc05"
+
+embla-carousel-reactive-utils@8.0.0-rc05:
+  version "8.0.0-rc05"
+  resolved "https://registry.yarnpkg.com/embla-carousel-reactive-utils/-/embla-carousel-reactive-utils-8.0.0-rc05.tgz#cfe4355c2959425aa8ff178009e199f6feee2e51"
+  integrity sha512-gWmyjsTm5X4P/8vP7a27lSuboUjVve/QQEqYPP9YDyz97k5PEYd1qncgObB6LRdDuYsLcsJJnV1EinoJZ65YVQ==
+
+embla-carousel@8.0.0-rc05:
+  version "8.0.0-rc05"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-8.0.0-rc05.tgz#4dfe3d766bd48323f37e3fa2aea4de66be034f79"
+  integrity sha512-Ujl1Bp+zIEn0WY9QHiBmhNyC+y7DZMEOy02WnINvJUxwXmuE5DiTb6UyG5b7PG/yLjlCgaboAsUdFOOIS+T7uQ==
 
 entities@^2.0.0:
   version "2.2.0"
@@ -1470,6 +1493,11 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
