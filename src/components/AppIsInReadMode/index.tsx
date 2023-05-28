@@ -1,7 +1,6 @@
-import * as React from "react";
 import { useTransition, animated } from "@react-spring/web";
 import { modalAnimation } from "../../animations";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { appContext } from "../../AppContext";
 
 export function AppIsInReadMode() {

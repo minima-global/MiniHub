@@ -5,6 +5,11 @@ import AppIsInReadMode from "../../components/AppIsInReadMode";
 import useAppList from "../../hooks/useAppList";
 import useEmblaCarousel from "embla-carousel-react";
 import { appContext } from "../../AppContext";
+import ColorThief from 'colorthief';
+
+function pickTextColorBasedOnBgColorSimple(r,g,b) {
+  return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ? '#000' : '#FFF';
+}
 
 function Dashboard() {
   const { query, setQuery } = useContext(appContext);
@@ -25,9 +30,27 @@ function Dashboard() {
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      try {
+        const colorThief = new ColorThief();
+        const elem = document.querySelector('img#ct-bg');
+
+        if (elem) {
+          const [r,g,b] = colorThief.getColor(elem);
+          const dominateColor = pickTextColorBasedOnBgColorSimple(r,g,b);
+          console.log(dominateColor);
+        }
+      } catch {
+        // die
+      }
+    }, 2000);
+  }, [])
+
   return (
     <div className="app bg">
       <AppIsInReadMode />
+      <img alt="background" id="ct-bg" src="/assets/install.png" width="100" height="100" className="absolute z-[-1]" />
       <Install display={showInstall} dismiss={() => setShowInstall(false)} />
       <div className="flex flex-col h-full">
         <div className="title-bar p-4">

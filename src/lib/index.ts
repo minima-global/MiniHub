@@ -45,7 +45,7 @@ export function install(filePath: string) {
   });
 }
 
-export function mds() {
+export function mds(): any {
   return new Promise((resolve, reject) => {
     (window as any).MDS.cmd('mds', function (response: any) {
       if (response.status) {
@@ -82,7 +82,7 @@ export function isWriteMode(): Promise<boolean> {
   });
 }
 
-export function dAppLink(dAppName: string) {
+export function dAppLink(dAppName: string): any {
   return new Promise((resolve, reject) => {
     (window as any).MDS.dapplink(dAppName, function (response: any) {
       if (response.status) {
