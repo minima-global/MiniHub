@@ -12,9 +12,9 @@ export function Settings() {
   const transition: any = useTransition(display, modalAnimation as any);
 
   const selectTheme = (theme: string) => {
-    localStorage.setItem('__miniHub_theme', theme);
+    localStorage.setItem("__miniHub_theme", theme);
     setTheme(theme);
-  }
+  };
 
   return (
     <div>
@@ -33,9 +33,18 @@ export function Settings() {
                       <div className="flex-grow my-4">
                         <h1 className="text-xl mb-5">Theme</h1>
                         <div className="flex gap-4">
-                          <div onClick={() => selectTheme('BLACK')} className="cursor-pointer inset bg-black border-2 border-slate-500 w-8 h-8 rounded-full" />
-                          <div onClick={() => selectTheme('WHITE')} className="cursor-pointer inset bg-white border-2 border-slate-500 w-8 h-8 rounded-full" />
-                          <div onClick={() => selectTheme('PURPLE')} className="cursor-pointer inset bg-purple-500 border-2 border-slate-500 w-8 h-8 rounded-full" />
+                          <div
+                            onClick={() => selectTheme("BLACK")}
+                            className="cursor-pointer inset bg-black border-2 border-slate-500 w-8 h-8 rounded-full"
+                          />
+                          <div
+                            onClick={() => selectTheme("WHITE")}
+                            className="cursor-pointer inset bg-white border-2 border-slate-500 w-8 h-8 rounded-full"
+                          />
+                          <div
+                            onClick={() => selectTheme("PURPLE")}
+                            className="cursor-pointer inset bg-purple-500 border-2 border-slate-500 w-8 h-8 rounded-full"
+                          />
                         </div>
                       </div>
                       <div className="flex justify-end">
