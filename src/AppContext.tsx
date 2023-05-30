@@ -22,7 +22,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (theme) {
       setTheme(theme);
     } else {
-      setTheme('PURPLE');
+      setTheme("BLACK");
     }
   }, []);
 
@@ -63,13 +63,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       );
     });
   }, []);
-
-  useEffect(() => {
-    if (appIsInWriteMode) {
-      refreshAppList();
-      installRecommended();
-    }
-  }, [appIsInWriteMode]);
 
   const installRecommended = useCallback(() => {
     mds().then(async (response) => {
@@ -126,6 +119,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
     });
   }, [refreshAppList]);
+
+  useEffect(() => {
+    if (appIsInWriteMode) {
+      refreshAppList();
+      installRecommended();
+    }
+  }, [appIsInWriteMode, installRecommended, refreshAppList]);
 
   // init mds
   useEffect(() => {
