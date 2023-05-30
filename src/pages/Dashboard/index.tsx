@@ -138,10 +138,17 @@ function Dashboard() {
         <div className="taskbar p-4">
           <div className="taskbar__shell flex gap-5">
             <div className="item" onClick={() => setShowManage(true)}>
+              <div
+                className="icon mb-2"
+                style={{ backgroundImage: "url(./assets/app.png)" }}
+              />
               <span className="appLabel mx-auto">Manage</span>
             </div>
             <div className="item" onClick={() => setShowSettings(true)}>
-
+              <div
+                className="icon mb-2"
+                style={{ backgroundImage: "url(./assets/app.png)" }}
+              />
               <span className="appLabel mx-auto">Settings</span>
             </div>
             <div className="item" onClick={() => setShowInstall(true)}>
