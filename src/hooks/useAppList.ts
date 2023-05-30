@@ -19,12 +19,12 @@ const useAppList = () => {
       if (width > 1024) {
         if (height > 1200) {
           setMaxRows(5);
-        } else if (height > 960) {
+        } else if (height > 980) {
           setMaxRows(4);
         } else if (height > 860) {
-          setMaxRows(4);
-        } else if (height > 800) {
           setMaxRows(3);
+        } else {
+          setMaxRows(2);
         }
 
         setMaxColumns(6);
@@ -33,10 +33,12 @@ const useAppList = () => {
       } else {
         if (height > 960) {
           setMaxRows(6);
-        } else if (height > 820) {
-          setMaxRows(5);
-        } else if (height > 760) {
+        } else if (height > 800) {
           setMaxRows(4);
+        } else if (height > 700) {
+          setMaxRows(3);
+        } else {
+          setMaxRows(2);
         }
 
         setMaxColumns(3);

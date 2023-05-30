@@ -35,19 +35,22 @@ export function getPath(fileName: string): Promise<string> {
 
 export function install(filePath: string) {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.cmd(`mds action:install file:${filePath}`, function (response: any) {
-      if (response.status) {
-        return resolve(response.response.installed);
-      }
+    (window as any).MDS.cmd(
+      `mds action:install file:${filePath}`,
+      function (response: any) {
+        if (response.status) {
+          return resolve(response.response.installed);
+        }
 
-      return reject();
-    });
+        return reject();
+      }
+    );
   });
 }
 
 export function mds(): any {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.cmd('mds', function (response: any) {
+    (window as any).MDS.cmd("mds", function (response: any) {
       if (response.status) {
         return resolve(response.response);
       }
@@ -56,7 +59,6 @@ export function mds(): any {
     });
   });
 }
-
 
 export function deleteFile(fileName: string) {
   return new Promise((resolve, reject) => {
@@ -74,7 +76,7 @@ export function isWriteMode(): Promise<boolean> {
   return new Promise((resolve, reject) => {
     (window as any).MDS.cmd(`checkmode`, function (response: any) {
       if (response.status) {
-        return resolve(response.response.mode === 'WRITE');
+        return resolve(response.response.mode === "WRITE");
       }
 
       return reject();
@@ -91,5 +93,80 @@ export function dAppLink(dAppName: string): any {
 
       return reject();
     });
+  });
+}
+
+export function downloadFile(url: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.file.download(url, function (resp: any) {
+      if (resp.status) {
+        resolve(resp.response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function copyFileToWeb(filePath: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    return (window as any).MDS.file.copytoweb(
+      filePath,
+      `/mywebfiles/${filePath.split("/").pop()}`,
+      function (resp) {
+        if (resp.status) {
+          return resolve(resp.response);
+        }
+
+        return reject();
+      }
+    );
+  });
+}
+
+export function getFullFilePath(filePath: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    return (window as any).MDS.file.getpath(filePath, function (resp) {
+      if (resp.status) {
+        return resolve(resp.response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function installMdsFile(
+  filePath: string,
+  trust: "write" | "read" = "read"
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    return (window as any).MDS.cmd(
+      `mds action:install file:${filePath} trust:${trust}`,
+      function (resp) {
+        if (resp.status) {
+          return resolve(resp.response);
+        }
+
+        return reject();
+      }
+    );
+  });
+}
+
+export function uninstallApp(
+  appUid: string,
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    return (window as any).MDS.cmd(
+      `mds action:uninstall uid:${appUid}`,
+      function (resp) {
+        if (resp.status) {
+          return resolve(resp.response);
+        }
+
+        return reject();
+      }
+    );
   });
 }

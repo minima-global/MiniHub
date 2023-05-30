@@ -1,14 +1,16 @@
 import * as React from "react";
 import { useTransition, animated } from "@react-spring/web";
 import { modalAnimation } from "../../animations";
-import { useState } from "react";
-import { blobToArrayBuffer, bufferToHex } from "../../utilities/utilities";
+import { useContext, useState } from "react";
+import { blobToArrayBuffer, bufferToHex } from "../../utilities";
 import { deleteFile, getHost, getPath, install, saveFile } from "../../lib";
+import { appContext } from "../../AppContext";
 
 type Props = { display: boolean; dismiss: () => void };
 
 export function Install({ display, dismiss }: Props) {
   // seems to be an issue somewhere with types
+  const { refreshAppList } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -45,6 +47,8 @@ export function Install({ display, dismiss }: Props) {
       // delete file after we are done
       await deleteFile(savedFile.canonical);
 
+      refreshAppList();
+
       setIsLoading(false);
       setInstalled(installedInfo);
     }
@@ -64,7 +68,7 @@ export function Install({ display, dismiss }: Props) {
           {display && (
             <div className="mx-auto absolute w-full h-full z-10 flex items-center justify-center text-black">
               {display && (
-                <div className="relative z-10 w-full max-w-md px-5">
+                <div className="relative z-10 w-full max-w-lg px-5">
                   <animated.div
                     style={style}
                     className="modal bg-white box-shadow-lg rounded-xl p-8 mx-auto relative overflow-hidden"

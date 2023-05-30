@@ -1,8 +1,8 @@
 /**
-* MDS JS lib for MiniDAPPs..
-*
-* @spartacusrex
-*/
+ * MDS JS lib for MiniDAPPs..
+ *
+ * @spartacusrex
+ */
 
 /**
  * The MAIN Minima Callback function
@@ -60,16 +60,16 @@ var MDS = {
 			port=MDS.DEBUG_PORT;
 		}
 
+		// env overrides
+		if (window.DEBUG) {
+			host = window.DEBUG_HOST;
+			port = Math.floor(window.DEBUG_PORT);
+			MDS.minidappuid = window.DEBUG_UID;
+		}
+
 		if(MDS.minidappuid == null){
 			MDS.minidappuid = MDS.DEBUG_MINIDAPPID;
 		}
-
-    // env overrides
-    if (window.DEBUG) {
-      host = window.DEBUG_HOST;
-      port = Math.floor(window.DEBUG_PORT);
-      MDS.minidappuid = window.DEBUG_UID;
-    }
 
 		//Is one specified..
 		if(MDS.minidappuid == "0x00"){
@@ -338,6 +338,30 @@ var MDS = {
 
 			//Send via POST
 			httpPostAsync(MDS.mainhost+"file?"+"uid="+MDS.minidappuid, commsline, callback);
+		},
+
+		/**
+		 * Download a File from the InterWeb - Will be put in Downloads folder
+		 */
+		download : function(url, callback){
+
+			//Create the single line
+			var commsline = "download&"+url;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"file?"+"uid="+MDS.minidappuid, commsline, callback);
+		},
+
+		/**
+		 * Copy a file to your web folder
+		 */
+		copytoweb : function(file, webfile, callback){
+
+			//Create the single line
+			var commsline = "copytoweb&"+file+"&"+webfile;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"file?"+"uid="+MDS.minidappuid, commsline, callback);
 		}
 
 	},
@@ -349,15 +373,15 @@ var MDS = {
 
 		//Return the GET parameter by scraping the location..
 		getParams : function(parameterName){
-			    var result = null,
-		        tmp = [];
-			    var items = window.location.search.substr(1).split("&");
-			    for (var index = 0; index < items.length; index++) {
-			        tmp = items[index].split("=");
-			        //console.log("TMP:"+tmp);
-				   if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-			    }
-			    return result;
+			var result = null,
+				tmp = [];
+			var items = window.location.search.substr(1).split("&");
+			for (var index = 0; index < items.length; index++) {
+				tmp = items[index].split("=");
+				//console.log("TMP:"+tmp);
+				if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+			}
+			return result;
 		}
 	},
 
@@ -374,9 +398,9 @@ var MDS = {
 				thex = hexstring.substring(2);
 			}
 
-		    return btoa(thex.match(/\w{2}/g).map(function(a) {
-		        return String.fromCharCode(parseInt(a, 16));
-		    }).join(""));
+			return btoa(thex.match(/\w{2}/g).map(function(a) {
+				return String.fromCharCode(parseInt(a, 16));
+			}).join(""));
 		},
 
 		//Convert Base64 to HEX
@@ -392,13 +416,13 @@ var MDS = {
 
 		//Convert Base64 to a Uint8Array - useful for Blobs
 		base64ToArrayBuffer(base64) {
-		    var binary_string = window.atob(base64);
-		    var len = binary_string.length;
-		    var bytes = new Uint8Array(len);
-		    for (var i = 0; i < len; i++) {
-		        bytes[i] = binary_string.charCodeAt(i);
-		    }
-		    return bytes.buffer;
+			var binary_string = window.atob(base64);
+			var len = binary_string.length;
+			var bytes = new Uint8Array(len);
+			for (var i = 0; i < len; i++) {
+				bytes[i] = binary_string.charCodeAt(i);
+			}
+			return bytes.buffer;
 		},
 
 		//Return a state variable given the coin
@@ -423,10 +447,10 @@ var MDS = {
  * Post a message to the Minima Event Listeners
  */
 function MDSPostMessage(json){
-   //And dispatch
-   if(MDS_MAIN_CALLBACK){
+	//And dispatch
+	if(MDS_MAIN_CALLBACK){
 		MDS_MAIN_CALLBACK(json);
-   }
+	}
 }
 
 
@@ -498,31 +522,31 @@ function httpPostAsync(theUrl, params, callback){
 	}
 
 	var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+	xmlHttp.onreadystatechange = function() {
 
 		var status = xmlHttp.status;
 		if (xmlHttp.readyState == XMLHttpRequest.DONE){
 			if (status === 0 || (status >= 200 && status < 400)) {
 
 				//Do we log it..
-	        	if(MDS.logging){
-	        		MDS.log("RESPONSE:"+xmlHttp.responseText);
-	        	}
+				if(MDS.logging){
+					MDS.log("RESPONSE:"+xmlHttp.responseText);
+				}
 
-	        	//Send it to the callback function..
-	        	if(callback){
-	        		callback(JSON.parse(xmlHttp.responseText));
-	        	}
+				//Send it to the callback function..
+				if(callback){
+					callback(JSON.parse(xmlHttp.responseText));
+				}
 
 			}else{
 				//Some error..
 				postMDSFail(theUrl,params,xmlHttp.status);
 			}
 		}
-    }
-    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+	}
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	xmlHttp.overrideMimeType('text/plain; charset=UTF-8');
-    xmlHttp.send(encodeURIComponent(params));
+	xmlHttp.send(encodeURIComponent(params));
 	//xmlHttp.onerror = function () {
 	//  console.log("** An error occurred during the transaction");
 	//};
@@ -538,32 +562,32 @@ function httpPostAsyncPoll(theUrl, params, callback){
 	}
 
 	var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        var status = xmlHttp.status;
+	xmlHttp.onreadystatechange = function() {
+		var status = xmlHttp.status;
 		if (xmlHttp.readyState == XMLHttpRequest.DONE){
 			if (status === 0 || (status >= 200 && status < 400)) {
 
 				//Do we log it..
-	        	if(MDS.logging){
-	        		MDS.log("RESPONSE:"+xmlHttp.responseText);
-	        	}
+				if(MDS.logging){
+					MDS.log("RESPONSE:"+xmlHttp.responseText);
+				}
 
-	        	//Send it to the callback function..
-	        	if(callback){
-	        		callback(JSON.parse(xmlHttp.responseText));
-	        	}
+				//Send it to the callback function..
+				if(callback){
+					callback(JSON.parse(xmlHttp.responseText));
+				}
 
 			}else{
 				//Some error..
 				postMDSFail(theUrl,params,xmlHttp.status);
 			}
 		}
-    }
-    xmlHttp.addEventListener('error', function(ev){
+	}
+	xmlHttp.addEventListener('error', function(ev){
 		MDS.log("Error Polling - reconnect in 10s");
 		setTimeout(function(){PollListener();},10000);
 	});
-    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	xmlHttp.overrideMimeType('text/plain; charset=UTF-8');
-    xmlHttp.send(encodeURIComponent(params));
+	xmlHttp.send(encodeURIComponent(params));
 }
