@@ -5,9 +5,11 @@ import { appContext } from "../../AppContext";
 
 export function Settings() {
   const {
-    showSettings: display,
-    setShowSettings,
+    mdsInfo,
     setTheme,
+    setModal,
+    setShowSettings,
+    showSettings: display,
   } = useContext(appContext);
   const transition: any = useTransition(display, modalAnimation as any);
 
@@ -34,17 +36,46 @@ export function Settings() {
                         <h1 className="text-xl mb-5">Theme</h1>
                         <div className="flex gap-4">
                           <div
-                            onClick={() => selectTheme("BLACK")}
+                            onClick={() => selectTheme('BLACK')}
                             className="cursor-pointer inset bg-black border-2 border-slate-500 w-8 h-8 rounded-full"
                           />
                           <div
-                            onClick={() => selectTheme("WHITE")}
+                            onClick={() => selectTheme('WHITE')}
                             className="cursor-pointer inset bg-white border-2 border-slate-500 w-8 h-8 rounded-full"
                           />
                           <div
-                            onClick={() => selectTheme("PURPLE")}
+                            onClick={() => selectTheme('PURPLE')}
                             className="cursor-pointer inset bg-purple-500 border-2 border-slate-500 w-8 h-8 rounded-full"
                           />
+                        </div>
+                        {mdsInfo && (
+                          <div className="my-8">
+                            <div>
+                              Installed: {mdsInfo.installed}
+                            </div>
+                            <div>
+                              Connect URL: {mdsInfo.connect}
+                            </div>
+                            <div>
+                              Password: {mdsInfo.password}
+                            </div>
+                          </div>
+                        )}
+                        <div className="my-8">
+                          <button
+                            type="button"
+                            onClick={() => setModal({ display: true, title: 'You have reset your IP' })}
+                            className="block mb-4 px-8 py-2 rounded font-bold text-black bg-black text-white"
+                          >
+                            Reset IP
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setModal({ display: true, title: 'You have shutdown your node' })}
+                            className="px-8 py-2 rounded font-bold text-black bg-black text-white"
+                          >
+                            Shutdown
+                          </button>
                         </div>
                       </div>
                       <div className="flex justify-end">

@@ -72,6 +72,7 @@ const useAppList = () => {
     numberOfPages,
     currentPage: page,
     currentAppListPage,
+    hasMoreThanOnePage: numberOfPages > 1,
   };
 }
 

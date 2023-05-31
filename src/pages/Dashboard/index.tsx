@@ -7,12 +7,12 @@ import useEmblaCarousel from "embla-carousel-react";
 import { appContext } from "../../AppContext";
 import Manage from "../../components/Manage";
 import Settings from "../../components/Settings";
+import { Confirm } from '../../components/Settings/ConfirmDelete';
 
 function Dashboard() {
-  const { query, setQuery, setShowManage, setShowSettings } = useContext(appContext);
-  const [showInstall, setShowInstall] = useState(false);
-  const { entireAppList, maxCount } = useAppList();
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const { query, setQuery } = useContext(appContext);
+  const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -30,16 +30,17 @@ function Dashboard() {
   return (
     <div className="app bg">
       <AppIsInReadMode />
-      <Install display={showInstall} dismiss={() => setShowInstall(false)} />
+      <Install />
       <Manage />
       <Settings />
+      <Confirm />
       <div className="flex flex-col h-full">
-        <div className="title-bar p-4">
+        <div className="title-bar py-4 px-12">
           <div className="grid grid-cols-12 h-full">
             <div className="svg col-span-6 h-full flex items-center">
               <svg
-                width="32"
-                height="28"
+                width="28"
+                height="24"
                 viewBox="0 0 32 28"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +67,62 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="search-bar py-8 px-3 sm:px-0 sm:py-12 text-center hidden lg:block">
+        <div className="w-full max-w-5xl mx-auto py-10">
+          <div className="grid grid-cols-12">
+            <div className="col-span-6 flex items-center gap-3">
+              A-Z
+              <svg
+                width="12"
+                height="7"
+                viewBox="0 0 12 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.99981 6.5496L0.349609 0.8748L1.24961 0L5.99981 4.7496L10.75 0L11.65 0.9L5.99981 6.5496Z"
+                  fill="#A7A7B0"
+                />
+              </svg>
+            </div>
+            <div className="col-span-6 flex items-center justify-end gap-4">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.3913 10.6957C18.3913 14.9458 14.9459 18.3913 10.6957 18.3913C6.44546 18.3913 3 14.9458 3 10.6957C3 6.44546 6.44546 3 10.6957 3C14.9459 3 18.3913 6.44546 18.3913 10.6957Z"
+                  stroke="#E9E9EB"
+                  strokeWidth="2"
+                  strokeMiterlimit="10"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M16.2929 16.2929C16.6834 15.9024 17.3166 15.9024 17.7071 16.2929L21.7071 20.2929C22.0976 20.6834 22.0976 21.3166 21.7071 21.7071C21.3166 22.0976 20.6834 22.0976 20.2929 21.7071L16.2929 17.7071C15.9024 17.3166 15.9024 16.6834 16.2929 16.2929Z"
+                  fill="#E9E9EB"
+                />
+              </svg>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.88892 20V11.1111H0V8.88892H8.88892V0H11.1111V8.88892H20V11.1111H11.1111V20H8.88892Z"
+                  fill="#E9E9EB"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="search-bar py-8 px-3 sm:px-0 sm:py-12 text-center hidden">
           <div className="search-container relative mx-auto">
             <input
               type="text"
@@ -104,13 +160,13 @@ function Dashboard() {
           </div>
         </div>
         <div className="home flex items-start md:items-center flex-grow max-w-lg lg:max-w-5xl mx-auto mt-4 md:mt-8 lg:mt-0 lg:mt-0">
-          <div
-            className="embla w-full flex items-start lg:px-0"
-            ref={emblaRef}
-          >
+          <div className="embla w-full flex items-start lg:px-0" ref={emblaRef}>
             <div className="flex items-start h-full">
               {entireAppList.map((appList, index) => (
-                <div key={`appList_${index}`} className="embla__slide grid grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4 lg:gap-6">
+                <div
+                  key={`appList_${index}`}
+                  className="embla__slide grid grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4 lg:gap-6"
+                >
                   <AppList data={appList} maxCount={maxCount} />
                 </div>
               ))}
@@ -118,7 +174,7 @@ function Dashboard() {
           </div>
         </div>
         <div>
-          <div className="flex gap-1 items-center justify-center p-5">
+          <div className="flex gap-1 items-center justify-center pb-24">
             {entireAppList &&
               entireAppList.map((_page, index) => (
                 <div
@@ -133,31 +189,6 @@ function Dashboard() {
                   />
                 </div>
               ))}
-          </div>
-        </div>
-        <div className="taskbar p-4">
-          <div className="taskbar__shell flex gap-5">
-            <div className="item" onClick={() => setShowManage(true)}>
-              <div
-                className="icon mb-2"
-                style={{ backgroundImage: "url(./assets/app.png)" }}
-              />
-              <span className="appLabel mx-auto">Manage</span>
-            </div>
-            <div className="item" onClick={() => setShowSettings(true)}>
-              <div
-                className="icon mb-2"
-                style={{ backgroundImage: "url(./assets/app.png)" }}
-              />
-              <span className="appLabel mx-auto">Settings</span>
-            </div>
-            <div className="item" onClick={() => setShowInstall(true)}>
-              <div
-                className="icon mb-2"
-                style={{ backgroundImage: "url(./assets/install.png)" }}
-              />
-              <span className="appLabel mx-auto">Install</span>
-            </div>
           </div>
         </div>
       </div>

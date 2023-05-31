@@ -10,6 +10,9 @@
     --inset: rgba(255,255,255,0.2);
     --globalnav-backdrop-filter: saturate(180%) blur(10px);
     --globalnav-backdrop-filter-level-two: saturate(180%) blur(20px);
+
+    --core-black-100: #08090B;
+    --core-black-contrast: #17191C;
 }
 
 html {
@@ -51,10 +54,11 @@ body {
 
 .title-bar {
     width: 100%;
-    background: var(--globalnav-background);
-    -webkit-backdrop-filter: var(--globalnav-backdrop-filter);
-    backdrop-filter: var(--globalnav-backdrop-filter);
-    box-shadow: inset 0 -1px 0 rgba(255,255,255,.1);
+    background: var(--core-black-100);
+}
+
+.bg-heroBlack {
+    background: var(--core-black-contrast);
 }
 
 .taskbar__shell {

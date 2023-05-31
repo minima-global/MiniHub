@@ -4,8 +4,12 @@ import { displayDAppName } from "../../utilities";
 const AppList = ({ data, maxCount }: any) => {
   const empty = maxCount - data.length;
 
-  const openApp = async (dAppName: string) => {
-    const link = await dAppLink(dAppName);
+  const openApp = async (conf: any) => {
+    if (conf.onClick) {
+      return conf.onClick();
+    }
+
+    const link = await dAppLink(conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
     window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`)
   };
@@ -13,7 +17,7 @@ const AppList = ({ data, maxCount }: any) => {
   return (
     <>
       {data && data.map((app) => (
-        <div key={app.uid} className="item" onClick={() => openApp(app.conf.name)}>
+        <div key={app.uid} className="item" onClick={() => openApp(app.conf)}>
           <div
             className="icon mb-2"
             style={{ backgroundImage: `url(${(window as any).MDS.filehost}/${app.uid}/${app.conf.icon}), url('./assets/app.png')` }}
