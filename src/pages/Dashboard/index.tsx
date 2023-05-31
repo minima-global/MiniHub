@@ -8,6 +8,8 @@ import { appContext } from "../../AppContext";
 import Manage from "../../components/Manage";
 import Settings from "../../components/Settings";
 import { Confirm } from '../../components/Settings/ConfirmDelete';
+import Blur from '../../components/Blur';
+import BadgeNotification from '../../components/BadgeNotification';
 
 function Dashboard() {
   const { query, setQuery } = useContext(appContext);
@@ -119,6 +121,7 @@ function Dashboard() {
                   fill="#E9E9EB"
                 />
               </svg>
+              <Blur />
             </div>
           </div>
         </div>
@@ -159,9 +162,9 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="home flex items-start md:items-center flex-grow max-w-lg lg:max-w-5xl mx-auto mt-4 md:mt-8 lg:mt-0 lg:mt-0">
-          <div className="embla w-full flex items-start lg:px-0" ref={emblaRef}>
-            <div className="flex items-start h-full">
+        <div className="home relative flex items-start md:items-center flex-grow max-w-lg lg:max-w-5xl mx-auto mt-4 md:mt-8 lg:mt-0 lg:mt-0">
+          <div className="embla z-20 w-full flex items-start lg:px-0" ref={emblaRef}>
+            <div className="flex items-start h-full relative">
               {entireAppList.map((appList, index) => (
                 <div
                   key={`appList_${index}`}
@@ -191,6 +194,9 @@ function Dashboard() {
               ))}
           </div>
         </div>
+      </div>
+      <div className="fixed z-40 bottom-0 left-0 user-select-none w-full p-8 mx-auto">
+        <BadgeNotification />
       </div>
     </div>
   );

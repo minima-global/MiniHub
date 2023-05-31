@@ -1,16 +1,12 @@
 export function saveFile(fileName: string, hexData: any): Promise<any> {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.file.savebinary(
-      fileName,
-      hexData,
-      function (response: any) {
-        if (response.status) {
-          return resolve(response.response);
-        }
-
-        return reject();
+    (window as any).MDS.file.savebinary(fileName, hexData, function (response: any) {
+      if (response.status) {
+        return resolve(response.response);
       }
-    );
+
+      return reject();
+    });
   });
 }
 
@@ -35,22 +31,19 @@ export function getPath(fileName: string): Promise<string> {
 
 export function install(filePath: string) {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.cmd(
-      `mds action:install file:${filePath}`,
-      function (response: any) {
-        if (response.status) {
-          return resolve(response.response.installed);
-        }
-
-        return reject();
+    (window as any).MDS.cmd(`mds action:install file:${filePath}`, function (response: any) {
+      if (response.status) {
+        return resolve(response.response.installed);
       }
-    );
+
+      return reject();
+    });
   });
 }
 
 export function mds(): any {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.cmd("mds", function (response: any) {
+    (window as any).MDS.cmd('mds', function (response: any) {
       if (response.status) {
         return resolve(response.response);
       }
@@ -76,7 +69,7 @@ export function isWriteMode(): Promise<boolean> {
   return new Promise((resolve, reject) => {
     (window as any).MDS.cmd(`checkmode`, function (response: any) {
       if (response.status) {
-        return resolve(response.response.mode === "WRITE");
+        return resolve(response.response.mode === 'WRITE');
       }
 
       return reject();
@@ -110,17 +103,13 @@ export function downloadFile(url: string): Promise<any> {
 
 export function copyFileToWeb(filePath: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    return (window as any).MDS.file.copytoweb(
-      filePath,
-      `/mywebfiles/${filePath.split("/").pop()}`,
-      function (resp) {
-        if (resp.status) {
-          return resolve(resp.response);
-        }
-
-        return reject();
+    return (window as any).MDS.file.copytoweb(filePath, `/mywebfiles/${filePath.split('/').pop()}`, function (resp) {
+      if (resp.status) {
+        return resolve(resp.response);
       }
-    );
+
+      return reject();
+    });
   });
 }
 
@@ -136,37 +125,38 @@ export function getFullFilePath(filePath: string): Promise<any> {
   });
 }
 
-export function installMdsFile(
-  filePath: string,
-  trust: "write" | "read" = "read"
-): Promise<string> {
+export function installMdsFile(filePath: string, trust: 'write' | 'read' = 'read'): Promise<string> {
   return new Promise((resolve, reject) => {
-    return (window as any).MDS.cmd(
-      `mds action:install file:${filePath} trust:${trust}`,
-      function (resp) {
-        if (resp.status) {
-          return resolve(resp.response);
-        }
-
-        return reject();
+    return (window as any).MDS.cmd(`mds action:install file:${filePath} trust:${trust}`, function (resp) {
+      if (resp.status) {
+        return resolve(resp.response);
       }
-    );
+
+      return reject();
+    });
   });
 }
 
-export function uninstallApp(
-  appUid: string,
-): Promise<string> {
+export function uninstallApp(appUid: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    return (window as any).MDS.cmd(
-      `mds action:uninstall uid:${appUid}`,
-      function (resp) {
-        if (resp.status) {
-          return resolve(resp.response);
-        }
-
-        return reject();
+    return (window as any).MDS.cmd(`mds action:uninstall uid:${appUid}`, function (resp) {
+      if (resp.status) {
+        return resolve(resp.response);
       }
-    );
+
+      return reject();
+    });
+  });
+}
+
+export function mdsActionPermission(appUid: string, trust: 'write' | 'read'): any {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.cmd(`mds action:permission uid:${appUid} trust:${trust}`, function (response: any) {
+      if (response.status) {
+        return resolve(response.response);
+      }
+
+      return reject();
+    });
   });
 }

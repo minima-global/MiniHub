@@ -23,7 +23,7 @@ export function Settings() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-10 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-30 flex items-center justify-center text-black">
               {display && (
                 <div className="relative z-10 w-full h-full p-5">
                   <animated.div

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import { isWriteMode, mds } from './lib';
+import { isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
 import downloadAndInstallMDSFile from './utilities/downloadAndInstallMDSFile';
 
 export const appContext = createContext({} as any);
@@ -14,7 +14,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showInstall, setShowInstall] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [theme, setTheme] = useState('');
-  const [mdsInfo, setMdsInfo] = useState<any>(null)
+  const [mdsInfo, setMdsInfo] = useState<any>(null);
+  const [rightMenu, setRightMenu] = useState<any>(false);
+  const [badgeNotification, setBadgeNotification] = useState<string | null>(null);
   const [modal, setModal] = useState({
     display: false,
     title: '',
@@ -59,13 +61,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     mds().then((response) => {
       setMdsInfo({
         installed: response.minidapps.length,
-        connect:  response.connect,
+        connect: response.connect,
         password: response.password,
-      })
+      });
       setAppList([
-        ...response.minidapps.filter(
-          (app) => !(app.conf.name.includes('minihub') || app.conf.name.includes('MiniHub'))
-        ),
+        ...response.minidapps
+          .sort((a, b) => a.conf.name.localeCompare(b.conf.name))
+          .filter((app) => !(app.conf.name.includes('minihub') || app.conf.name.includes('MiniHub'))),
         {
           uid: 'system_01',
           conf: {
@@ -169,6 +171,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [loaded]);
 
+  const deleteApp = async (app: any) => {
+    await uninstallApp(app.uid);
+    await refreshAppList();
+    setRightMenu(null);
+    setBadgeNotification(`${app.conf.name} removed from MiniDapps`);
+  };
+
+  const setAppToWriteMode = async (app: any) => {
+    await mdsActionPermission(app.uid, 'write');
+    await refreshAppList();
+    setBadgeNotification(`Write permissions enabled`);
+  };
+
+  const setAppToReadMode = async (app: any) => {
+    await mdsActionPermission(app.uid, 'read');
+    await refreshAppList();
+    setBadgeNotification(`Read permissions enabled`);
+  };
+
   const value = {
     appList,
     query,
@@ -186,6 +207,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     modal,
     setModal,
     mdsInfo,
+    rightMenu,
+    setRightMenu,
+    badgeNotification,
+    setBadgeNotification,
+    deleteApp,
+    setAppToReadMode,
+    setAppToWriteMode,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

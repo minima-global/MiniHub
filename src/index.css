@@ -13,6 +13,8 @@
 
     --core-black-100: #08090B;
     --core-black-contrast: #17191C;
+    --core-black-contrast-2: #282B2E;
+    --core-black-contrast-3: #464C4F;
 }
 
 html {
@@ -147,7 +149,7 @@ body {
 }
 
 .bg-frosted {
-    background: var(--globalnav-background);
+    background: rgba(0,0,0,0.3);
     -webkit-backdrop-filter: var(--globalnav-backdrop-filter-level-two);
     backdrop-filter: var(--globalnav-backdrop-filter-level-two);
 }
@@ -238,7 +240,7 @@ body {
 
 .embla {
     margin: 8px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .embla__container {
@@ -248,6 +250,14 @@ body {
 .embla__slide {
     flex: 0 0 100%;
     min-width: 0;
+}
+
+/* backgrounds */
+.core-black-contrast-2 {
+    background-color: var(--core-black-contrast-2);
+}
+.core-black-contrast-3 {
+    background-color: var(--core-black-contrast-3);
 }
 
 .inset {
@@ -277,4 +287,11 @@ body.theme-light .taskbar__shell {
 body.theme-light .search-container input {
     color: #4f4f4f;
     background-color: white !important;
+}
+
+.embla__slide div:nth-child(6) .menu,
+.embla__slide div:nth-child(12) .menu,
+.embla__slide div:nth-child(18) .menu,
+.embla__slide div:nth-child(24) .menu{
+    left: calc(-120%);
 }

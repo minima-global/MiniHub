@@ -20,7 +20,7 @@ export function ConfirmDelete({ data, dismiss }: any) {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-20 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
               <div className="relative z-20 w-full max-w-lg px-5">
                 <animated.div
                   style={style}
