@@ -61,7 +61,6 @@ export function Update() {
 
   const onClose = () => {
     setShowUpdateApp(false);
-    setRightMenu(false);
     setTimeout(() => {
       setFile(null);
       setName(null);
@@ -75,9 +74,9 @@ export function Update() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-50 flex items-center justify-center text-black">
               {display && (
-                <div className="relative z-40 w-full max-w-sm">
+                <div className="relative z-50 w-full max-w-sm">
                   <animated.div
                     style={style}
                     className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"
@@ -101,7 +100,7 @@ export function Update() {
                               <label className="file rounded core-grey-20 w-full">
                                 <input type="file" id="file" aria-label="Choose file" onChange={handleOnChange} />
                                 <span className="file-custom"></span>
-                                <span className="file-label">{name || 'Choose file...'}</span>
+                                <span className="file-label truncate">{name || 'Choose file...'}</span>
                               </label>
                               {name && (
                                 <div className="cursor-pointer absolute flex h-full justify-end items-center top-0 right-0 px-4">
@@ -177,7 +176,7 @@ export function Update() {
                   </animated.div>
                 </div>
               )}
-              <div className="absolute bg-frosted top-0 left-0 w-full h-full"></div>
+              <div className="absolute z-40 bg-frosted top-0 left-0 w-full h-full"></div>
             </div>
           )}
         </div>

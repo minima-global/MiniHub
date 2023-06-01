@@ -76,7 +76,7 @@ export function Install() {
           {display && (
             <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
               {display && (
-                <div className="relative z-40 w-full max-w-sm">
+                <div className="relative z-20 w-full max-w-sm px-4 lg:px-0">
                   <animated.div
                     style={style}
                     className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"
@@ -101,7 +101,7 @@ export function Install() {
                               <label className="file rounded core-grey-20 w-full">
                                 <input type="file" id="file" aria-label="Choose file" onChange={handleOnChange} />
                                 <span className="file-custom"></span>
-                                <span className="file-label">{name || 'Choose file...'}</span>
+                                <span className="file-label truncate">{name || 'Choose file...'}</span>
                               </label>
                               {name && (
                                 <div className="cursor-pointer absolute flex h-full justify-end items-center top-0 right-0 px-4">

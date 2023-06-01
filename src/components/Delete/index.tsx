@@ -25,8 +25,8 @@ export function ConfirmDelete() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
-              <div className="relative z-20 w-full max-w-sm">
+            <div className="mx-auto absolute w-full h-full z-50 flex items-center justify-center text-black">
+              <div className="relative z-50 w-full max-w-sm px-4 lg:px-0">
                 <animated.div
                   style={style}
                   className="modal rounded core-black-contrast-2 text-white box-shadow-lg p-6 mx-auto relative overflow-hidden"
@@ -58,7 +58,7 @@ export function ConfirmDelete() {
                   )}
                 </animated.div>
               </div>
-              <div className="absolute bg-black bg-opacity-60 top-0 left-0 w-full h-full"></div>
+              <div className="absolute z-40 bg-black bg-opacity-60 top-0 left-0 w-full h-full"></div>
             </div>
           )}
         </div>

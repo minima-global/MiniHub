@@ -39,7 +39,7 @@ const Sort = () => {
         </svg>
       </div>
       <div
-        className={`menu absolute inset-x-0 left-18 z-40 transition-all origin-top-left ${
+        className={`absolute inset-x-0 bottom-1 left-0 lg:left-18 z-40 transition-all origin-top-left ${
           showOptions ? 'scale-100' : 'scale-0'
         }`}
       >
