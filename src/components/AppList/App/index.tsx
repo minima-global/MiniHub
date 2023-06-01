@@ -4,7 +4,8 @@ import { useContext } from 'react';
 import { appContext } from '../../../AppContext';
 
 const AppList = ({ data }) => {
-  const { rightMenu, setRightMenu, deleteApp, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
+  const { rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
+    useContext(appContext);
 
   const openApp = async () => {
     if (data.conf.onClick) {
@@ -35,18 +36,17 @@ const AppList = ({ data }) => {
         onContextMenu={handleOnContextMenu}
         className={`item z-20 ${activeRightMenu ? 'blur-lg opacity-20' : ''}`}
       >
-        <div
+        <img
           className="icon mb-2"
-          style={{
-            backgroundImage: `url(${(window as any).MDS.filehost}/${data.uid}/${
-              data.conf.icon
-            }), url('./assets/app.png')`,
+          src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
+          onError={(e) => {
+            e.currentTarget.src = "./assets/app.png";
           }}
         />
         <span className="appLabel">{displayDAppName(data.conf.name)}</span>
       </div>
       <div
-        className={`menu absolute inset-x-0 left-18 z-40 transition-all origin-top ${
+        className={`menu absolute inset-x-0 left-18 text-left z-40 transition-all origin-top ${
           rightMenu === data.uid ? 'scale-100' : 'scale-0'
         }`}
       >
@@ -97,8 +97,10 @@ const AppList = ({ data }) => {
               )}
             </div>
           </div>
-          <div className="cursor-pointer">Update</div>
-          <div onClick={() => deleteApp(data)} className="cursor-pointer">
+          <div onClick={() => setShowUpdateApp(data)} className="cursor-pointer">
+            Update
+          </div>
+          <div onClick={() => setShowDeleteApp(data)} className="cursor-pointer">
             Delete MiniDApp
           </div>
         </div>

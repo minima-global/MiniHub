@@ -2,7 +2,7 @@ import { useTransition, animated } from "@react-spring/web";
 import { modalAnimation } from "../../animations";
 import { useContext, useState } from "react";
 import { appContext } from "../../AppContext";
-import ConfirmDelete from "./ConfirmDelete";
+import ConfirmDelete from "./Delete";
 
 export function Manage() {
   const {

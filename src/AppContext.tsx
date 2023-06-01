@@ -7,7 +7,11 @@ export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
-  const [appList, setAppList] = useState([]);
+
+  // controls the sort type for apps shown on the home screen
+  const [sort, setSort] = useState('alphabetical');
+
+  const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
   const [showManage, setShowManage] = useState(false);
@@ -22,6 +26,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     title: '',
     onClose: null,
   });
+  const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
+  const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
 
   useEffect(() => {
     const theme = localStorage.getItem('__miniHub_theme');
@@ -64,26 +70,21 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         connect: response.connect,
         password: response.password,
       });
+
+      let apps = [
+        ...response.minidapps.filter(
+          (app) => !(app.conf.name.includes('minihub') || app.conf.name.includes('MiniHub'))
+        ),
+      ];
+
+      if (sort === 'alphabetical') {
+        apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
+      } else if (sort === 'last_added') {
+        apps = apps.reverse();
+      }
+
       setAppList([
-        ...response.minidapps
-          .sort((a, b) => a.conf.name.localeCompare(b.conf.name))
-          .filter((app) => !(app.conf.name.includes('minihub') || app.conf.name.includes('MiniHub'))),
-        {
-          uid: 'system_01',
-          conf: {
-            name: 'Install',
-            system: true,
-            onClick: () => setShowInstall(true),
-          },
-        },
-        {
-          uid: 'system_02',
-          conf: {
-            name: 'Manage',
-            system: true,
-            onClick: () => setShowManage(true),
-          },
-        },
+        ...apps,
         {
           uid: 'system_03',
           conf: {
@@ -94,7 +95,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         },
       ]);
     });
-  }, []);
+  }, [sort]);
 
   const installRecommended = useCallback(() => {
     mds().then(async (response) => {
@@ -214,6 +215,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     deleteApp,
     setAppToReadMode,
     setAppToWriteMode,
+    showDeleteApp,
+    setShowDeleteApp,
+    showUpdateApp,
+    setShowUpdateApp,
+    sort,
+    setSort,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

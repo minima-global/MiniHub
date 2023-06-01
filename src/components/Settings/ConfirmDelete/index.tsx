@@ -20,11 +20,11 @@ export function Confirm() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-20 flex items-center justify-center text-black">
-              <div className="relative z-20 w-full max-w-md px-5">
+            <div className="mx-auto absolute w-full h-full z-30 flex items-center justify-center text-black">
+              <div className="relative z-30 w-full max-w-md px-5">
                 <animated.div
                   style={style}
-                  className="modal rounded bg-white box-shadow-lg p-6 mx-auto relative overflow-hidden"
+                  className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"
                 >
                   <div>
                     <h1 className="text-xl font-bold text-center mb-6">{modal.title}</h1>
@@ -32,7 +32,7 @@ export function Confirm() {
                       <button
                         type="button"
                         onClick={onClose}
-                        className="w-full px-4 py-3.5 rounded font-bold text-black bg-black text-white"
+                        className="w-full px-4 py-3.5 rounded font-bold text-black core-black-contrast-3 text-white"
                       >
                         Close
                       </button>

@@ -41,6 +41,18 @@ export function install(filePath: string) {
   });
 }
 
+export function update(appUid: string, filePath: string) {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.cmd(`mds action:update uid:${appUid} file:${filePath}`, function (response: any) {
+      if (response.status) {
+        return resolve(response.response.updated);
+      }
+
+      return reject();
+    });
+  });
+}
+
 export function mds(): any {
   return new Promise((resolve, reject) => {
     (window as any).MDS.cmd('mds', function (response: any) {

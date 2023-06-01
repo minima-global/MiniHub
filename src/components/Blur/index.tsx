@@ -11,7 +11,7 @@ const Blur = () => {
   return (
     <div
       onClick={dismiss}
-      className={`z-10 w-screen h-screen bg-frosted top-0 left-0 ${rightMenu ? 'absolute' : 'hidden'}`}
+      className={`z-20 w-screen h-screen bg-frosted top-0 left-0 ${rightMenu ? 'fixed' : 'hidden'}`}
     />
   );
 };

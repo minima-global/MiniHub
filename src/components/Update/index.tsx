@@ -3,18 +3,18 @@ import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../animations';
 import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../utilities';
-import { deleteFile, getHost, getPath, install, saveFile } from '../../lib';
+import { deleteFile, getHost, getPath, install, saveFile, update } from '../../lib';
 import { appContext } from '../../AppContext';
 
-export function Install() {
-  // seems to be an issue somewhere with types
-  const { refreshAppList, showInstall: display, setShowInstall } = useContext(appContext);
+export function Update() {
+  const { refreshAppList, showUpdateApp, setShowUpdateApp, setRightMenu } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [installed, setInstalled] = useState<any | null>(null);
-  const transition: any = useTransition(display, modalAnimation as any);
+  const transition: any = useTransition(!!showUpdateApp, modalAnimation as any);
+
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
@@ -43,7 +43,7 @@ export function Install() {
         const filePath = await getPath(savedFile.canonical);
 
         // install with full file path
-        const installedInfo = await install(filePath);
+        const installedInfo = await update(showUpdateApp.uid, filePath);
 
         // delete file after we are done
         await deleteFile(savedFile.canonical);
@@ -60,7 +60,8 @@ export function Install() {
   };
 
   const onClose = () => {
-    setShowInstall(false);
+    setShowUpdateApp(false);
+    setRightMenu(false);
     setTimeout(() => {
       setFile(null);
       setName(null);
@@ -92,10 +93,9 @@ export function Install() {
                       <div>
                         {!installed && !error && (
                           <form onSubmit={handleOnSubmit} className="text-center">
-                            <h1 className="mt-1 text-2xl text-center mb-6">Add a MiniDapp</h1>
+                            <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp.conf.name}</h1>
                             <p className="text-center mb-10 line-height">
-                              Instructions if poss please. Lorem ipsum dolor sit amet consectetur. Enim sit in ac
-                              faucibus posuere dolor.
+                              Please select the update mds file.
                             </p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">
@@ -129,7 +129,7 @@ export function Install() {
                               disabled={!name}
                               className="w-full px-4 py-3.5 rounded font-bold text-black core-grey-5 mb-4 disabled:opacity-40 disabled:cursor-not-allowed"
                             >
-                              Install
+                              Update
                             </button>
                             <button
                               type="button"
@@ -143,7 +143,7 @@ export function Install() {
                         {error && !installed && (
                           <div className="text-center">
                             <h1 className="text-2xl font-bold mb-6">Something wrong occurred</h1>
-                            <p className="mb-7">There was an issue installing this app, please try again later</p>
+                            <p className="mb-7">There was an issue updating this app, please try again later</p>
                             <button
                               type="button"
                               onClick={onClose}
@@ -155,10 +155,8 @@ export function Install() {
                         )}
                         {installed && (
                           <div className="text-center">
-                            <h1 className="mt-1 text-lg text-center mb-3">MiniDapp installed</h1>
-                            <p className="text-2xl text-center mb-12 line-height capitalize">
-                              {installed.conf.name}
-                            </p>
+                            <h1 className="mt-1 text-lg text-center mb-3">MiniDapp updated</h1>
+                            <p className="text-2xl text-center mb-12 line-height capitalize">{installed.conf.name}</p>
                             <div
                               className="icon icon--big mb-12 mx-auto"
                               style={{
@@ -188,4 +186,4 @@ export function Install() {
   );
 }
 
-export default Install;
+export default Update;
