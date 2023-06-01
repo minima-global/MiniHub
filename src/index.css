@@ -11,6 +11,7 @@
     --globalnav-backdrop-filter: saturate(180%) blur(10px);
     --globalnav-backdrop-filter-level-two: saturate(180%) blur(20px);
 
+    --core-grey: #91919D;
     --core-grey-5: #F9F9FA;
     --core-grey-20: #E9E9EB;
     --core-black-100: #08090B;
@@ -245,6 +246,9 @@ body {
 }
 .text-white {
     color: var(--core-grey-5);
+}
+.text-core-grey {
+    color: var(--core-grey);
 }
 .inset {
     box-shadow: inset 0 0 0 3px white;

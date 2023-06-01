@@ -37,15 +37,18 @@ const AppList = ({ data }) => {
       <div className="relative">
         {/* App icon */}
         <div
-          onClick={openApp}
+          onClick={() => rightMenu ? setRightMenu(null) : null}
           onContextMenu={handleOnContextMenu}
           className={`item w-full z-30 ${
-            rightMenu && rightMenu.uid !== data.uid ? 'blur-lg opacity-20 lg:blur-lg lg:opacity-20' : 'cursor-pointer'
-          } ${(rightMenu && rightMenu.uid === data.uid) ? 'blur-lg opacity-20 lg:blur-none lg:opacity-100' : ''}`}
+            rightMenu && rightMenu.uid !== data.uid ? 'blur-lg opacity-20 lg:blur-lg lg:opacity-20' : ''
+          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-lg opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
           <img
             alt="app_icon"
-            className={`icon relative mb-3 active:scale-95 hover:scale-95`}
+            onClick={openApp}
+            className={`icon relative mb-3 active:scale-95 hover:scale-95 ${
+              rightMenu && rightMenu.uid !== data.uid ? '' : 'cursor-pointer'
+            }`}
             src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
             onError={(e) => {
               e.currentTarget.src = './assets/app.png';

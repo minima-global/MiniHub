@@ -25,10 +25,14 @@ const MobileRightMenu = () => {
                   e.currentTarget.src = './assets/app.png';
                 }}
               />
-              <div className="capitalize px-5 flex items-center">
-                <div>
-                  <div>{data.conf.name}</div>
+              <div className="px-5 flex items-center">
+                <div className="block lg:hidden">
+                  <div className="capitalize">{data.conf.name}</div>
                   <div>{data.conf.version}</div>
+                </div>
+                <div className="hidden lg:block">
+                  <div>{data.conf.name} v{data.conf.version}</div>
+                  <div className="text-core-grey">{data.conf.description}</div>
                 </div>
               </div>
             </div>
