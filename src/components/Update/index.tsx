@@ -75,7 +75,7 @@ export function Update() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-30 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
               {display && (
                 <div className="relative z-40 w-full max-w-sm">
                   <animated.div
@@ -93,7 +93,7 @@ export function Update() {
                       <div>
                         {!installed && !error && (
                           <form onSubmit={handleOnSubmit} className="text-center">
-                            <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp.conf.name}</h1>
+                            <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp?.conf?.name}</h1>
                             <p className="text-center mb-10 line-height">
                               Please select the update mds file.
                             </p>

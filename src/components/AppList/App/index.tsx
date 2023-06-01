@@ -30,17 +30,18 @@ const AppList = ({ data }) => {
   const isRead = data.conf.permission === 'read';
 
   return (
-    <div className="relative">
+    <div className="relative mb-8">
       <div
         onClick={openApp}
         onContextMenu={handleOnContextMenu}
-        className={`item z-20 ${activeRightMenu ? 'blur-lg opacity-20' : ''}`}
+        className={`item w-full z-20 ${activeRightMenu ? 'blur-lg opacity-20' : ''}`}
       >
         <img
-          className="icon mb-2"
+          alt="app_icon"
+          className="icon transition-all active:scale-96 focus:scale-98 mb-2 cursor-pointer"
           src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
           onError={(e) => {
-            e.currentTarget.src = "./assets/app.png";
+            e.currentTarget.src = './assets/app.png';
           }}
         />
         <span className="appLabel">{displayDAppName(data.conf.name)}</span>

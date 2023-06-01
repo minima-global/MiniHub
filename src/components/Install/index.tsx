@@ -74,7 +74,7 @@ export function Install() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-30 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
               {display && (
                 <div className="relative z-40 w-full max-w-sm">
                   <animated.div

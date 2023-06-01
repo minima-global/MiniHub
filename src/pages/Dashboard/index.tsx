@@ -32,8 +32,10 @@ function Dashboard() {
     emblaApi.on('reInit', onSelect);
   }, [emblaApi, onSelect]);
 
+  const isDev = import.meta.env.MODE === 'development';
+
   return (
-    <div className="app bg" onContextMenu={(evt) => evt.preventDefault()}>
+    <div className="app bg overflow-hidden lg:overflow-visible" onContextMenu={!isDev ? (evt) => evt.preventDefault() : null}>
       <AppIsInReadMode />
       <Install />
       <Update />
@@ -43,13 +45,13 @@ function Dashboard() {
       <div className="flex flex-col h-full">
         <TitleBar />
         <ActionBar />
-        <div className="home relative flex items-start md:items-center flex-grow max-w-lg lg:max-w-5xl mx-auto mt-4 md:mt-8 lg:mt-0 lg:mt-0">
-          <div className="embla z-30 w-full flex items-start lg:px-0" ref={emblaRef}>
-            <div className="flex items-start h-full relative">
+        <div className="flex-grow w-full max-w-5xl relative flex items-start mx-auto">
+          <div className="embla z-30 w-full" ref={emblaRef}>
+            <div className="flex items-start h-full relative lg:-ml-14 lg:-mr-14">
               {entireAppList.map((appList, index) => (
                 <div
                   key={`appList_${index}`}
-                  className="embla__slide grid grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4 lg:gap-6"
+                  className="embla__slide w-full pt-2 lg:pt-3 grid grid-cols-4 lg:grid-cols-6"
                 >
                   <AppList data={appList} maxCount={maxCount} />
                 </div>
@@ -59,7 +61,7 @@ function Dashboard() {
           <Blur />
         </div>
         <div>
-          <div className="flex gap-1 items-center justify-center pb-24">
+          <div className="flex gap-1 items-center justify-center pb-16 lg:pb-24">
             {entireAppList &&
               entireAppList.map((_page, index) => (
                 <div
@@ -73,7 +75,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="fixed z-40 bottom-0 left-0 user-select-none w-full p-8 mx-auto">
+      <div className="fixed z-40 bottom-0 left-0 user-select-none w-full p-4 lg:p-8 mx-auto">
         <BadgeNotification />
       </div>
     </div>

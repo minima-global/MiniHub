@@ -80,16 +80,6 @@ body {
     line-height: 24px;
 }
 
-.icon {
-    width: 58px;
-    height: 58px;
-    background-size: contain;
-    border-radius: 10px;
-    transition: 0.1s all;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
 .item:active {
     transform: scale(1.1);
     opacity: 0.8;
@@ -110,14 +100,6 @@ body {
 .grid > .item {
     min-width: 108px;
     min-height: 108px;
-}
-
-.icon:hover {
-    transform: scale(0.95);
-}
-
-.icon:active {
-    transform: scale(0.98);
 }
 
 @media screen and (min-width: 768px) {
@@ -231,20 +213,15 @@ body {
 }
 
 .embla {
-    margin: 8px;
     overflow: visible;
 }
-
 .embla__container {
     display: flex;
 }
-
 .embla__slide {
     flex: 0 0 100%;
-    min-width: 0;
     text-align: center;
 }
-
 .embla__slide div:nth-child(6) .menu,
 .embla__slide div:nth-child(12) .menu,
 .embla__slide div:nth-child(18) .menu,
@@ -308,7 +285,21 @@ body.theme-light .search-container input {
     background-color: white !important;
 }
 
+.icon {
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    border-radius: 10px;
+    transition: 0.1s all;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
 .icon--big {
     width: 96px;
     height: 96px;
+}
+@media (max-width: 420px) {
+    .icon {
+        width: 58px;
+        height: 58px;
+    }
 }

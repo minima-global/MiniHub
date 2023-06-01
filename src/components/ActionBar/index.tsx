@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { appContext } from '../../AppContext';
 import Sort from './Sort';
-import Blur from '../Blur';
 
 const ActionBar = () => {
   const { setShowInstall, query, setQuery } = useContext(appContext);
@@ -11,7 +10,7 @@ const ActionBar = () => {
   const closeSearch = () => setShowSearch(false);
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto my-10">
+    <div className="relative w-full max-w-5xl mx-auto my-8 lg:my-10 px-8 lg:px-0">
       {showSearch && (
         <div className="absolute flex w-full core-black-contrast top-0 bottom-0 z-10 text-center">
           <div className="flex-grow flex items-center relative mx-auto">
