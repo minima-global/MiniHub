@@ -1,16 +1,15 @@
-import * as React from 'react';
 import { useTransition, animated } from '@react-spring/web';
-import { slideAnimation } from '../../../animations';
+import { modalAnimation } from '../../../animations';
 
-type SlideScreenProps = {
+type FullScreenProps = {
   display: boolean;
 };
 
-export const SlideScreen: React.FC<React.PropsWithChildren<SlideScreenProps>> = ({ display, children }) => {
-  const transition: any = useTransition(display, slideAnimation as any);
+const FullScreen: React.FC<React.PropsWithChildren<FullScreenProps>> = ({ children, display }) => {
+  const transition: any = useTransition(display, modalAnimation as any);
 
   return (
-    <div>
+    <>
       {transition((style, display) => (
         <div>
           {display && (
@@ -19,18 +18,19 @@ export const SlideScreen: React.FC<React.PropsWithChildren<SlideScreenProps>> = 
                 <div className="relative z-[60] w-full h-full">
                   <animated.div
                     style={style}
-                    className="modal h-full text-white box-shadow-lg mx-auto relative overflow-hidden"
+                    className="modal h-full bg-black text-white box-shadow-lg mx-auto relative overflow-hidden"
                   >
                     {children}
                   </animated.div>
                 </div>
               )}
+              <div className="absolute bg-frosted top-0 left-0 w-full h-full"></div>
             </div>
           )}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
-export default SlideScreen;
+export default FullScreen;

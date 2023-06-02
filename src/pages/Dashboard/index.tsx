@@ -5,7 +5,7 @@ import AppIsInReadMode from '../../components/AppIsInReadMode';
 import useAppList from '../../hooks/useAppList';
 import useEmblaCarousel from 'embla-carousel-react';
 import Settings from '../../components/Settings';
-import { Confirm } from '../../components/Settings/ConfirmDelete';
+import { Confirm } from '../../components/Confirmation';
 import Blur from '../../components/Blur';
 import BadgeNotification from '../../components/BadgeNotification';
 import ConfirmDelete from '../../components/Delete';

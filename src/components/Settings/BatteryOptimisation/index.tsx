@@ -7,7 +7,7 @@ export function BatteryOptimisation({ display, dismiss }: any) {
     <SlideScreen display={display}>
       <div className="flex flex-col h-full mt-14 bg-black">
         <div className="pt-10 px-6 pb-6 flex flex-col h-full">
-          <h1 onClick={dismiss} className="cursor-pointer text-2xl mb-4 flex items-center">
+          <div onClick={dismiss} className="cursor-pointer mb-4 flex items-center">
             <svg
               className="mt-0.5 mr-4"
               width="8"
@@ -22,9 +22,9 @@ export function BatteryOptimisation({ display, dismiss }: any) {
               />
             </svg>
             Settings
-          </h1>
+          </div>
           <div className="mt-6 text-2xl mb-8">Battery optimisation</div>
-          <div className="core-black-contrast-2 p-5 rounded">
+          <div className="core-black-contrast-2 p-4 rounded">
             <div className="mb-6">
               Lorem ipsum dolor sit amet consectetur. Non massa mauris ut ornare dolor amet. Donec accumsan volutpat
               scelerisque aliquet pretium nam egestas proin.

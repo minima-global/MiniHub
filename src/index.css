@@ -12,6 +12,7 @@
     --globalnav-backdrop-filter-level-two: saturate(180%) blur(20px);
 
     --status-red: #FF627E;
+    --status-green: #4FE3C1;
     --core-grey: #91919D;
     --core-grey-5: #F9F9FA;
     --core-grey-20: #E9E9EB;
@@ -254,6 +255,9 @@ body {
 }
 .text-core-grey-80 {
     color: var(--core-grey-80);
+}
+.text-status-green {
+    color: var(--status-green);
 }
 .text-status-red {
     color: var(--status-red);

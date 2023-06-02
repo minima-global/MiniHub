@@ -1,13 +1,12 @@
 import * as React from 'react';
 import SlideScreen from '../../UI/SlideScreen';
-import Block from '../../UI/Block';
+import Block from '../../Block';
 import { useContext } from 'react';
 import { appContext } from '../../../AppContext';
+import Button from '../../UI/Button';
 
-export function DesktopConnect({ display, dismiss }: any) {
+export function PeerList({ display, dismiss }: any) {
   const { mdsInfo } = useContext(appContext);
-
-  console.log(mdsInfo);
 
   return (
     <SlideScreen display={display}>
@@ -29,27 +28,30 @@ export function DesktopConnect({ display, dismiss }: any) {
             </svg>
             Settings
           </div>
-          <div className="mt-6 text-2xl mb-8">Desktop connect</div>
+          <div className="mt-6 text-2xl mb-8">Peer list</div>
           <div className="flex flex-col gap-5">
             <div className="core-black-contrast p-4 rounded">
               <div>
-                <div className="mb-3"> What is desktop connect?</div>
+                <div className="mb-3">What are peers?</div>
                 <p className="text-core-grey">
-                  Lorem ipsum dolor sit amet consectetur. Non massa mauris ut ornare dolor amet. Donec accumsan volutpat
-                  scelerisque aliquet pretium nam egestas proin.
+                  Lorem ipsum dolor sit amet consectetur. In diam sem cras pellentesque luctus leo faucibus ullamcorper
+                  venenatis.
                 </p>
               </div>
             </div>
-            <div>
-              <Block title="URL" value={mdsInfo?.connect} copy refresh />
+            <div className="core-black-contrast-2 p-4 rounded">
+              <div className="mb-6">
+                Lorem ipsum dolor sit amet consectetur. Ipsum leo sagittis mattis egestas mattis pulvinar pulvinar in
+                tempor.
+              </div>
+              <Button>Share peers</Button>
             </div>
-            <div>
-              <p className="text-core-grey-80 text-sm">
-                Here is a short description as to what happens when I reset my URL and why I would want to do it.
-              </p>
-            </div>
-            <div>
-              <Block title="Password" value={mdsInfo?.password} copy />
+            <div className="core-black-contrast-2 p-4 rounded">
+              <div className="mb-6">
+                Lorem ipsum dolor sit amet consectetur. Ipsum leo sagittis mattis egestas mattis pulvinar pulvinar in
+                tempor.
+              </div>
+              <Button>Import peers</Button>
             </div>
           </div>
         </div>
@@ -58,4 +60,4 @@ export function DesktopConnect({ display, dismiss }: any) {
   );
 }
 
-export default DesktopConnect;
+export default PeerList;
