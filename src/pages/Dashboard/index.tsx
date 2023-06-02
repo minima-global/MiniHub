@@ -4,7 +4,6 @@ import Install from '../../components/Install';
 import AppIsInReadMode from '../../components/AppIsInReadMode';
 import useAppList from '../../hooks/useAppList';
 import useEmblaCarousel from 'embla-carousel-react';
-import { appContext } from '../../AppContext';
 import Settings from '../../components/Settings';
 import { Confirm } from '../../components/Settings/ConfirmDelete';
 import Blur from '../../components/Blur';
@@ -35,7 +34,10 @@ function Dashboard() {
   const isDev = import.meta.env.MODE === 'development';
 
   return (
-    <div className="app bg overflow-hidden xl:overflow-visible" onContextMenu={!isDev ? (evt) => evt.preventDefault() : null}>
+    <div
+      className="app bg overflow-hidden xl:overflow-visible"
+      onContextMenu={!isDev ? (evt) => evt.preventDefault() : null}
+    >
       <AppIsInReadMode />
       <Install />
       <Update />
