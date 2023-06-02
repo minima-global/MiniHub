@@ -33,40 +33,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
 
-  useEffect(() => {
-    const theme = localStorage.getItem('__miniHub_theme');
-
-    if (theme) {
-      setTheme(theme);
-    } else {
-      setTheme('BLACK');
-    }
-  }, []);
-
-  useEffect(() => {
-    if (theme === 'PURPLE') {
-      document.body.classList.remove('bg-heroWhite');
-      document.body.classList.remove('bg-heroBlack');
-      document.body.classList.remove('theme-light');
-      document.body.classList.add('bg-heroPurple');
-      document.body.classList.add('theme-dark');
-    } else if (theme === 'WHITE') {
-      document.body.classList.remove('bg-heroPurple');
-      document.body.classList.remove('bg-heroWhite');
-      document.body.classList.remove('bg-heroBlack');
-      document.body.classList.remove('theme-dark');
-      document.body.classList.add('bg-heroWhite');
-      document.body.classList.add('theme-light');
-    } else if (theme === 'BLACK') {
-      document.body.classList.remove('bg-heroPurple');
-      document.body.classList.remove('bg-heroWhite');
-      document.body.classList.remove('bg-heroBlack');
-      document.body.classList.remove('theme-light');
-      document.body.classList.add('bg-heroBlack');
-      document.body.classList.add('theme-dark');
-    }
-  }, [theme]);
-
   const refreshAppList = useCallback(() => {
     mds().then((response) => {
       setMdsInfo({
@@ -145,7 +111,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setBadgeNotification(`Read permissions enabled`);
   };
 
+  const homeScreenAppList = appList.filter(i => !['Health', 'Logs', 'Security'].includes(i.conf.name));
+
   const value = {
+    homeScreenAppList,
     appList,
     query,
     setQuery,

@@ -1,10 +1,12 @@
 import { mds } from '../lib';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import downloadAndInstallMDSFile from '../utilities/downloadAndInstallMDSFile';
 import utilityMiniDapps from '../utilities_minidapps.json';
 import miniDapps from '../minidapps.json';
 
 const useRecommended = (appIsInWriteMode, refreshAppList) => {
+  const loaded = useRef(false);
+
   const installRecommended = useCallback(() => {
     mds().then(async (response) => {
       try {
@@ -42,10 +44,11 @@ const useRecommended = (appIsInWriteMode, refreshAppList) => {
   }, [refreshAppList]);
 
   useEffect(() => {
-    if (appIsInWriteMode) {
+    if (appIsInWriteMode && !loaded.current) {
+      loaded.current = true;
       installRecommended();
     }
-  }, [appIsInWriteMode, installRecommended]);
+  }, [appIsInWriteMode, loaded, installRecommended]);
 };
 
 export default useRecommended;

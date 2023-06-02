@@ -3,7 +3,7 @@ import { appContext } from "../AppContext";
 import * as _ from "lodash";
 
 const useAppList = () => {
-  const { appList, query } = useContext(appContext);
+  const { homeScreenAppList: appList, query } = useContext(appContext);
   const [page, setPage] = useState(1);
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);

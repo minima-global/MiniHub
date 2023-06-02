@@ -47,7 +47,10 @@ const Utilities = () => {
                         <div className="bg-utility text-white w-full max-w-lg mx-auto rounded-xl">
                           {healthApp && (
                             <>
-                              <div onClick={() => openApp(healthApp)} className="flex items-stretch w-full p-4">
+                              <div
+                                onClick={() => openApp(healthApp)}
+                                className="cursor-pointer flex items-stretch w-full p-4"
+                              >
                                 <div>
                                   <img
                                     className="icon"
@@ -63,7 +66,10 @@ const Utilities = () => {
                           {logsApp && (
                             <>
                               <div className="h-0.5 w-full bg-black opacity-40" />
-                              <div onClick={() => openApp(logsApp)} className="flex items-stretch w-full p-4">
+                              <div
+                                onClick={() => openApp(logsApp)}
+                                className="cursor-pointer flex items-stretch w-full p-4"
+                              >
                                 <div>
                                   <img
                                     className="icon"
@@ -78,7 +84,10 @@ const Utilities = () => {
                           )}
                           <>
                             <div className="h-0.5 w-full bg-black opacity-40" />
-                            <div onClick={() => openApp(logsApp)} className="flex items-stretch w-full p-4">
+                            <div
+                              onClick={() => openApp(logsApp)}
+                              className="cursor-pointer flex items-stretch w-full p-4"
+                            >
                               <div>
                                 <img className="icon" src={`./assets/app.png`} />
                               </div>
@@ -87,7 +96,10 @@ const Utilities = () => {
                           </>
                           <>
                             <div className="h-0.5 w-full bg-black opacity-40" />
-                            <div onClick={() => setShowSettings(true)} className="flex items-stretch w-full p-4">
+                            <div
+                              onClick={() => setShowSettings(true)}
+                              className="cursor-pointer flex items-stretch w-full p-4"
+                            >
                               <div>
                                 <img className="icon" src="./assets/settings.png" />
                               </div>
