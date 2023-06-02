@@ -7,8 +7,6 @@ import { appContext } from '../../../AppContext';
 export function DesktopConnect({ display, dismiss }: any) {
   const { mdsInfo } = useContext(appContext);
 
-  console.log(mdsInfo);
-
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full mt-14 bg-black">

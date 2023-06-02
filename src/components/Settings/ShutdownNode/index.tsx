@@ -1,52 +1,41 @@
-import { useContext } from 'react';
-import { useTransition, animated } from '@react-spring/web';
-import { appContext } from '../../../AppContext';
-import { modalAnimation } from '../../../animations';
+import Modal from '../../UI/Modal';
+import Button from '../../UI/Button';
+import { quit } from '../../../lib';
+import { useState } from 'react';
 
-export function Confirm() {
-  const { modal, setModal } = useContext(appContext);
-  const transition: any = useTransition(modal?.display, modalAnimation as any);
+export function ShutdownNode({ display, dismiss }) {
+  const [shutdown, setShutdown] = useState(false);
 
-  const onClose = async () => {
-    if (modal.onClose) {
-      modal.onClose();
-    }
-
-    setModal({ display: false, title: modal.title, onClose: null })
+  const confirm = async () => {
+    await quit();
+    setShutdown(true);
   };
 
-  return (
-    <div>
-      {transition((style, display) => (
+  if (shutdown) {
+    return (
+      <Modal display={display} frosted>
         <div>
-          {display && (
-            <div className="mx-auto absolute w-full h-full z-30 flex items-center justify-center text-black">
-              <div className="relative z-30 w-full max-w-md px-5">
-                <animated.div
-                  style={style}
-                  className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"
-                >
-                  <div>
-                    <h1 className="text-xl font-bold text-center mb-6">{modal.title}</h1>
-                    <div className="text-center">
-                      <button
-                        type="button"
-                        onClick={onClose}
-                        className="w-full px-4 py-3.5 rounded font-bold text-black core-black-contrast-3 text-white"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </animated.div>
-              </div>
-              <div className="absolute bg-black bg-opacity-60 top-0 left-0 w-full h-full"></div>
-            </div>
-          )}
+          <div className="text-center">
+            <h1 className="text-xl mb-6">Your node has been shutdown</h1>
+            <p className="text-core-grey mb-1">Lorem ipsum dolor sit amet consectetur. At faucibus nunc neque vitae integer id sem blandit magna.</p>
+          </div>
         </div>
-      ))}
-    </div>
+      </Modal>
+    );
+  }
+
+  return (
+    <Modal display={display} frosted closeAtBottom={dismiss}>
+      <div>
+        <div className="text-center">
+          <p className="mb-12">
+            Lorem ipsum dolor sit amet consectetur. At faucibus nunc neque vitae integer id sem blandit magna.
+          </p>
+          <Button onClick={confirm}>Shutdown node</Button>
+        </div>
+      </div>
+    </Modal>
   );
 }
 
-export default Confirm;
+export default ShutdownNode;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import SlideScreen from '../../UI/SlideScreen';
-import Block from '../../Block';
 import { useContext } from 'react';
 import { appContext } from '../../../AppContext';
 import Button from '../../UI/Button';

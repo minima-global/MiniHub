@@ -172,3 +172,19 @@ export function mdsActionPermission(appUid: string, trust: 'write' | 'read'): an
     });
   });
 }
+
+export function promisfyMds(command: string): any {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.cmd(command, function (response: any) {
+      if (response.status) {
+        return resolve(response.response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function quit() {
+  return promisfyMds('quit compact:true');
+}

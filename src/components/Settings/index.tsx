@@ -4,20 +4,23 @@ import BatteryOptimisation from './BatteryOptimisation';
 import DesktopConnect from './DesktopConnect';
 import PeerList from './PeerList';
 import FullScreen from '../UI/FullScreen';
+import ShutdownNode from './ShutdownNode';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);
+  const [showShutdown, setShutdown] = useState(false);
   const [showPeerList, setShowPeerList] = useState(false);
   const [showDesktopConnect, setShowDesktopConnect] = useState(false);
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
 
   return (
     <FullScreen display={display}>
+      <ShutdownNode display={showShutdown} dismiss={() => setShutdown(false)} />
       <PeerList display={showPeerList} dismiss={() => setShowPeerList(false)} />
       <DesktopConnect display={showDesktopConnect} dismiss={() => setShowDesktopConnect(false)} />
       <BatteryOptimisation display={showBatteryOptimisation} dismiss={() => setShowBatteryOptimisation(false)} />
       <div className="flex flex-col h-full">
-        <div className="title-bar py-6 px-6 z-40">
+        <div className="title-bar py-6 px-6 z-[80]">
           <div className="grid grid-cols-12 h-full">
             <div className="svg col-span-6 h-full flex items-center">
               <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +85,7 @@ export function Settings() {
                 </svg>
               </div>
             </div>
-            <div className="relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer">
+            <div onClick={() => setShutdown(true)} className="relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer">
               Shutdown node
               <div className="absolute right-0 top-0 h-full px-4 flex items-center">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
