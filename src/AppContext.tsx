@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
 import downloadAndInstallMDSFile from './utilities/downloadAndInstallMDSFile';
+import useRecommended from './hooks/useInstallRecommend';
 
 export const appContext = createContext({} as any);
 
@@ -11,12 +12,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
 
+  // shows fake utilities group folder
+  const [showUtilities, setShowUtilities] = useState(false);
+
+  // show settings menu
+  const [showSettings, setShowSettings] = useState(false);
+
   const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
-  const [showManage, setShowManage] = useState(false);
-  const [showInstall, setShowInstall] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [theme, setTheme] = useState('');
   const [mdsInfo, setMdsInfo] = useState<any>(null);
   const [rightMenu, setRightMenu] = useState<any>(false);
@@ -88,73 +92,23 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         {
           uid: 'system_03',
           conf: {
-            name: 'Settings',
+            name: 'Utilities',
             system: true,
-            onClick: () => setShowSettings(true),
+            overrideIcon: './assets/utilities.png',
+            onClick: () => setShowUtilities(true),
           },
         },
       ]);
     });
   }, [sort]);
 
-  const installRecommended = useCallback(() => {
-    mds().then(async (response) => {
-      const minidapps = response.minidapps;
-      const downloadTarget: any = [];
-
-      if (!minidapps.find((i) => i.conf.name === 'Health')) {
-        console.log('health is not installed');
-        downloadTarget.push({
-          url: 'https://storage.googleapis.com/test-bucket-wt/minidapps/health-0.1.0.mds.zip',
-          trust: 'read',
-        });
-      }
-
-      if (!minidapps.find((i) => i.conf.name === 'Logs')) {
-        console.log('logs is not installed');
-        downloadTarget.push({
-          url: 'https://storage.googleapis.com/test-bucket-wt/minidapps/logs-0.1.0.mds.zip',
-          trust: 'read',
-        });
-      }
-
-      if (!minidapps.find((i) => i.conf.name === 'Pending')) {
-        console.log('pending is not installed');
-        downloadTarget.push({
-          url: 'https://storage.googleapis.com/test-bucket-wt/minidapps/pending-0.1.0.mds.zip',
-          trust: 'write',
-        });
-      }
-
-      if (!minidapps.find((i) => i.conf.name === 'Help')) {
-        console.log('help is not installed');
-        downloadTarget.push({
-          url: 'https://storage.googleapis.com/test-bucket-wt/minidapps/help-1.0.0.mds.zip',
-          trust: 'read',
-        });
-      }
-
-      if (!minidapps.find((i) => i.conf.name === 'Mdsdebug')) {
-        console.log('mds debug is not installed');
-        downloadTarget.push({
-          url: 'https://storage.googleapis.com/test-bucket-wt/minidapps/mdsdebug-0.1.0.mds.zip',
-          trust: 'read',
-        });
-      }
-
-      if (downloadTarget.length > 0) {
-        await Promise.all(downloadTarget.map(({ url, trust }) => downloadAndInstallMDSFile(url, trust)));
-        refreshAppList();
-      }
-    });
-  }, [refreshAppList]);
-
   useEffect(() => {
     if (appIsInWriteMode) {
       refreshAppList();
-      installRecommended();
     }
-  }, [appIsInWriteMode, installRecommended, refreshAppList]);
+  }, [appIsInWriteMode, refreshAppList]);
+
+  useRecommended(appIsInWriteMode, refreshAppList);
 
   // init mds
   useEffect(() => {
@@ -197,14 +151,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setQuery,
     appIsInWriteMode,
     refreshAppList,
-    showManage,
-    setShowManage,
-    showSettings,
-    setShowSettings,
     theme,
     setTheme,
-    showInstall,
-    setShowInstall,
     modal,
     setModal,
     mdsInfo,
@@ -219,8 +167,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowDeleteApp,
     showUpdateApp,
     setShowUpdateApp,
+
     sort,
     setSort,
+
+    showUtilities,
+    setShowUtilities,
+
+    showSettings,
+    setShowSettings,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

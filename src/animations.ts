@@ -54,3 +54,21 @@ export const slideAnimation: any = {
     duration: 100,
   },
 };
+
+export const folderAnimation: any = {
+  from: {
+    opacity: 0,
+    blur: 10,
+  },
+  enter: {
+    opacity: 1,
+    blur: 0,
+  },
+  leave: {
+    opacity: 0,
+    blur: 10,
+  },
+  config: {
+    duration: 100,
+  },
+};

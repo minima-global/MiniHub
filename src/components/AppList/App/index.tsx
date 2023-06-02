@@ -1,7 +1,7 @@
-import { dAppLink } from '../../../lib';
-import { displayDAppName } from '../../../utilities';
 import { useContext } from 'react';
+import { dAppLink } from '../../../lib';
 import { appContext } from '../../../AppContext';
+import { displayDAppName } from '../../../utilities';
 
 const AppList = ({ data }) => {
   const { rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
@@ -37,7 +37,7 @@ const AppList = ({ data }) => {
       <div className="relative">
         {/* App icon */}
         <div
-          onClick={() => rightMenu ? setRightMenu(null) : null}
+          onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={handleOnContextMenu}
           className={`item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-lg opacity-20 lg:blur-lg lg:opacity-20' : ''
@@ -49,7 +49,11 @@ const AppList = ({ data }) => {
             className={`icon relative mb-3 active:scale-95 hover:scale-95 ${
               rightMenu && rightMenu.uid !== data.uid ? '' : 'cursor-pointer'
             }`}
-            src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
+            src={
+              data.conf.overrideIcon
+                ? data.conf.overrideIcon
+                : `${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`
+            }
             onError={(e) => {
               e.currentTarget.src = './assets/app.png';
             }}

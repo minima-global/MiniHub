@@ -13,6 +13,7 @@ import Update from '../../components/Update';
 import TitleBar from '../../components/TitleBar';
 import ActionBar from '../../components/ActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
+import Utilities from '../../components/Utilities';
 
 function Dashboard() {
   const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
@@ -45,6 +46,7 @@ function Dashboard() {
       <Confirm />
       <ConfirmDelete />
       <MobileRightMenu />
+      <Utilities />
       <div className="flex flex-col h-full">
         <TitleBar />
         <ActionBar />
@@ -78,9 +80,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="fixed z-50 bottom-0 left-0 user-select-none w-full p-6 lg:p-8 mx-auto">
-        <BadgeNotification />
-      </div>
+      <BadgeNotification />
     </div>
   );
 }

@@ -125,7 +125,7 @@ body {
 }
 
 .bg-frosted {
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.6);
     -webkit-backdrop-filter: var(--globalnav-backdrop-filter-level-two);
     backdrop-filter: var(--globalnav-backdrop-filter-level-two);
 }
@@ -313,4 +313,8 @@ body.theme-light .search-container input {
         width: 58px;
         height: 58px;
     }
+}
+
+.bg-utility {
+    background-color: rgba(54, 58, 63, 0.7);;
 }

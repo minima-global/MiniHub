@@ -19,13 +19,13 @@ const MobileRightMenu = () => {
             <div className="flex h-full">
               <img
                 alt="app_icon"
-                className={`mt-1 icon icon--small relative active:scale-95 hover:scale-95`}
+                className={`block lg:hidden mt-1 icon icon--small relative active:scale-95 hover:scale-95`}
                 src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
                 onError={(e) => {
                   e.currentTarget.src = './assets/app.png';
                 }}
               />
-              <div className="px-6 flex items-center">
+              <div className="px-6 lg:px-0 flex items-center">
                 <div>
                   <div className="mb-1">
                     {data.conf.name} {data.conf.version && <>v{data.conf.version}</>}
