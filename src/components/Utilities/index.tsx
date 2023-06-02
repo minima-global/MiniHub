@@ -40,7 +40,7 @@ const Utilities = () => {
               <div onClick={dismiss} className="absolute bg-frosted z-[60] top-0 left-0 w-full h-full" />
               {display && (
                 <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0 mt-24">
-                  <animated.div style={style} className="h-full mb-10 lg:mb-16">
+                  <animated.div style={style} className="h-full mb-10 lg:mb-32">
                     <div className="mx-auto text-center flex items-center justify-center h-full w-full">
                       <div className="w-full">
                         <h1 className="text-white font-bold text-3xl mb-8 lg:mb-10">Utilities</h1>
