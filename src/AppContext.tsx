@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import { isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
-import downloadAndInstallMDSFile from './utilities/downloadAndInstallMDSFile';
 import useRecommended from './hooks/useInstallRecommend';
+import { isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
 
 export const appContext = createContext({} as any);
 
@@ -17,6 +16,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show settings menu
   const [showSettings, setShowSettings] = useState(false);
+
+  // show install menu
+  const [showInstall, setShowInstall] = useState(false);
 
   const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
@@ -145,6 +147,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showSettings,
     setShowSettings,
+
+    showInstall,
+    setShowInstall,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

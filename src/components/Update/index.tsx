@@ -3,11 +3,11 @@ import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../animations';
 import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../utilities';
-import { deleteFile, getHost, getPath, install, saveFile, update } from '../../lib';
+import { deleteFile, getHost, getPath, saveFile, update } from '../../lib';
 import { appContext } from '../../AppContext';
 
 export function Update() {
-  const { refreshAppList, showUpdateApp, setShowUpdateApp, setRightMenu } = useContext(appContext);
+  const { refreshAppList, showUpdateApp, setShowUpdateApp } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);

@@ -1,12 +1,7 @@
-import * as React from 'react';
-import SlideScreen from '../../UI/SlideScreen';
-import { useContext } from 'react';
-import { appContext } from '../../../AppContext';
 import Button from '../../UI/Button';
+import SlideScreen from '../../UI/SlideScreen';
 
 export function PeerList({ display, dismiss }: any) {
-  const { mdsInfo } = useContext(appContext);
-
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full mt-14 bg-black">

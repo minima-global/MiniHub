@@ -66,7 +66,7 @@ const Block: React.FC<BlockProps> = ({ title, value, link = null, copy = false, 
           )}
           {copied && (
             <div className="absolute top-4 right-3.5 md:top-4 md:right-4 z-10 text-status-green">
-              <div className="flex items-center" onClick={() => null}>
+              <div className="flex items-center">
                 <div className="text-sm text-primary flex items-center gap-2">
                   Copied
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

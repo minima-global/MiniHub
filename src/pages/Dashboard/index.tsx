@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import AppList from '../../components/AppList';
 import Install from '../../components/Install';
 import AppIsInReadMode from '../../components/AppIsInReadMode';
@@ -37,7 +37,7 @@ function Dashboard() {
   return (
     <div
       className="app bg overflow-hidden xl:overflow-visible"
-      onContextMenu={!isDev ? (evt) => evt.preventDefault() : null}
+      onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
     >
       <AppIsInReadMode />
       <Install />
@@ -51,7 +51,7 @@ function Dashboard() {
         <TitleBar />
         <ActionBar />
         <div className="flex-grow w-full max-w-5xl flex items-start mx-auto">
-          <div className="embla z-30 w-full" ref={emblaRef}>
+          <div className="embla z-30 w-full h-full" ref={emblaRef}>
             <div className="flex items-start h-full lg:-ml-14 lg:-mr-14">
               {entireAppList.map((appList, index) => (
                 <div
