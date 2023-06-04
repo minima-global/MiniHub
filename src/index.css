@@ -8,8 +8,6 @@
     --background-color: #17191C;
     --globalnav-background: rgba(22, 22, 23, .2);
     --inset: rgba(255,255,255,0.2);
-    --globalnav-backdrop-filter: saturate(180%) blur(10px);
-    --globalnav-backdrop-filter-level-two: saturate(180%) blur(20px);
 
     --status-red: #FF627E;
     --status-green: #4FE3C1;
@@ -28,6 +26,10 @@ html {
     height: -webkit-fill-available;
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
     user-select: none;
+    background-color: var(--background-color);
+    background-image: url('./assets/background.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 body {
@@ -39,7 +41,6 @@ body {
     font-family: 'Manrope', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--background-color);
     background-size: cover;
     background-repeat: no-repeat;
 }
