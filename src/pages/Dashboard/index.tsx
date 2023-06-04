@@ -75,7 +75,7 @@ function Dashboard() {
       <MobileRightMenu />
       <Utilities />
 
-      <div onClick={hasPrevious ? previous : undefined} className="hidden lg:block fixed z-20 h-full px-10 pb-10">
+      <div onClick={hasPrevious ? previous : undefined} className="hidden xl:block fixed z-20 h-full px-10 pb-10">
         <div className={`h-full flex items-center ${hasPrevious ? 'cursor-pointer' : 'opacity-20 cursor-not-allowed'}`}>
           <svg width="20px" height="34px" viewBox="0 0 26 44" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <g
@@ -90,7 +90,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div onClick={hasNext ? next : undefined} className="hidden lg:block fixed fixed right-0 z-20 h-full px-10 pb-10">
+      <div onClick={hasNext ? next : undefined} className="hidden xl:block fixed fixed right-0 z-20 h-full px-10 pb-10">
         <div className={`h-full flex items-center ${hasNext ? 'cursor-pointer' : 'opacity-20 cursor-not-allowed'}`}>
           <svg width="20px" height="34px" viewBox="0 0 26 44" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <g id="arrow_right" fill="#E9E9EB" fillRule="nonzero">
