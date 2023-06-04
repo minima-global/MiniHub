@@ -31,14 +31,15 @@ const AppList = ({ data }) => {
   };
 
   const isRead = data.conf.permission === 'read';
+  const isInstalledApp = data.conf.permission;
 
   return (
-    <div className="mb-6 lg:mb-8">
+    <div className="app-grid__icon mb-6 lg:mb-8">
       <div className="relative">
         {/* App icon */}
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
-          onContextMenu={handleOnContextMenu}
+          onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
           className={`item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md opacity-20 lg:blur-md lg:opacity-20' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}

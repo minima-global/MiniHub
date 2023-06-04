@@ -221,6 +221,22 @@ body {
     left: calc(-80%);
 }
 
+.app-grid__icon:nth-last-child(6) .menu,
+.app-grid__icon:nth-last-child(5) .menu,
+.app-grid__icon:nth-last-child(4) .menu,
+.app-grid__icon:nth-last-child(3) .menu,
+.app-grid__icon:nth-last-child(2) .menu,
+.app-grid__icon:nth-last-child(1) .menu {
+    bottom: initial;
+    top: -50%;
+    left: 70%;
+    z-index: 40;
+}
+
+.app-grid__icon:nth-last-child(1) .menu {
+    left: calc(-120%) !important;
+}
+
 /* backgrounds */
 .core-grey-5 {
     background-color: var(--core-grey-5);

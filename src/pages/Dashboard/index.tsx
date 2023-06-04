@@ -113,7 +113,7 @@ function Dashboard() {
               {entireAppList.map((appList, index) => (
                 <div
                   key={`appList_${index}`}
-                  className="embla__slide w-full pt-2 lg:pt-3 grid grid-cols-4 lg:grid-cols-6"
+                  className="app-grid embla__slide w-full pt-2 lg:pt-3 grid grid-cols-4 lg:grid-cols-6"
                 >
                   <AppList data={appList} maxCount={maxCount} />
                 </div>
