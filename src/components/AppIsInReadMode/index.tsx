@@ -16,9 +16,9 @@ export function AppIsInReadMode() {
             <div className="mx-auto absolute w-full h-full z-[100] flex items-center justify-center text-black">
               <div className="relative z-[110] w-full max-w-lg mx-8">
                 <animated.div style={style}>
-                  <div className="text-center text-white pb-4">
-                    <div className="text-2xl mb-3">App is in read mode!</div>
-                    <div className="text-lg mb-8 text-core-grey-80">Please ensure that the MiniHub has write permissions</div>
+                  <div className="text-center text-white pb-12">
+                    <div className="text-2xl mb-1">App is in read mode!</div>
+                    <div className="text-lg text-core-grey-80">Please ensure that the MiniHub has write permissions</div>
                   </div>
                 </animated.div>
               </div>
