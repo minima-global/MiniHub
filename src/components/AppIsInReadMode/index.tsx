@@ -1,7 +1,7 @@
-import { useTransition, animated } from "@react-spring/web";
-import { modalAnimation } from "../../animations";
-import { useContext } from "react";
-import { appContext } from "../../AppContext";
+import { useTransition, animated } from '@react-spring/web';
+import { modalAnimation } from '../../animations';
+import { useContext } from 'react';
+import { appContext } from '../../AppContext';
 
 export function AppIsInReadMode() {
   const { appIsInWriteMode } = useContext(appContext);
@@ -13,24 +13,16 @@ export function AppIsInReadMode() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-10 flex items-center justify-center text-black">
-              {display && (
-                <div className="relative z-10 w-full max-w-md mx-8">
-                  <animated.div
-                    style={style}
-                    className="modal bg-white box-shadow-lg rounded-xl p-8 mx-auto relative overflow-hidden"
-                  >
-                    <div>
-                      <div>
-                        <div className="text-center">
-                          <h1 className="text-2xl font-bold mb-8">App is in read mode!</h1>
-                        </div>
-                      </div>
-                    </div>
-                  </animated.div>
-                </div>
-              )}
-              <div className="absolute bg-frosted top-0 left-0 w-full h-full"></div>
+            <div className="mx-auto absolute w-full h-full z-[100] flex items-center justify-center text-black">
+              <div className="relative z-[110] w-full max-w-lg mx-8">
+                <animated.div style={style}>
+                  <div className="text-center text-white pb-4">
+                    <div className="text-2xl mb-3">App is in read mode!</div>
+                    <div className="text-lg mb-8 text-core-grey-80">Please ensure that the MiniHub has write permissions</div>
+                  </div>
+                </animated.div>
+              </div>
+              <div className="absolute bg-black opacity-80 top-0 left-0 w-full h-full"></div>
             </div>
           )}
         </div>
