@@ -16,7 +16,7 @@ const ActionBar = () => {
   }
 
   return (
-    <div className="relative w-full pt-6 pb-2 px-8 lg:p-5 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
+    <div className="relative w-full pt-6 pb-2 px-8 lg:pt-8 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
       {showSearch && (
         <div className="flex flex-col lg:hidden mt-14 z-40 fixed w-full h-full top-0 left-0 z-10 text-center">
           <div className="bg-black w-full p-5">
@@ -58,15 +58,15 @@ const ActionBar = () => {
         </div>
       )}
       {showSearch && (
-        <div className="hidden lg:flex absolute w-full top-0 bottom-0 z-10 text-center">
-          <div className="flex-grow flex items-center relative mx-auto">
+        <div className="hidden lg:flex absolute bg-red w-full left-0 top-0 bottom-0 z-10 text-center">
+          <div className="flex-grow flex items-center relative mx-auto pt-8 pb-4 px-16">
             <input
               type="text"
-              className="border-2 border-core-black-contrast-3 bg-transparent outline-none rounded w-full mx-auto py-2 px-3"
+              className="flex-grow border-2 border-core-black-contrast-3 bg-transparent outline-none rounded mx-auto py-2 px-3"
               placeholder="Search"
               value={query}
               onChange={(evt) => setQuery(evt.target.value)}
-            ></input>
+            />
             <div className={query !== '' ? 'opacity-100' : 'opacity-0'}>
               <div
                 onClick={() => setQuery('')}
@@ -80,9 +80,9 @@ const ActionBar = () => {
                 </svg>
               </div>
             </div>
-          </div>
-          <div className="ml-5 cursor-pointer" onClick={closeSearch}>
-            Close
+            <div className="flex items-center ml-5 cursor-pointer" onClick={closeSearch}>
+              Close
+            </div>
           </div>
         </div>
       )}
