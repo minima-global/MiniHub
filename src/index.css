@@ -26,10 +26,9 @@ html {
     height: -webkit-fill-available;
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
     user-select: none;
-    background-color: var(--background-color);
-    background-image: url('./assets/background.jpg');
     background-size: cover;
     background-position: center;
+    background-color: var(--background-color);
 }
 
 body {
