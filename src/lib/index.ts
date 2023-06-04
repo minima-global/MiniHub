@@ -188,3 +188,7 @@ export function promisfyMds(command: string): any {
 export function quit() {
   return promisfyMds('quit compact:true');
 }
+
+export function networkRecalculate() {
+  return promisfyMds('network action:recalculateip');
+}

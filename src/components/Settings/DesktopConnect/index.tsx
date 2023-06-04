@@ -1,10 +1,28 @@
 import SlideScreen from '../../UI/SlideScreen';
 import Block from '../../UI/Block';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { appContext } from '../../../AppContext';
+import { networkRecalculate } from '../../../lib';
 
 export function DesktopConnect({ display, dismiss }: any) {
-  const { mdsInfo } = useContext(appContext);
+  const { mdsInfo, setBadgeNotification } = useContext(appContext);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const refreshNetwork = async () => {
+    try {
+      setIsLoading(true);
+      await networkRecalculate();
+      setBadgeNotification('Network URL has been refreshed');
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 750);
+    }
+  };
+
+  const onCopy = () => {
+    setBadgeNotification('Value has been copied to clipboard');
+  };
 
   return (
     <SlideScreen display={display}>
@@ -38,7 +56,16 @@ export function DesktopConnect({ display, dismiss }: any) {
               </div>
             </div>
             <div>
-              <Block title="URL" value={mdsInfo?.connect} copy refresh />
+              <Block
+                copy
+                title="URL"
+                value={mdsInfo?.connect}
+                onCopy={onCopy}
+                refresh={{
+                  loading: isLoading,
+                  callback: refreshNetwork,
+                }}
+              />
             </div>
             <div>
               <p className="text-core-grey-80 text-sm">
@@ -46,7 +73,7 @@ export function DesktopConnect({ display, dismiss }: any) {
               </p>
             </div>
             <div>
-              <Block title="Password" value={mdsInfo?.password} copy />
+              <Block copy title="Password" value={mdsInfo?.password} onCopy={onCopy} />
             </div>
           </div>
         </div>

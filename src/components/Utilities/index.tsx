@@ -37,7 +37,10 @@ const Utilities = () => {
                   />
                 </svg>
               </div>
-              <div onClick={dismiss} className="absolute backdrop-blur-lg bg-black/70 z-[60] top-0 left-0 w-full h-full" />
+              <div
+                onClick={dismiss}
+                className="absolute backdrop-blur-lg bg-black/70 z-[60] top-0 left-0 w-full h-full"
+              />
               {display && (
                 <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0 mt-24">
                   <animated.div style={style} className="h-full mb-10 lg:mb-32">
