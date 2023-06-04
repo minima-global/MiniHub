@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import AppList from '../../components/AppList';
 import Install from '../../components/Install';
 import AppIsInReadMode from '../../components/AppIsInReadMode';
@@ -14,8 +14,10 @@ import TitleBar from '../../components/TitleBar';
 import ActionBar from '../../components/ActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import Utilities from '../../components/Utilities';
+import { appContext } from '../../AppContext';
 
 function Dashboard() {
+  const { setRightMenu } = useContext(appContext);
   const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -105,7 +107,7 @@ function Dashboard() {
       <div className="flex flex-col h-full">
         <TitleBar />
         <ActionBar />
-        <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto">
+        <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
           <div className="embla z-30 w-full h-full" ref={emblaRef}>
             <div className="flex items-start h-full">
               {entireAppList.map((appList, index) => (

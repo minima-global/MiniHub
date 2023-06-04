@@ -23,16 +23,6 @@ const useAppList = () => {
 
       // desktop
       if (width > 1024) {
-        // if (height > 960) {
-        //   setMaxRows(5);
-        // } else if (height > 810) {
-        //   setMaxRows(5);
-        // } else if (height > 650) {
-        //   setMaxRows(3);
-        // } else {
-        //   setMaxRows(2);
-        // }
-
         if (height > 960) {
           setMaxRows(5);
         } else if (height > 830) {
@@ -47,11 +37,15 @@ const useAppList = () => {
 
       // mobile
       } else {
-        if (height > 960) {
+        if (height > 900) {
           setMaxRows(6);
-        } else if (height > 800) {
+        } else if (height > 870) {
+          setMaxRows(6);
+        } else if (height > 770) {
+          setMaxRows(5);
+        } else if (height > 670) {
           setMaxRows(4);
-        } else if (height > 700) {
+        } else if (height > 570) {
           setMaxRows(3);
         } else {
           setMaxRows(2);

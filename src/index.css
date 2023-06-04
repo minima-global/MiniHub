@@ -310,7 +310,7 @@ body.theme-light .search-container input {
     width: 96px;
     height: 96px;
 }
-@media (max-width: 420px) {
+@media (max-width: 520px) {
     .icon {
         width: 58px;
         height: 58px;

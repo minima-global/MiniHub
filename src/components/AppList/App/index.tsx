@@ -40,8 +40,8 @@ const AppList = ({ data }) => {
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={handleOnContextMenu}
           className={`item w-full z-30 ${
-            rightMenu && rightMenu.uid !== data.uid ? 'blur-lg opacity-20 lg:blur-lg lg:opacity-20' : ''
-          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-lg opacity-20 lg:blur-none lg:opacity-100' : ''}`}
+            rightMenu && rightMenu.uid !== data.uid ? 'blur-md opacity-20 lg:blur-md lg:opacity-20' : ''
+          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
           <img
             alt="app_icon"
