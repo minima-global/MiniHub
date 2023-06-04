@@ -15,7 +15,7 @@ const MobileRightMenu = () => {
     >
       {data && (
         <>
-          <div className="core-black-100 p-6">
+          <div className="backdrop-blur-md bg-black/60 p-6">
             <div className="flex h-full">
               <img
                 alt="app_icon"

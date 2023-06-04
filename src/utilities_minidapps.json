@@ -16,11 +16,6 @@
       "trust": "write"
     },
     {
-      "name": "Help",
-      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/help-1.0.0.mds.zip",
-      "trust": "read"
-    },
-    {
       "name": "Mdsdebug",
       "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/mdsdebug-0.1.0.mds.zip",
       "trust": "read"

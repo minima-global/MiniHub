@@ -1,6 +1,6 @@
 const TitleBar = () => {
   return (
-    <div className="backdrop-blur-md	bg-black/40 py-4 px-4 lg:px-12 z-40">
+    <div className="backdrop-blur-md bg-black/40 p-4 z-40">
       <div className="grid grid-cols-12 h-full">
         <div className="svg col-span-6 h-full flex items-center">
           <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">

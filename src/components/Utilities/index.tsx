@@ -37,7 +37,7 @@ const Utilities = () => {
                   />
                 </svg>
               </div>
-              <div onClick={dismiss} className="absolute bg-frosted z-[60] top-0 left-0 w-full h-full" />
+              <div onClick={dismiss} className="absolute backdrop-blur-lg bg-black/70 z-[60] top-0 left-0 w-full h-full" />
               {display && (
                 <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0 mt-24">
                   <animated.div style={style} className="h-full mb-10 lg:mb-32">
@@ -65,7 +65,7 @@ const Utilities = () => {
                           )}
                           {logsApp && (
                             <>
-                              <div className="h-0.5 w-full bg-black opacity-40" />
+                              <div className="h-0.5 w-full bg-black opacity-30" />
                               <div
                                 onClick={() => openApp(logsApp)}
                                 className="cursor-pointer flex items-stretch w-full p-4"
@@ -83,7 +83,7 @@ const Utilities = () => {
                             </>
                           )}
                           <>
-                            <div className="h-0.5 w-full bg-black opacity-40" />
+                            <div className="h-0.5 w-full bg-black opacity-30" />
                             <div
                               onClick={() => openApp(logsApp)}
                               className="cursor-pointer flex items-stretch w-full p-4"
@@ -95,7 +95,7 @@ const Utilities = () => {
                             </div>
                           </>
                           <>
-                            <div className="h-0.5 w-full bg-black opacity-40" />
+                            <div className="h-0.5 w-full bg-black opacity-30" />
                             <div
                               onClick={() => setShowSettings(true)}
                               className="cursor-pointer flex items-stretch w-full p-4"
