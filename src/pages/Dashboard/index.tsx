@@ -50,9 +50,9 @@ function Dashboard() {
       <div className="flex flex-col h-full">
         <TitleBar />
         <ActionBar />
-        <div className="flex-grow w-full max-w-5xl flex items-start mx-auto">
+        <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto">
           <div className="embla z-30 w-full h-full" ref={emblaRef}>
-            <div className="flex items-start h-full lg:-ml-14 lg:-mr-14">
+            <div className="flex items-start h-full">
               {entireAppList.map((appList, index) => (
                 <div
                   key={`appList_${index}`}

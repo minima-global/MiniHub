@@ -204,7 +204,8 @@ body {
 }
 
 .embla {
-    overflow: visible;
+    padding: 10px;
+    overflow: hidden;
 }
 .embla__container {
     display: flex;

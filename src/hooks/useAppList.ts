@@ -2,6 +2,12 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { appContext } from "../AppContext";
 import * as _ from "lodash";
 
+/**
+ * Handles the grid list for apps
+ * 6 columns for desktop
+ * 4 columns for mobile
+ * @returns {{currentAppListPage: any, hasMoreThanOnePage: boolean, numberOfPages: number, entireAppList: any[] | unknown[][], currentPage: number, maxCount: number, setPage: (value: (((prevState: number) => number) | number)) => void}}
+ */
 const useAppList = () => {
   const { homeScreenAppList: appList, query } = useContext(appContext);
   const [page, setPage] = useState(1);
@@ -17,13 +23,23 @@ const useAppList = () => {
 
       // desktop
       if (width > 1024) {
-        if (height > 1200) {
+        // if (height > 960) {
+        //   setMaxRows(5);
+        // } else if (height > 810) {
+        //   setMaxRows(5);
+        // } else if (height > 650) {
+        //   setMaxRows(3);
+        // } else {
+        //   setMaxRows(2);
+        // }
+
+        if (height > 960) {
           setMaxRows(5);
-        } else if (height > 980) {
+        } else if (height > 930) {
           setMaxRows(4);
-        } else if (height > 860) {
+        } else if (height > 730) {
           setMaxRows(3);
-        } else {
+        } else if (height > 630) {
           setMaxRows(2);
         }
 
@@ -41,7 +57,7 @@ const useAppList = () => {
           setMaxRows(2);
         }
 
-        setMaxColumns(3);
+        setMaxColumns(4);
       }
     };
 
