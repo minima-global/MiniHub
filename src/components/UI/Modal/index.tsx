@@ -7,6 +7,7 @@ type ModalProps = {
   display: boolean;
   frosted: boolean;
   closeAtBottom?: () => void;
+  close?: () => void;
 };
 
 export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
@@ -14,6 +15,7 @@ export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   closeAtBottom,
   display,
   children,
+  close,
 }) => {
   const transition: any = useTransition(display, modalAnimation as any);
 
@@ -26,7 +28,7 @@ export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
               <div className="relative z-[80] w-full max-w-md px-5">
                 <animated.div
                   style={style}
-                  className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"
+                  className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mb-10 mx-auto relative overflow-hidden"
                 >
                   {children}
                 </animated.div>
@@ -38,7 +40,12 @@ export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
                   </Button>
                 </div>
               )}
-              {frosted && <div className="absolute z-[70] bg-black bg-opacity-90 top-0 left-0 w-full h-full"></div>}
+              {frosted && (
+                <div
+                  onClick={close}
+                  className="absolute z-[70] bg-black bg-opacity-90 top-0 left-0 w-full h-full"
+                />
+              )}
             </div>
           )}
         </div>

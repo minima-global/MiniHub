@@ -268,7 +268,7 @@ body {
 }
 
 .text-black {
-    color: #282B2E;
+    color: var(--core-black-100);
 }
 .text-white {
     color: var(--core-grey-5);
@@ -284,6 +284,10 @@ body {
 }
 .text-status-red {
     color: var(--status-red);
+}
+
+.bg-status-red {
+    background-color: var(--status-red);
 }
 
 .inset {

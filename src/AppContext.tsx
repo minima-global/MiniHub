@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import useRecommended from './hooks/useInstallRecommend';
-import { block, isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
+import { block, isWriteMode, mds, mdsActionPermission, status, uninstallApp } from './lib';
 
 export const appContext = createContext({} as any);
 
@@ -26,6 +26,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [blockInfo, setBlockInfo] = useState<any>({
     blockHeight: null,
     date: null,
+  });
+
+  const [statusInfo, setStatusInfo] = useState<any>({
+    locked: null,
   });
 
   const [appList, setAppList] = useState<any[]>([]);
@@ -115,6 +119,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
               dateTime: blockInfo.date,
             });
           });
+
+          status().then((response) => {
+            setStatusInfo({
+              locked: response.locked,
+            });
+          });
         }
 
         if (evt.event === 'NEWBLOCK') {
@@ -188,6 +198,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowInstall,
 
     blockInfo,
+    statusInfo,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

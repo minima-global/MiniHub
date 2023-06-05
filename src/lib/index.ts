@@ -196,3 +196,7 @@ export function networkRecalculate() {
 export function block() {
   return promisfyMds('block');
 }
+
+export function status() {
+  return promisfyMds('status');
+}
