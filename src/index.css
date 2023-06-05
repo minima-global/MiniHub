@@ -42,6 +42,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+}
+
+@media screen and (max-width: 520px) {
+    body {
+        background-position: 70% !important;
+    }
 }
 
 #root {
@@ -204,7 +211,6 @@ body {
 }
 
 .embla {
-    padding: 10px;
     overflow: hidden;
 }
 .embla__container {
@@ -310,8 +316,8 @@ body.theme-light .search-container input {
 }
 
 .icon {
-    width: 80px;
-    height: 80px;
+    width: 46px;
+    height: 46px;
     background-size: contain;
     border-radius: 10px;
     transition: 0.1s all;
@@ -325,10 +331,16 @@ body.theme-light .search-container input {
     width: 96px;
     height: 96px;
 }
-@media (max-width: 520px) {
+@media (min-width: 390px) {
     .icon {
-        width: 58px;
-        height: 58px;
+        width: 56px;
+        height: 56px;
+    }
+}
+@media (min-width: 768px) {
+    .icon {
+        width: 80px;
+        height: 80px;
     }
 }
 

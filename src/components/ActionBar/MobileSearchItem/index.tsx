@@ -4,7 +4,7 @@ import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 
 const MobileSearchItem = ({ data, onRightClick }) => {
-  const { rightMenu, setRightMenu } = useContext(appContext);
+  const { rightMenu, setRightMenu, isMobile } = useContext(appContext);
 
   const openApp = async () => {
     if (rightMenu) {
@@ -17,7 +17,7 @@ const MobileSearchItem = ({ data, onRightClick }) => {
 
     const link = await dAppLink(data.conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
-    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`);
+    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, isMobile ? "_self" : "_blank");
   };
 
   const handleOnContextMenu = (evt: React.MouseEvent<HTMLDivElement>) => {

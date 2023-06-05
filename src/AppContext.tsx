@@ -8,6 +8,9 @@ export const appContext = createContext({} as any);
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
 
+  // desktop / or / mobile
+  const [mode, setMode] = useState('desktop');
+
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
 
@@ -34,6 +37,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   });
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 568) {
+      setMode('mobile');
+    }
+  }, []);
 
   const refreshAppList = useCallback(() => {
     mds().then((response) => {
@@ -116,6 +125,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const homeScreenAppList = appList.filter(i => !['Health', 'Logs', 'Security'].includes(i.conf.name));
 
   const value = {
+    mode,
+    isMobile: mode === 'mobile',
+
     homeScreenAppList,
     appList,
     query,

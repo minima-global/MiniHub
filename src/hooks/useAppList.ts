@@ -36,7 +36,7 @@ const useAppList = () => {
         setMaxColumns(6);
 
       // mobile
-      } else {
+      } else if (width > 390) {
         if (height > 900) {
           setMaxRows(6);
         } else if (height > 870) {
@@ -52,6 +52,22 @@ const useAppList = () => {
         }
 
         setMaxColumns(4);
+      } else {
+        if (height > 900) {
+          setMaxRows(6);
+        } else if (height > 780) {
+          setMaxRows(6);
+        } else if (height > 680) {
+          setMaxRows(5);
+        } else if (height > 590) {
+          setMaxRows(4);
+        } else if (height > 500) {
+          setMaxRows(3);
+        } else {
+          setMaxRows(2);
+        }
+
+        setMaxColumns(3);
       }
     };
 

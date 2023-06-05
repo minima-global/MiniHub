@@ -108,12 +108,12 @@ function Dashboard() {
         <TitleBar />
         <ActionBar />
         <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
-          <div className="embla z-30 w-full h-full" ref={emblaRef}>
+          <div className="embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
             <div className="flex items-start h-full">
               {entireAppList.map((appList, index) => (
                 <div
                   key={`appList_${index}`}
-                  className="app-grid embla__slide w-full pt-2 lg:pt-3 grid grid-cols-4 lg:grid-cols-6"
+                  className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6"
                 >
                   <AppList data={appList} maxCount={maxCount} />
                 </div>
