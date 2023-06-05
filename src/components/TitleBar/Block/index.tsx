@@ -7,20 +7,20 @@ const BlockInfo = ({ display, close }: any) => {
 
   return (
     <div className={`${display ? 'fixed' : 'hidden'} h-screen w-screen top-0 left-0 z-10`}>
+      <div className="fixed z-[100] left-4 top-4 mt-0.5">
+        <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M25.6554 7.46969L24.2413 13.5076L22.4307 6.21148L16.0935 3.73123L14.3802 11.0346L12.8614 2.47302L6.5242 0L0 27.8974H6.92074L8.92588 19.3286L10.4297 27.8974H17.3654L19.0713 20.5868L20.8744 27.8974H27.7952L32 9.94271L25.6554 7.46969Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <div onClick={close} className="fixed z-[100] top-4 right-4">
+        <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">
+          Close
+        </div>
+      </div>
       <Modal display={display} frosted close={close}>
-        <div className="fixed left-5 top-5">
-          <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M25.6554 7.46969L24.2413 13.5076L22.4307 6.21148L16.0935 3.73123L14.3802 11.0346L12.8614 2.47302L6.5242 0L0 27.8974H6.92074L8.92588 19.3286L10.4297 27.8974H17.3654L19.0713 20.5868L20.8744 27.8974H27.7952L32 9.94271L25.6554 7.46969Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-        <div onClick={close} className="fixed top-5 right-5">
-          <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">
-            Close
-          </div>
-        </div>
         <div className="text-center pb-2">
           <div className="text-2xl mx-auto mb-8">Chain status</div>
           <div className="core-black-contrast p-5 flex items-center mb-4 rounded gap-4">
