@@ -15,7 +15,7 @@ const BlockInfo = ({ display, close }: any) => {
           />
         </svg>
       </div>
-      <div onClick={close} className="fixed z-[100] top-4 right-4">
+      <div onClick={close} className="fixed z-[100] right-4 top-4 -mt-0.5">
         <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">
           Close
         </div>
