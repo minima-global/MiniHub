@@ -7,7 +7,7 @@
     },
     {
       "name": "Logs",
-      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/logs-0.1.0.mds.zip",
+      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/logs-0.1.2.mds.zip",
       "trust": "read"
     },
     {

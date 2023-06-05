@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import useRecommended from './hooks/useInstallRecommend';
-import { isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
+import { block, isWriteMode, mds, mdsActionPermission, uninstallApp } from './lib';
 
 export const appContext = createContext({} as any);
 
@@ -22,6 +22,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
+
+  const [blockInfo, setBlockInfo] = useState<any>({
+    blockHeight: null,
+    date: null,
+  });
 
   const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
@@ -54,7 +59,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       let apps = [
         ...response.minidapps.filter(
-          (app) => !(app.conf.name.includes('minihub') || app.conf.name.includes('MiniHub'))
+          (app) =>
+            !(
+              app.conf.name.includes('minihub') ||
+              app.conf.name.includes('MiniHub') ||
+              app.conf.name.includes('MiniHUB')
+            )
         ),
       ];
 
@@ -98,6 +108,20 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           isWriteMode().then((appIsInWriteMode) => {
             setAppIsInWriteMode(appIsInWriteMode);
           });
+
+          block().then((blockInfo) => {
+            setBlockInfo({
+              blockHeight: blockInfo.block,
+              dateTime: blockInfo.date,
+            });
+          });
+        }
+
+        if (evt.event === 'NEWBLOCK') {
+          setBlockInfo({
+            blockHeight: evt.data.txpow.header.block,
+            dateTime: evt.data.txpow.header.date,
+          });
         }
       });
     }
@@ -122,7 +146,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setBadgeNotification(`Read permissions enabled`);
   };
 
-  const homeScreenAppList = appList.filter(i => !['Health', 'Logs', 'Security'].includes(i.conf.name));
+  const homeScreenAppList = appList.filter((i) => !['Health', 'Logs', 'Security'].includes(i.conf.name));
 
   const value = {
     mode,
@@ -162,6 +186,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showInstall,
     setShowInstall,
+
+    blockInfo,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

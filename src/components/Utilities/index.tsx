@@ -7,7 +7,7 @@ import { dAppLink } from '../../lib';
 import Button from '../UI/Button';
 
 const Utilities = () => {
-  const { showUtilities, setShowUtilities, setShowSettings } = useContext(appContext);
+  const { isMobile, showUtilities, setShowUtilities, setShowSettings } = useContext(appContext);
   const transition: any = useTransition(showUtilities, folderAnimation as any);
   const logsApp = useAppInfo('Logs');
   const healthApp = useAppInfo('Health');
@@ -19,7 +19,7 @@ const Utilities = () => {
   const openApp = async (app: any) => {
     const link = await dAppLink(app.conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
-    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`);
+    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, isMobile ? '_self' : '_blank');
     dismiss();
   };
 

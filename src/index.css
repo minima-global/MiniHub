@@ -295,6 +295,12 @@ body.theme-light .appLabel {
     text-shadow: none;
 }
 
+@media (max-width: 340px) {
+    .appLabel {
+        font-size: 11px;
+    }
+}
+
 body.theme-light .title-bar {
     text-shadow: none;
     background: none;

@@ -61,7 +61,7 @@ const useAppList = () => {
           setMaxRows(5);
         } else if (height > 590) {
           setMaxRows(4);
-        } else if (height > 500) {
+        } else if (height > 450) {
           setMaxRows(3);
         } else {
           setMaxRows(2);

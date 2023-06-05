@@ -25,7 +25,8 @@ function Dashboard() {
   const [hasNext, setHasNext] = useState(false);
   const isDev = import.meta.env.MODE === 'development';
 
-  const next = () => {1
+  const next = () => {
+    1;
     emblaApi?.scrollTo(selectedIndex + 1);
   };
 
@@ -77,33 +78,6 @@ function Dashboard() {
       <MobileRightMenu />
       <Utilities />
 
-      <div onClick={hasPrevious ? previous : undefined} className="hidden xl:block fixed z-20 h-full px-10 pb-10">
-        <div className={`h-full flex items-center ${hasPrevious ? 'cursor-pointer' : 'opacity-20 cursor-not-allowed'}`}>
-          <svg width="20px" height="34px" viewBox="0 0 26 44" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <g
-              id="arrow_left"
-              transform="translate(12.919084, 22.147865) rotate(90.000000) translate(-12.919084, -22.147865) translate(-8.647865, 9.647865)"
-              fill="#E9E9EB"
-              fillRule="nonzero"
-            >
-              <polygon points="21.5669697 25 -2.11887563e-16 3.33913521 3.43532811 0 21.5669697 18.1293514 39.6985732 0 43.1338975 3.43532429"></polygon>
-            </g>
-          </svg>
-        </div>
-      </div>
-
-      <div onClick={hasNext ? next : undefined} className="hidden xl:block fixed fixed right-0 z-20 h-full px-10 pb-10">
-        <div className={`h-full flex items-center ${hasNext ? 'cursor-pointer' : 'opacity-20 cursor-not-allowed'}`}>
-          <svg width="20px" height="34px" viewBox="0 0 26 44" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <g id="arrow_right" fill="#E9E9EB" fillRule="nonzero">
-              <g transform="translate(12.500000, 21.566949) scale(-1, 1) rotate(90.000000) translate(-12.500000, -21.566949) translate(-9.066949, 9.066949)">
-                <polygon points="21.5669697 25 -2.11887563e-16 3.33913521 3.43532811 0 21.5669697 18.1293514 39.6985732 0 43.1338975 3.43532429"></polygon>
-              </g>
-            </g>
-          </svg>
-        </div>
-      </div>
-
       <div className="flex flex-col h-full">
         <TitleBar />
         <ActionBar />
@@ -124,6 +98,17 @@ function Dashboard() {
         </div>
         <div>
           <div className="flex gap-1 items-center justify-center pb-16 lg:pb-24">
+            <div onClick={hasPrevious ? previous : undefined} className="hidden xl:block mr-4">
+              <div
+                className={`core-black-contrast-2 rounded-xl px-4 py-1 ${
+                  hasPrevious ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                }`}
+              >
+                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z" fill="white" />
+                </svg>
+              </div>
+            </div>
             {entireAppList &&
               entireAppList.map((_page, index) => (
                 <div
@@ -134,6 +119,17 @@ function Dashboard() {
                   <div className={`dot ${index === selectedIndex ? '' : 'opacity-50'}`} />
                 </div>
               ))}
+            <div onClick={hasNext ? next : undefined} className="hidden xl:block ml-4">
+              <div
+                className={`core-black-contrast-2 rounded-xl px-4 pr-3.5 py-1 ${
+                  hasNext ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                }`}
+              >
+                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z" fill="white" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </div>

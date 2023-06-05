@@ -38,7 +38,7 @@ const useRecommended = (appIsInWriteMode, refreshAppList) => {
 
         console.log('installed');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     });
   }, [refreshAppList]);

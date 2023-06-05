@@ -192,3 +192,7 @@ export function quit() {
 export function networkRecalculate() {
   return promisfyMds('network action:recalculateip');
 }
+
+export function block() {
+  return promisfyMds('block');
+}

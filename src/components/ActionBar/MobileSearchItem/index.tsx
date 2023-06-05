@@ -31,13 +31,12 @@ const MobileSearchItem = ({ data, onRightClick }) => {
   };
 
   return (
-    <div className="w-full core-black-contrast-2 rounded-lg" onContextMenu={handleOnContextMenu}>
+    <div onClick={openApp} className="w-full core-black-contrast-2 rounded-lg" onContextMenu={handleOnContextMenu}>
       <div className="flex relative">
         {/* App icon */}
         <div onClick={() => (rightMenu ? setRightMenu(null) : null)} className={`z-30`}>
           <img
             alt="app_icon"
-            onClick={openApp}
             className="w-[64px] h-[64px] rounded-lg core-black-contrast-2"
             src={
               data.conf.overrideIcon
