@@ -46,14 +46,14 @@ const Utilities = () => {
                 <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0 mt-24">
                   <animated.div style={style} className="h-full mb-10 lg:mb-32">
                     <div className="mx-auto text-center flex items-center justify-center h-full w-full">
-                      <div className="w-full">
+                      <div className="w-full lg:mb-20">
                         <h1 className="text-white font-bold text-3xl mb-8 lg:mb-10">Utilities</h1>
-                        <div className="bg-utility text-white w-full max-w-lg mx-auto rounded-xl">
+                        <div className="text-white w-full max-w-lg mx-auto rounded-xl flex flex-col gap-0.5 bg-core-black-contrast-2-50 rounded-xl overflow-hidden">
                           {healthApp && (
                             <>
                               <div
                                 onClick={() => openApp(healthApp)}
-                                className="cursor-pointer flex items-stretch w-full p-4"
+                                className="cursor-pointer flex items-stretch w-full p-4 bg-core-black-contrast-2-20"
                               >
                                 <div>
                                   <img
@@ -69,10 +69,9 @@ const Utilities = () => {
                           )}
                           {logsApp && (
                             <>
-                              <div className="h-0.5 w-full bg-black opacity-30" />
                               <div
                                 onClick={() => openApp(logsApp)}
-                                className="cursor-pointer flex items-stretch w-full p-4"
+                                className="cursor-pointer flex items-stretch w-full p-4 bg-core-black-contrast-2-50"
                               >
                                 <div>
                                   <img
@@ -88,10 +87,9 @@ const Utilities = () => {
                           )}
                           {securityApp && (
                             <>
-                              <div className="h-0.5 w-full bg-black opacity-30" />
                               <div
                                 onClick={() => openApp(logsApp)}
-                                className="cursor-pointer flex items-stretch w-full p-4"
+                                className="cursor-pointer flex items-stretch w-full p-4 bg-core-black-contrast-2-50"
                               >
                                 <div>
                                   <img className="icon" src={`./assets/app.png`} />
@@ -101,10 +99,9 @@ const Utilities = () => {
                             </>
                           )}
                           <>
-                            <div className="h-0.5 w-full bg-black opacity-30" />
                             <div
                               onClick={() => setShowSettings(true)}
-                              className="cursor-pointer flex items-stretch w-full p-4"
+                              className="cursor-pointer flex items-stretch w-full p-4 bg-core-black-contrast-2-50"
                             >
                               <div>
                                 <img className="icon" src="./assets/settings.png" />

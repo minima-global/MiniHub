@@ -299,6 +299,14 @@ body.theme-light .appLabel {
     text-shadow: none;
 }
 
+.bg-core-black-contrast-2-50 {
+    background-color: rgba(54, 58, 63, 0.25);
+}
+
+.bg-core-black-contrast-2-20 {
+    background-color: rgba(22, 24, 28, 0.6);
+}
+
 @media (max-width: 340px) {
     .appLabel {
         font-size: 11px;
@@ -352,8 +360,4 @@ body.theme-light .search-container input {
         width: 80px;
         height: 80px;
     }
-}
-
-.bg-utility {
-    background-color: rgba(54, 58, 63, 0.6);;
 }
