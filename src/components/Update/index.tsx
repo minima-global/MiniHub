@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../animations';
 import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../utilities';
-import { deleteFile, getHost, getPath, saveFile, update } from '../../lib';
+import { deleteFile, getPath, saveFile, update } from '../../lib';
 import { appContext } from '../../AppContext';
 
 export function Update() {
@@ -159,7 +159,7 @@ export function Update() {
                             <div
                               className="icon icon--big mb-12 mx-auto"
                               style={{
-                                backgroundImage: `url(${getHost()}/${installed.uid}/${installed.conf.icon})`,
+                                backgroundImage: `url(${(window as any).MDS.filehost}/${installed.uid}/${installed.conf.icon})`,
                               }}
                             />
                             <button

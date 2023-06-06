@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import useRecommended from './hooks/useInstallRecommend';
 import { block, isWriteMode, mds, mdsActionPermission, status, uninstallApp } from './lib';
 
 export const appContext = createContext({} as any);
@@ -72,6 +71,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         ),
       ];
 
+      // let apps = response.minidapps;
+
       if (sort === 'alphabetical') {
         apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
       } else if (sort === 'last_added') {
@@ -99,7 +100,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [appIsInWriteMode, refreshAppList]);
 
-  useRecommended(appIsInWriteMode, refreshAppList);
+  // useRecommended(appIsInWriteMode, refreshAppList);
 
   // init mds
   useEffect(() => {

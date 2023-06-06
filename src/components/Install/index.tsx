@@ -3,7 +3,7 @@ import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../animations';
 import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../utilities';
-import { deleteFile, getHost, getPath, install, saveFile } from '../../lib';
+import { deleteFile, getPath, install, saveFile } from '../../lib';
 import { appContext } from '../../AppContext';
 
 export function Install() {
@@ -162,7 +162,7 @@ export function Install() {
                             <div
                               className="icon icon--big mb-12 mx-auto"
                               style={{
-                                backgroundImage: `url(${getHost()}/${installed.uid}/${installed.conf.icon})`,
+                                backgroundImage: `url(${(window as any).MDS.filehost}/${installed.uid}/${installed.conf.icon})`,
                               }}
                             />
                             <button

@@ -52,9 +52,11 @@ const TitleBar = () => {
             </div>
           )}
           <div className="hidden lg:block">
-            <div className="cursor-pointer border-2 border-gray-700 rounded-full px-5 pb-1 pt-1.5 -mt-0.5 text-xs uppercase font-bold">
-              Log out
-            </div>
+            <form action="/logoff.html" method="POST">
+              <button type="submit" className="cursor-pointer border-2 border-gray-700 rounded-full px-5 pb-1 pt-1.5 -mt-0.5 text-xs uppercase font-bold">
+                Log out
+              </button>
+            </form>
           </div>
         </div>
       </div>

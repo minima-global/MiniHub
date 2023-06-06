@@ -11,6 +11,7 @@ const Utilities = () => {
   const transition: any = useTransition(showUtilities, folderAnimation as any);
   const logsApp = useAppInfo('Logs');
   const healthApp = useAppInfo('Health');
+  const securityApp = useAppInfo('Security');
 
   const dismiss = () => {
     setShowUtilities(false);
@@ -76,7 +77,7 @@ const Utilities = () => {
                                 <div>
                                   <img
                                     className="icon"
-                                    src={`${(window as any).MDS.filehost}${logsApp.uid}/${healthApp.conf.icon}`}
+                                    src={`${(window as any).MDS.filehost}${logsApp.uid}/${logsApp.conf.icon}`}
                                   />
                                 </div>
                                 <div className="flex-grow flex justify-start items-center pl-5 text-lg">
@@ -85,18 +86,20 @@ const Utilities = () => {
                               </div>
                             </>
                           )}
-                          <>
-                            <div className="h-0.5 w-full bg-black opacity-30" />
-                            <div
-                              onClick={() => openApp(logsApp)}
-                              className="cursor-pointer flex items-stretch w-full p-4"
-                            >
-                              <div>
-                                <img className="icon" src={`./assets/app.png`} />
+                          {securityApp && (
+                            <>
+                              <div className="h-0.5 w-full bg-black opacity-30" />
+                              <div
+                                onClick={() => openApp(logsApp)}
+                                className="cursor-pointer flex items-stretch w-full p-4"
+                              >
+                                <div>
+                                  <img className="icon" src={`./assets/app.png`} />
+                                </div>
+                                <div className="flex-grow flex justify-start items-center pl-5 text-lg">Security</div>
                               </div>
-                              <div className="flex-grow flex justify-start items-center pl-5 text-lg">Security</div>
-                            </div>
-                          </>
+                            </>
+                          )}
                           <>
                             <div className="h-0.5 w-full bg-black opacity-30" />
                             <div
