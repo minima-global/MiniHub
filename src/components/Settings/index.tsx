@@ -1,26 +1,28 @@
 import { useContext, useState } from 'react';
 import { appContext } from '../../AppContext';
 import BatteryOptimisation from './BatteryOptimisation';
-import DesktopConnect from './DesktopConnect';
 import PeerList from './PeerList';
+import Wallpaper from './Wallpaper';
 import FullScreen from '../UI/FullScreen';
 import ShutdownNode from './ShutdownNode';
+import useInstallRecommend from '../../hooks/useInstallRecommend';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);
   const [showShutdown, setShutdown] = useState(false);
   const [showPeerList, setShowPeerList] = useState(false);
-  const [showDesktopConnect, setShowDesktopConnect] = useState(false);
+  const [showWallpaper, setShowWallpaper] = useState(false);
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
+  const installRecommended = useInstallRecommend();
 
   return (
     <FullScreen display={display}>
       <ShutdownNode display={showShutdown} dismiss={() => setShutdown(false)} />
       <PeerList display={showPeerList} dismiss={() => setShowPeerList(false)} />
-      <DesktopConnect display={showDesktopConnect} dismiss={() => setShowDesktopConnect(false)} />
+      <Wallpaper display={showWallpaper} dismiss={() => setShowWallpaper(false)} />
       <BatteryOptimisation display={showBatteryOptimisation} dismiss={() => setShowBatteryOptimisation(false)} />
       <div className="flex flex-col h-full">
-        <div className="title-bar py-6 px-6 z-[80]">
+        <div className="title-bar p-4 z-[80]">
           <div className="grid grid-cols-12 h-full">
             <div className="svg col-span-6 h-full flex items-center">
               <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +42,7 @@ export function Settings() {
             </div>
           </div>
         </div>
-        <div className="pt-6 px-6 pb-6 flex flex-col h-full">
+        <div className="pt-4 px-4 pb-4 flex flex-col h-full">
           <h1 className="text-2xl mb-4">Settings</h1>
           <div className="flex-grow my-4 flex flex-col gap-3">
             <div
@@ -48,20 +50,6 @@ export function Settings() {
               className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
             >
               Battery optimisation
-              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
-                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7.04984 5.99995L1.37504 11.6501L0.500244 10.7501L5.24984 5.99995L0.500244 1.24975L1.40024 0.349747L7.04984 5.99995Z"
-                    fill="#F4F4F5"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div
-              onClick={() => setShowDesktopConnect(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
-            >
-              Desktop connect
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -85,7 +73,24 @@ export function Settings() {
                 </svg>
               </div>
             </div>
-            <div onClick={() => setShutdown(true)} className="relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer">
+            <div
+              onClick={() => setShowWallpaper(true)}
+              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+            >
+              Wallpaper
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.04984 5.99995L1.37504 11.6501L0.500244 10.7501L5.24984 5.99995L0.500244 1.24975L1.40024 0.349747L7.04984 5.99995Z"
+                    fill="#F4F4F5"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              onClick={() => setShutdown(true)}
+              className="relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer"
+            >
               Shutdown node
               <div className="absolute right-0 top-0 h-full px-4 flex items-center">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,6 +100,13 @@ export function Settings() {
                   />
                 </svg>
               </div>
+            </div>
+            <br />
+            <div
+              onClick={installRecommended}
+              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+            >
+              Install recommended apps
             </div>
           </div>
           <div>

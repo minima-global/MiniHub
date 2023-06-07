@@ -15,6 +15,7 @@ import ActionBar from '../../components/ActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import Utilities from '../../components/Utilities';
 import { appContext } from '../../AppContext';
+import DesktopConnect from '../../components/DesktopConnect';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
@@ -76,6 +77,7 @@ function Dashboard() {
       <Confirm />
       <ConfirmDelete />
       <MobileRightMenu />
+      <DesktopConnect />
       <Utilities />
 
       <div className="flex flex-col h-full">
@@ -97,15 +99,17 @@ function Dashboard() {
           <Blur />
         </div>
         <div>
-          <div className="flex gap-1 items-center justify-center pb-16 lg:pb-24">
-            <div onClick={hasPrevious ? previous : undefined} className="hidden xl:block mr-4">
+          <div
+            className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${
+              selectedIndex === 0 && !hasNext ? 'hidden' : ''
+            }`}
+          >
+            <div onClick={hasPrevious ? previous : undefined} className="hidden mr-4">
               <div
-                className={`core-black-contrast-2 rounded-xl px-4 py-1 ${
-                  hasPrevious ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
-                }`}
+                className={`mt-0.5 ${hasPrevious ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'}}`}
               >
                 <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z" fill="white" />
+                  <path d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z" fill="currentColor" />
                 </svg>
               </div>
             </div>
@@ -114,19 +118,19 @@ function Dashboard() {
                 <div
                   key={`page_${index}`}
                   onClick={() => emblaApi?.scrollTo(index)}
-                  className="cursor-pointer p-2 lg:p-3"
+                  className="cursor-pointer p-1.5"
                 >
-                  <div className={`dot ${index === selectedIndex ? '' : 'opacity-50'}`} />
+                  <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
                 </div>
               ))}
-            <div onClick={hasNext ? next : undefined} className="hidden xl:block ml-4">
+            <div onClick={hasNext ? next : undefined} className="hidden ml-4">
               <div
-                className={`core-black-contrast-2 rounded-xl px-4 pr-3.5 py-1 ${
-                  hasNext ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
-                }`}
+                className={`mt-0.5 text-core-grey-40 ${
+                  hasNext ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'
+                }}`}
               >
                 <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z" fill="white" />
+                  <path d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z" fill="currentColor" />
                 </svg>
               </div>
             </div>

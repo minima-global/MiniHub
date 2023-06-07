@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { block, isWriteMode, mds, mdsActionPermission, status, uninstallApp } from './lib';
+import useWallpaper from './hooks/useWallpaper';
 
 export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
+
+  const wallpaperProps = useWallpaper();
 
   // desktop / or / mobile
   const [mode, setMode] = useState('desktop');
@@ -18,6 +21,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show settings menu
   const [showSettings, setShowSettings] = useState(false);
+
+  // show desktop connect
+  const [showDesktopConnect, setShowDesktopConnect] = useState(false);
 
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
@@ -200,6 +206,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     blockInfo,
     statusInfo,
+
+    showDesktopConnect,
+    setShowDesktopConnect,
+
+    ...wallpaperProps,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

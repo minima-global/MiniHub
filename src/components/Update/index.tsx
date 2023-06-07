@@ -74,9 +74,9 @@ export function Update() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-50 flex items-center justify-center text-black">
+            <div className="mx-auto absolute w-full h-full z-[100] flex items-center justify-center text-black">
               {display && (
-                <div className="relative z-50 w-full max-w-sm">
+                <div className="relative z-[100] w-full max-w-sm">
                   <animated.div
                     style={style}
                     className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"

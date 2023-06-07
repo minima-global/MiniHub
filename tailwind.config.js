@@ -14,6 +14,12 @@ export default {
     extend: {
       backgroundImage: {
         'hero': "url('../assets/background.jpg')",
+        'thumbnail-minima': "url('../assets/thumbnails/minima.png')",
+        'thumbnail-liquid': "url('../assets/thumbnails/liquid.png')",
+        'thumbnail-mountains': "url('../assets/thumbnails/mountains.png')",
+        'thumbnail-desert': "url('../assets/thumbnails/desert.png')",
+        'thumbnail-galaxy': "url('../assets/thumbnails/galaxy.png')",
+        'thumbnail-feather': "url('../assets/thumbnails/feather.png')",
       },
     },
   },

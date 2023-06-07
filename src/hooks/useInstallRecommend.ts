@@ -1,14 +1,15 @@
 import { mds } from '../lib';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useContext } from 'react';
 import downloadAndInstallMDSFile from '../utilities/downloadAndInstallMDSFile';
 import utilityMiniDapps from '../utilities_minidapps.json';
 import miniDapps from '../minidapps.json';
+import { appContext } from '../AppContext';
 
-const useRecommended = (appIsInWriteMode, refreshAppList) => {
-  const loaded = useRef(false);
+const useRecommended = () => {
+  const { refreshAppList, setBadgeNotification } = useContext(appContext);
 
-  const installRecommended = useCallback(() => {
-    mds().then(async (response) => {
+  return useCallback(() => {
+    return mds().then(async (response) => {
       try {
         const minidapps = response.minidapps;
         const downloadTarget: any = [];
@@ -36,19 +37,12 @@ const useRecommended = (appIsInWriteMode, refreshAppList) => {
           refreshAppList();
         }
 
-        console.log('installed');
+        setBadgeNotification('Recommended apps have been installed');
       } catch (e) {
         // console.log(e);
       }
     });
-  }, [refreshAppList]);
-
-  useEffect(() => {
-    if (appIsInWriteMode && !loaded.current) {
-      loaded.current = true;
-      installRecommended();
-    }
-  }, [appIsInWriteMode, loaded, installRecommended]);
+  }, [refreshAppList, setBadgeNotification]);
 };
 
 export default useRecommended;

@@ -14,6 +14,7 @@
     --core-grey: #91919D;
     --core-grey-5: #F9F9FA;
     --core-grey-20: #E9E9EB;
+    --core-grey-40: #D3D3D8;
     --core-grey-80: #A7A7B0;
     --core-black-100: #08090B;
     --core-black-contrast: #17191C;
@@ -125,10 +126,16 @@ body {
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: white;
+    width: 16px;
+    height: 8px;
+    border-radius: 30px;
+    transition: 0.2s all;
+    background: rgb(249, 249, 250, 0.4);
+}
+
+.dot--active {
+    width: 32px;
+    background: #F4F4F5;
 }
 
 .bg-frosted {
@@ -276,8 +283,17 @@ body {
 .text-core-grey {
     color: var(--core-grey);
 }
+.text-core-grey-20 {
+    color: var(--core-grey-20);
+}
+.text-core-grey-40 {
+    color: var(--core-grey-40);
+}
 .text-core-grey-80 {
     color: var(--core-grey-80);
+}
+.text-black-contrast-black-2 {
+    color: var(--core-black-contrast-2);
 }
 .text-status-green {
     color: var(--status-green);
@@ -360,4 +376,54 @@ body.theme-light .search-container input {
         width: 80px;
         height: 80px;
     }
+}
+
+.bg-solid-black {
+    background-color: #08090B;
+}
+.bg-solid-green {
+    background-color: #003F45;
+}
+.bg-solid-blue {
+    background-color: #002D70;
+}
+.bg-solid-purple {
+    background-color: #412961;
+}
+.bg-solid-red {
+    background-color: #6F062E;
+}
+.bg-solid-orange {
+    background-color: #841E0A;
+}
+
+.bg-gradient-grey {
+    background: linear-gradient(180deg, #515458 0%, #08090B 100%);
+}
+.bg-gradient-green {
+    background: linear-gradient(180deg, #085157 0%, #08090B 100%);
+}
+.bg-gradient-blue {
+    background: linear-gradient(180deg, #0B4087 0%, #08090B 100%);
+}
+.bg-gradient-purple {
+    background: linear-gradient(180deg, #401D6D 0%, #08090B 100%);
+}
+.bg-gradient-red {
+    background: linear-gradient(180deg, #7C0F39 0%, #08090B 100%);
+}
+.bg-gradient-orange {
+    background: linear-gradient(180deg, #8D1E08 0%, #08090B 100%);
+}
+
+/** Custom scrollbar **/
+.custom-scrollbar::-webkit-scrollbar {
+    width: 0.3em;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: var(--core-black-100);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: white;
+    outline: none;
 }

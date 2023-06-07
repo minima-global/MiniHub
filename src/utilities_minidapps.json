@@ -2,17 +2,17 @@
   "dapps": [
     {
       "name": "Health",
-      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/health-0.1.0.mds.zip",
+      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/health-0.1.1.mds.zip",
       "trust": "read"
     },
     {
       "name": "Logs",
-      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/logs-0.1.2.mds.zip",
+      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/logs-0.1.4.mds.zip",
       "trust": "read"
     },
     {
       "name": "Pending",
-      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/pending-0.1.0.mds.zip",
+      "url": "https://storage.googleapis.com/test-bucket-wt/minidapps/pending-0.1.1.mds.zip",
       "trust": "write"
     },
     {

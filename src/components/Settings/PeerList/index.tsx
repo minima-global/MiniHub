@@ -4,9 +4,9 @@ import SlideScreen from '../../UI/SlideScreen';
 export function PeerList({ display, dismiss }: any) {
   return (
     <SlideScreen display={display}>
-      <div className="flex flex-col h-full mt-14 bg-black">
+      <div className="flex flex-col h-full mt-8 bg-black">
         <div className="pt-10 px-6 pb-6 flex flex-col h-full">
-          <div onClick={dismiss} className="cursor-pointer mb-4 flex items-center">
+          <div onClick={dismiss} className="cursor-pointer flex items-center">
             <svg
               className="mt-0.5 mr-4"
               width="8"

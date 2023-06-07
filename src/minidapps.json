@@ -3,17 +3,19 @@
   "description":"Official Minima DAPPs",
   "icon":"https://storage.googleapis.com/minidapps-363120.appspot.com/icons/mainnet/minima_logo.png",
   "version":"1.0",
+
   "dapps":[
     {
-      "file":"https://storage.googleapis.com/minidapps-363120.appspot.com/minidapps/miniswap-1.0.mds.zip",
+      "file":"https://storage.googleapis.com/minidapps-363120.appspot.com/minidapps/miniswap-1.0.3.mds.zip",
       "icon":"https://storage.googleapis.com/minidapps-363120.appspot.com/icons/mainnet/miniswap.png",
       "name":"MiniSwap",
       "description": "The cross-chain swap protocol. Exchange ERC20s and ETH for native MINIMA",
-      "version" : "1.0",
+      "version" : "1.0.3",
       "about" : ["MiniSwap is a cross-chain swap protocol that enables you to trade ERC-20 tokens and ETH for native MINIMA between the Ethereum and Minima blockchains, peer-to-peer.\n\n","Requires both participants to run a Minima node and have a MetaMask wallet installed on their browser."],
-      "update" : [""],
-      "date" : "May 22, 2023",
+      "update" : ["- Metamask now pops up as expected when approving and locking an ERC-20 value of over 999."],
+      "date" : "Jun 05, 2023",
       "history" :[
+        {"version": "1.0.0","file": "https://storage.googleapis.com/minidapps-363120.appspot.com/minidapps_history/miniswap-1.0.mds.zip","update" : "Version 1.0 released on 22 May"}
       ]
     },
     {
@@ -82,7 +84,7 @@
     {
       "file":"https://storage.googleapis.com/minidapps-363120.appspot.com/minidapps/iprewards-2.16.1.mds.zip",
       "icon":"https://storage.googleapis.com/minidapps-363120.appspot.com/icons/mainnet/IP_Payout_logo.png",
-      "name":"IP Rewards",
+      "name":"Incentive Program Rewards",
       "description": "Request withdrawal of your Testnet Rewards",
       "version" : "2.16.1",
       "about" : ["Request withdrawal of your Incentive Program Rewards earned for running a node during Testnet.\n","Once processed, your Rewards will be sent to your Wallet.\n\n","BEFORE REQUESTING WITHDRAWAL OF YOUR REWARDS, PLEASE ENSURE:\n","1. You are running the Mainnet version of Minima\n","2. You have written down your Seed Phrase\n","3. You have taken a backup of your node (with no special characters in the backup password)\n","4. If you have encrypted your keys using the Vault command, please ensure you can unlock it and relock it\n"],
