@@ -47,7 +47,7 @@ const Utilities = () => {
               />
               {display && (
                 <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0 mt-24">
-                  <animated.div style={style} className="h-full mb-10 lg:mb-32">
+                  <animated.div style={style} className="h-full">
                     <div className="mx-auto text-center flex items-center justify-center h-full w-full">
                       <div className="w-full lg:mb-20">
                         <h1 className="text-white font-bold text-3xl mb-8 lg:mb-10">Utilities</h1>
@@ -124,6 +124,7 @@ const Utilities = () => {
                             </div>
                           </>
                         </div>
+                        <div onClick={dismiss} className="pb-10 lg:pb-32" />
                         <div className="block lg:hidden fixed left-0 bottom-0 w-full p-4 z-[100]">
                           <Button variant="secondary" onClick={dismiss}>
                             Close
