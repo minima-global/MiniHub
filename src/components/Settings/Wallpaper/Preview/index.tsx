@@ -6,7 +6,7 @@ import { appContext } from '../../../../AppContext';
 export type PreviewProps = {
   data: any; // TODO
   display: boolean;
-  dismiss: () => void;
+  dismiss: (c: boolean) => void;
 };
 
 export function Preview({ display, data, dismiss }: PreviewProps) {

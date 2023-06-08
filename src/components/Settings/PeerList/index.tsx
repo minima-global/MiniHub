@@ -19,11 +19,6 @@ export function PeerList({ display, dismiss }: PeerListProps) {
     }
   }, [getPeers, display]);
 
-  if (peersInfo) {
-    peersInfo['peers-list'] =
-      '[“181.002.778”,“181.002.778”“181.002.778”,“181.002.778”,“181.002.778”,“181.002.778”,“181.002.778”,“181.002.778”,“181.002“181.002.778”,“181.002.778”,“181.002.778”,“181.002“181.002.778”,“181.002.778”,“181.002.778”,“181.002“181.002.778”,“181.002.778”,“181.002.778”,“181.002';
-  }
-
   const hasMoreThan30Characters = peersInfo && peersInfo['peers-list'].length > 120;
   const sliced = hasMoreThan30Characters ? peersInfo['peers-list'].slice(0, 120) : '';
 

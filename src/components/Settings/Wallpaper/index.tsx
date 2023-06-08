@@ -2,8 +2,6 @@ import SlideScreen from '../../UI/SlideScreen';
 import { useContext, useState } from 'react';
 import Preview from './Preview';
 import { appContext } from '../../../AppContext';
-import Block from '../../UI/Block';
-import Button from '../../UI/Button';
 
 const bgOptions = ['thumbnail-minima', 'thumbnail-feather', 'thumbnail-liquid'];
 const gradientOptions = [
@@ -19,7 +17,7 @@ const solidOptions = ['solid-black', 'solid-green', 'solid-blue', 'solid-purple'
 type WallpaperProps = {
   display: boolean;
   dismiss: () => void;
-}
+};
 
 export function Wallpaper({ display, dismiss }: WallpaperProps) {
   const { activeWallpaper } = useContext(appContext);

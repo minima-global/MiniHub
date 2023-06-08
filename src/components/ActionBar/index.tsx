@@ -16,7 +16,7 @@ const ActionBar = () => {
   }
 
   return (
-    <div className="relative w-full pt-4 sm:pt-6 pb-2 px-8 lg:pt-8 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
+    <div className="relative w-full pt-4 sm:pt-6 pb-2 px-8 lg:pt-10 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
       {showSearch && (
         <div className="flex flex-col lg:hidden mt-14 z-40 fixed w-full h-full top-0 left-0 z-10 text-center">
           <div className="bg-black w-full p-5">
