@@ -1,4 +1,4 @@
-export function saveFile(fileName: string, hexData: any): Promise<any> {
+export function saveFile(fileName: string, hexData: string): Promise<any> {
   return new Promise((resolve, reject) => {
     (window as any).MDS.file.savebinary(fileName, hexData, function (response: any) {
       if (response.status) {
