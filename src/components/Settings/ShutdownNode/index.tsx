@@ -3,7 +3,12 @@ import Button from '../../UI/Button';
 import { quit } from '../../../lib';
 import { useState } from 'react';
 
-export function ShutdownNode({ display, dismiss }) {
+type ShutdownProps = {
+  display: boolean;
+  dismiss: () => void;
+};
+
+export function ShutdownNode({ display, dismiss }: ShutdownProps) {
   const [shutdown, setShutdown] = useState(false);
 
   const confirm = async () => {
@@ -17,7 +22,6 @@ export function ShutdownNode({ display, dismiss }) {
         <div>
           <div className="text-center">
             <h1 className="text-xl mb-6">Your node has been shutdown</h1>
-            <p className="text-core-grey mb-1">Lorem ipsum dolor sit amet consectetur. At faucibus nunc neque vitae integer id sem blandit magna.</p>
           </div>
         </div>
       </Modal>
@@ -25,13 +29,23 @@ export function ShutdownNode({ display, dismiss }) {
   }
 
   return (
-    <Modal display={display} frosted closeAtBottom={dismiss}>
-      <div>
+    <Modal
+      frosted
+      display={display}
+      closeAtBottom={dismiss}
+      hideCloseAtBottomDesktop
+      bottomText="Your node's databases will be compacted and will stop receiving blocks whilst offline."
+    >
+      <div className="mb-1">
         <div className="text-center">
-          <p className="mb-12">
-            Lorem ipsum dolor sit amet consectetur. At faucibus nunc neque vitae integer id sem blandit magna.
-          </p>
+          <h5 className="text-2xl mb-6">Shutdown node</h5>
+          <p className="mb-10">Your node will restart and resync to the chain automatically.</p>
           <Button onClick={confirm}>Shutdown node</Button>
+          <div className="hidden lg:block mt-4">
+            <Button onClick={dismiss} variant="secondary">
+              Cancel
+            </Button>
+          </div>
         </div>
       </div>
     </Modal>

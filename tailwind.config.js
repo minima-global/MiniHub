@@ -1,8 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  safelist: [
+    'locked',
+    'bg-minima',
+    'bg-feather',
+    'bg-liquid',
+    'bg-thumbnail-minima',
+    'bg-thumbnail-liquid',
+    'bg-thumbnail-mountains',
+    'bg-thumbnail-desert',
+    'bg-thumbnail-galaxy',
+    'bg-thumbnail-feather',
   ],
   theme: {
     screens: {
@@ -13,7 +22,9 @@ export default {
     },
     extend: {
       backgroundImage: {
-        'hero': "url('../assets/background.jpg')",
+        minima: "url('../assets/wallpapers/minima.jpg')",
+        feather: "url('../assets/wallpapers/feather.jpg')",
+        liquid: "url('../assets/wallpapers/liquid.jpg')",
         'thumbnail-minima': "url('../assets/thumbnails/minima.png')",
         'thumbnail-liquid': "url('../assets/thumbnails/liquid.png')",
         'thumbnail-mountains': "url('../assets/thumbnails/mountains.png')",
@@ -24,5 +35,4 @@ export default {
     },
   },
   plugins: [],
-}
-
+};

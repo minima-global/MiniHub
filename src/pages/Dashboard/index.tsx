@@ -67,7 +67,7 @@ function Dashboard() {
 
   return (
     <div
-      className="app bg overflow-hidden xl:overflow-visible"
+      className="app bg overflow-hidden xl:overflow-visible custom-scrollbar"
       onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
     >
       <AppIsInReadMode />

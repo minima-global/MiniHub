@@ -1,6 +1,6 @@
-import { useContext, useEffect, useMemo, useState } from "react";
-import { appContext } from "../AppContext";
-import * as _ from "lodash";
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { appContext } from '../AppContext';
+import * as _ from 'lodash';
 
 /**
  * Handles the grid list for apps
@@ -19,7 +19,7 @@ const useAppList = () => {
   useEffect(() => {
     const handler = () => {
       const width = window.innerWidth;
-      const height =  window.innerHeight;
+      const height = window.innerHeight;
 
       // desktop
       if (width > 1024) {
@@ -35,7 +35,7 @@ const useAppList = () => {
 
         setMaxColumns(6);
 
-      // mobile
+        // mobile
       } else if (width > 390) {
         if (height > 900) {
           setMaxRows(6);
@@ -76,7 +76,7 @@ const useAppList = () => {
 
     return () => {
       window.removeEventListener('resize', handler);
-    }
+    };
   }, []);
 
   const chunkedAppList = useMemo(() => {
@@ -84,7 +84,10 @@ const useAppList = () => {
       return [];
     }
 
-    return _.chunk(query !== '' ? appList.filter(i => i.conf.name.toLowerCase().includes(query.toLowerCase())) : appList, maxRows * maxColumn);
+    return _.chunk(
+      query !== '' ? appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase())) : appList,
+      maxRows * maxColumn
+    );
   }, [appList, query, maxRows, maxColumn]);
 
   const entireAppList = chunkedAppList;
@@ -100,6 +103,6 @@ const useAppList = () => {
     currentAppListPage,
     hasMoreThanOnePage: numberOfPages > 1,
   };
-}
+};
 
 export default useAppList;

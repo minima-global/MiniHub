@@ -3,7 +3,13 @@ import Button from '../../../UI/Button';
 import { useContext, useEffect, useState } from 'react';
 import { appContext } from '../../../../AppContext';
 
-export function Preview({ display, data, dismiss }: any) {
+export type PreviewProps = {
+  data: any; // TODO
+  display: boolean;
+  dismiss: () => void;
+};
+
+export function Preview({ display, data, dismiss }: PreviewProps) {
   const { setActiveWallpaper } = useContext(appContext);
   const [className, setClassName] = useState('');
   const [hasSetRecently, setHasSetRecently] = useState(false);
@@ -22,7 +28,11 @@ export function Preview({ display, data, dismiss }: any) {
 
   useEffect(() => {
     if (data) {
-      setClassName(`bg-${data}`);
+      if (data.includes('thumbnail-')) {
+        setClassName(`bg-${data.replace('thumbnail-', '')}`);
+      } else {
+        setClassName(`bg-${data}`);
+      }
     }
   }, [data]);
 
@@ -39,9 +49,11 @@ export function Preview({ display, data, dismiss }: any) {
 
   return (
     <SlideScreen display={display}>
-      <div className="flex flex-col h-full mt-8 bg-black">
-        <div className={`pt-10 px-6 pb-14 flex flex-col h-full overflow-auto custom-scrollbar ${className} bg-cover`}>
-          <div onClick={onClose} className="cursor-pointer flex items-center">
+      <div className="flex flex-col h-full">
+        <div
+          className={`max-w-xl mx-auto w-full pt-16 p-6 flex flex-col h-full overflow-auto custom-scrollbar ${className} bg-cover bg-preview flex h-full`}
+        >
+          <div onClick={onClose} className="pt-4 flex items-center">
             <svg
               className="mt-0.5 mr-4"
               width="8"
@@ -57,11 +69,14 @@ export function Preview({ display, data, dismiss }: any) {
             </svg>
             Back
           </div>
-          <div className="w-[0px] h-[0px] bg-thumbnail-minima bg-thumbnail-mountains bg-thumbnail-galaxy bg-thumbnail-liquid bg-thumbnail-feather bg-thumbnail-desert" />
-          <div className="absolute left-0 bottom-0 w-full p-5">
+          <div className="flex items-end flex-grow left-0 bottom-0 w-full">
             <Button onClick={set} variant={hasSetRecently ? 'secondary' : 'primary'}>
               {hasSetRecently && 'Wallpaper updated'}
-              <div className={`absolute top-0 right-4 flex items-center h-full transition-all ${hasSetRecently ? 'scale-100' : 'scale-0'}`}>
+              <div
+                className={`absolute top-0 right-4 flex items-center h-full transition-all ${
+                  hasSetRecently ? 'scale-100' : 'scale-0'
+                }`}
+              >
                 <div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

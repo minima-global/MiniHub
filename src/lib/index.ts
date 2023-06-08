@@ -193,3 +193,7 @@ export function block() {
 export function status() {
   return promisfyMds('status');
 }
+
+export function peers() {
+  return promisfyMds('peers');
+}

@@ -1,7 +1,12 @@
 import Button from '../../UI/Button';
 import SlideScreen from '../../UI/SlideScreen';
 
-export function BatteryOptimisation({ display, dismiss }: any) {
+type BatteryOptimisationProps = {
+  display: boolean;
+  dismiss: () => void;
+};
+
+export function BatteryOptimisation({ display, dismiss }: BatteryOptimisationProps) {
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full mt-8 bg-black">

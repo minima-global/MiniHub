@@ -1,10 +1,14 @@
 import { mds } from '../lib';
 import { useCallback, useContext } from 'react';
-import downloadAndInstallMDSFile from '../utilities/downloadAndInstallMDSFile';
-import utilityMiniDapps from '../utilities_minidapps.json';
 import miniDapps from '../minidapps.json';
 import { appContext } from '../AppContext';
+import utilityMiniDapps from '../utilities_minidapps.json';
+import downloadAndInstallMDSFile from '../utilities/downloadAndInstallMDSFile';
 
+/**
+ * Installs recommended apps (DEV ONLY)
+ * @returns {() => any}
+ */
 const useRecommended = () => {
   const { refreshAppList, setBadgeNotification } = useContext(appContext);
 

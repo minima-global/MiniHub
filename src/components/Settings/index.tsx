@@ -6,6 +6,7 @@ import Wallpaper from './Wallpaper';
 import FullScreen from '../UI/FullScreen';
 import ShutdownNode from './ShutdownNode';
 import useInstallRecommend from '../../hooks/useInstallRecommend';
+import InScreenTitleBar from '../InScreenTitleBar';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);
@@ -15,39 +16,24 @@ export function Settings() {
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
   const installRecommended = useInstallRecommend();
 
+  const dismiss = () => {
+    setShowSettings(false);
+  }
+
   return (
     <FullScreen display={display}>
       <ShutdownNode display={showShutdown} dismiss={() => setShutdown(false)} />
       <PeerList display={showPeerList} dismiss={() => setShowPeerList(false)} />
       <Wallpaper display={showWallpaper} dismiss={() => setShowWallpaper(false)} />
       <BatteryOptimisation display={showBatteryOptimisation} dismiss={() => setShowBatteryOptimisation(false)} />
-      <div className="flex flex-col h-full">
-        <div className="title-bar p-4 z-[80]">
-          <div className="grid grid-cols-12 h-full">
-            <div className="svg col-span-6 h-full flex items-center">
-              <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M25.6554 7.46969L24.2413 13.5076L22.4307 6.21148L16.0935 3.73123L14.3802 11.0346L12.8614 2.47302L6.5242 0L0 27.8974H6.92074L8.92588 19.3286L10.4297 27.8974H17.3654L19.0713 20.5868L20.8744 27.8974H27.7952L32 9.94271L25.6554 7.46969Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <div className="svg col-span-6 flex items-center justify-end">
-              <svg width="6" height="18" viewBox="0 0 6 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M3.00295 17.275C2.42704 17.275 1.93428 17.0704 1.52468 16.6612C1.11508 16.2519 0.910278 15.76 0.910278 15.1853C0.910278 14.609 1.1149 14.1157 1.52413 13.7053C1.93335 13.2949 2.42529 13.0897 2.99995 13.0897C3.57785 13.0897 4.0706 13.2946 4.4782 13.7045C4.88582 14.1144 5.08963 14.6072 5.08963 15.1828C5.08963 15.7584 4.88582 16.251 4.4782 16.6606C4.0706 17.0702 3.57885 17.275 3.00295 17.275ZM3.00295 11.0897C2.42704 11.0897 1.93428 10.885 1.52468 10.4758C1.11508 10.0666 0.910278 9.57464 0.910278 8.99998C0.910278 8.42208 1.1149 7.92933 1.52413 7.52173C1.93335 7.11411 2.42529 6.9103 2.99995 6.9103C3.57785 6.9103 4.0706 7.11411 4.4782 7.52173C4.88582 7.92933 5.08963 8.42108 5.08963 8.99698C5.08963 9.57289 4.88582 10.0657 4.4782 10.4753C4.0706 10.8849 3.57885 11.0897 3.00295 11.0897ZM3.00295 4.9103C2.42704 4.9103 1.93428 4.70493 1.52468 4.2942C1.11508 3.88347 0.910278 3.38972 0.910278 2.81295C0.910278 2.23618 1.1149 1.74399 1.52413 1.33638C1.93335 0.928775 2.42529 0.724976 2.99995 0.724976C3.57785 0.724976 4.0706 0.928775 4.4782 1.33638C4.88582 1.74399 5.08963 2.23618 5.08963 2.81295C5.08963 3.38972 4.88582 3.88347 4.4782 4.2942C4.0706 4.70493 3.57885 4.9103 3.00295 4.9103Z"
-                  fill="#F9F9FA"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className="pt-4 px-4 pb-4 flex flex-col h-full">
+      <div className="flex flex-col h-full min-h-[700px]">
+        <InScreenTitleBar onExit={dismiss} />
+        <div className="pt-4 px-4 pb-4 flex flex-col h-full max-w-xl mx-auto w-full">
           <h1 className="text-2xl mb-4">Settings</h1>
           <div className="flex-grow my-4 flex flex-col gap-3">
             <div
               onClick={() => setShowBatteryOptimisation(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="hidden relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
             >
               Battery optimisation
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -108,15 +94,6 @@ export function Settings() {
             >
               Install recommended apps
             </div>
-          </div>
-          <div>
-            <button
-              type="button"
-              onClick={() => setShowSettings(false)}
-              className="w-full px-4 py-3.5 rounded core-black-contrast-3 font-bold text-black bg-black text-white mb-2"
-            >
-              Close
-            </button>
           </div>
         </div>
       </div>

@@ -46,8 +46,12 @@ body {
     background-position: center;
 }
 
+.bg-preview {
+    background-position: 70% !important;
+}
+
 @media screen and (max-width: 520px) {
-    body {
+    body, .bg-preview {
         background-position: 70% !important;
     }
 }
@@ -67,11 +71,6 @@ body {
     width: 100%;
     min-height: 100vh;
     min-height: -webkit-fill-available;
-}
-
-.title-bar {
-    width: 100%;
-    background: var(--core-black-100);
 }
 
 .bg-heroBlack {
@@ -295,6 +294,9 @@ body {
 .text-black-contrast-black-2 {
     color: var(--core-black-contrast-2);
 }
+.text-black-contrast-black-3 {
+    color: var(--core-black-contrast-3);
+}
 .text-status-green {
     color: var(--status-green);
 }
@@ -426,4 +428,8 @@ body.theme-light .search-container input {
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: white;
     outline: none;
+}
+
+.locked {
+    overflow: hidden !important;
 }

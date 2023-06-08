@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import { block, isWriteMode, mds, mdsActionPermission, status, uninstallApp } from './lib';
+import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
 
 export const appContext = createContext({} as any);
@@ -28,11 +28,16 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
 
+  // peers
+  const [peersInfo, setPeersInfo] = useState(false);
+
+  // block info
   const [blockInfo, setBlockInfo] = useState<any>({
     blockHeight: null,
     date: null,
   });
 
+  // status info
   const [statusInfo, setStatusInfo] = useState<any>({
     locked: null,
   });
@@ -106,8 +111,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [appIsInWriteMode, refreshAppList]);
 
-  // useRecommended(appIsInWriteMode, refreshAppList);
-
   // init mds
   useEffect(() => {
     if (!loaded.current) {
@@ -165,6 +168,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const homeScreenAppList = appList.filter((i) => !['Health', 'Logs', 'Security'].includes(i.conf.name));
 
+  const getPeers = useCallback(() => {
+    return peers().then((response) => setPeersInfo(response));
+  }, []);
+
   const value = {
     mode,
     isMobile: mode === 'mobile',
@@ -211,6 +218,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowDesktopConnect,
 
     ...wallpaperProps,
+
+    getPeers,
+    peersInfo,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
