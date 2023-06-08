@@ -438,39 +438,39 @@ body.theme-light .search-container input {
   overflow: hidden !important;
 }
 
-.bg-minima .block {
+.bg-minima .block-info {
   background-color: var(--core-black-contrast-2);
 }
 
-.bg-feather .block {
+.bg-feather .block-info {
   background-color: #13394f;
 }
 
-.bg-liquid .block {
+.bg-liquid .block-info {
   background-color: #1e3b5a;
 }
 
-.bg-solid-black .block,
-.bg-gradient-grey .block {
+.bg-solid-black .block-info,
+.bg-gradient-grey .block-info {
   background-color: var(--core-black-contrast-2);
 }
-.bg-solid-red .block,
-.bg-gradient-red .block {
+.bg-solid-red .block-info,
+.bg-gradient-red .block-info {
   background-color: #931a49;
 }
-.bg-solid-blue .block,
-.bg-gradient-blue .block {
+.bg-solid-blue .block-info,
+.bg-gradient-blue .block-info {
   background-color: #1755a5;
 }
-.bg-solid-green .block,
-.bg-gradient-green .block {
+.bg-solid-green .block-info,
+.bg-gradient-green .block-info {
   background-color: #0d6e77;
 }
-.bg-solid-orange .block,
-.bg-gradient-orange .block {
+.bg-solid-orange .block-info,
+.bg-gradient-orange .block-info {
   background-color: #234567;
 }
-.bg-solid-purple .block,
-.bg-gradient-purple .block {
+.bg-solid-purple .block-info,
+.bg-gradient-purple .block-info {
   background-color: #64389d;
 }

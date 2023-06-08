@@ -45,13 +45,13 @@ const Utilities = () => {
                 onClick={dismiss}
                 className="absolute backdrop-blur-lg bg-black/70 z-[60] top-0 left-0 w-full h-full"
               />
-              <div className="relative z-[60] w-full max-w-lg px-4 lg:px-0">
+              <div className="relative z-[60] h-full w-full max-w-lg px-4 lg:px-0">
                 <animated.div style={style} className="h-full">
                   <div className="mx-auto text-center flex items-center justify-center h-full w-full">
-                    <div className="w-full">
+                    <div className="w-full h-full lg:h-fit flex flex-col items-center">
                       <div onClick={dismiss} className="pt-24 lg:pt-0" />
                       <h1 className="text-white font-bold text-3xl mb-8 lg:mb-10">Utilities</h1>
-                      <div className="text-white w-full max-w-lg mx-auto rounded-xl flex flex-col gap-0.5 bg-core-black-contrast-2-50 rounded-xl overflow-hidden">
+                      <div className="text-white w-full max-w-lg mx-auto rounded-xl flex flex-col gap-0.5 bg-core-black-contrast-2-50 rounded-xl overflow-y-scroll">
                         {healthApp && (
                           <>
                             <div
@@ -145,7 +145,7 @@ const Utilities = () => {
                         </>
                       </div>
                       <div onClick={dismiss} className="pb-10 lg:pb-10" />
-                      <div className="block lg:hidden fixed left-0 bottom-0 w-full p-4 z-[100]">
+                      <div className="pb-5 flex-grow flex justify-end items-end block lg:hidden w-full z-[100]">
                         <Button variant="secondary" onClick={dismiss}>
                           Close
                         </Button>

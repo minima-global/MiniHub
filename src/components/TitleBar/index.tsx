@@ -25,7 +25,7 @@ const TitleBar = () => {
             {blockInfo && blockInfo.blockHeight && (
               <div
                 onClick={() => setShowBlockInfo(true)}
-                className="flex cursor-pointer block rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
+                className="flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
               >
                 <div className="ml-0.5">Block</div>
                 <div className="ml-1">{blockInfo.blockHeight}</div>
