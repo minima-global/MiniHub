@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
+import { peers } from '../../../lib';
+import Block from '../../UI/Block';
 import Button from '../../UI/Button';
 import SlideScreen from '../../UI/SlideScreen';
-import Block from '../../UI/Block';
-import { useContext, useEffect, useState } from 'react';
-import { appContext } from '../../../AppContext';
 
 type PeerListProps = {
   display: boolean;
@@ -10,17 +10,19 @@ type PeerListProps = {
 };
 
 export function PeerList({ display, dismiss }: PeerListProps) {
-  const { peersInfo, getPeers } = useContext(appContext);
+  const [peersInfo, setPeersInfo] = useState(null);
   const [inputPeerList, setInputPeerList] = useState('');
 
   useEffect(() => {
     if (display) {
-      getPeers();
+      peers().then((response) => {
+        setPeersInfo(response);
+      });
     }
-  }, [getPeers, display]);
+  }, [display]);
 
-  const hasMoreThan30Characters = peersInfo && peersInfo['peers-list'].length > 120;
-  const sliced = hasMoreThan30Characters ? peersInfo['peers-list'].slice(0, 120) : '';
+  // TODO: sort this out correctly in future
+  const peersListAsString: any = peersInfo && JSON.stringify(peersInfo['peers-list']);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputPeerList(evt.target.value);
@@ -58,14 +60,15 @@ export function PeerList({ display, dismiss }: PeerListProps) {
                   download.
                 </p>
               </div>
-              <div>
-                <Block title="Peers" value={peersInfo['peers-list']} copy>
-                  <div className="break-all">
-                    {!hasMoreThan30Characters && peersInfo['peers-list']}
-                    {hasMoreThan30Characters && <>{sliced}...</>}
-                  </div>
-                </Block>
-              </div>
+              {peersInfo && (
+                <div>
+                  <Block title="Peers" value={peersListAsString} copy>
+                    <div className="break-all">
+                      <>{peersListAsString}</>
+                    </div>
+                  </Block>
+                </div>
+              )}
               <p className="text-core-grey-80 text-sm">
                 Share your list of peers with a new node runner, this will enable them to join the network and receive
                 the blockchain.

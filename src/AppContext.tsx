@@ -168,9 +168,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const homeScreenAppList = appList.filter((i) => !['Health', 'Logs', 'Security'].includes(i.conf.name));
 
-  const getPeers = useCallback(() => {
+  const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
-  }, []);
+  };
 
   const value = {
     mode,
