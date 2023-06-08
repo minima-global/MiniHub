@@ -1,12 +1,11 @@
 import { useContext, useState } from 'react';
 import { appContext } from '../../AppContext';
-import BatteryOptimisation from './BatteryOptimisation';
 import PeerList from './PeerList';
 import Wallpaper from './Wallpaper';
 import FullScreen from '../UI/FullScreen';
 import ShutdownNode from './ShutdownNode';
-import useInstallRecommend from '../../hooks/useInstallRecommend';
 import InScreenTitleBar from '../InScreenTitleBar';
+import BatteryOptimisation from './BatteryOptimisation';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);
@@ -14,7 +13,6 @@ export function Settings() {
   const [showPeerList, setShowPeerList] = useState(false);
   const [showWallpaper, setShowWallpaper] = useState(false);
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
-  const installRecommended = useInstallRecommend();
 
   const dismiss = () => {
     setShowSettings(false);
@@ -88,12 +86,6 @@ export function Settings() {
               </div>
             </div>
             <br />
-            <div
-              onClick={installRecommended}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
-            >
-              Install recommended apps
-            </div>
           </div>
         </div>
       </div>
