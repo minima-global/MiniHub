@@ -51,7 +51,7 @@ const Utilities = () => {
                     <div className="w-full h-full lg:h-fit flex flex-col items-center">
                       <div onClick={dismiss} className="pt-24 lg:pt-0" />
                       <h1 className="text-white font-bold text-3xl mb-8 lg:mb-10">Utilities</h1>
-                      <div className="text-white w-full max-w-lg mx-auto rounded-xl flex flex-col gap-0.5 bg-core-black-contrast-2-50 rounded-xl overflow-y-scroll">
+                      <div className="text-white w-full max-w-lg mx-auto rounded-xl flex flex-col gap-0.5 bg-core-black-contrast-2-50 rounded-xl overflow-y-scroll lg:overflow-y-auto">
                         {healthApp && (
                           <>
                             <div

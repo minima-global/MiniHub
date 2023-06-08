@@ -10,19 +10,19 @@ type PeerListProps = {
 };
 
 export function PeerList({ display, dismiss }: PeerListProps) {
-  const [peersInfo, setPeersInfo] = useState(null);
+  const [peersInfo, setPeersInfo] = useState<string | null>(null);
   const [inputPeerList, setInputPeerList] = useState('');
 
   useEffect(() => {
     if (display) {
       peers().then((response) => {
-        setPeersInfo(response);
+        if (response['peers-list']) {
+          const asString = JSON.stringify(response['peers-list']);
+          setPeersInfo(asString);
+        }
       });
     }
   }, [display]);
-
-  // TODO: sort this out correctly in future
-  const peersListAsString: any = peersInfo && JSON.stringify(peersInfo['peers-list']);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputPeerList(evt.target.value);
@@ -62,9 +62,9 @@ export function PeerList({ display, dismiss }: PeerListProps) {
               </div>
               {peersInfo && (
                 <div>
-                  <Block title="Peers" value={peersListAsString} copy>
+                  <Block title="Peers" value={peersInfo} copy>
                     <div className="break-all">
-                      <>{peersListAsString}</>
+                      <>{peersInfo}</>
                     </div>
                   </Block>
                 </div>
