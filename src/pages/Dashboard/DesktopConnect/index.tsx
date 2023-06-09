@@ -3,7 +3,7 @@ import { appContext } from '../../../AppContext';
 import Block from '../../../components/UI/Block';
 import FullScreen from '../../../components/UI/FullScreen';
 import { networkRecalculate } from '../../../lib';
-import InScreenTitleBar from '../../../components/InScreenTitleBar';
+import InScreenTitleBar from '../../../components/InScreenStatusBar';
 
 export function DesktopConnect() {
   const [isLoading, setIsLoading] = useState(false);

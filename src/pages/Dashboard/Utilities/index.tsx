@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { appContext } from '../../AppContext';
+import { appContext } from '../../../AppContext';
 import { animated, useTransition } from '@react-spring/web';
-import { folderAnimation } from '../../animations';
-import useAppInfo from '../../hooks/useAppInfo';
-import { dAppLink } from '../../lib';
-import Button from '../UI/Button';
+import { folderAnimation } from '../../../animations';
+import useAppInfo from '../../../hooks/useAppInfo';
+import { dAppLink } from '../../../lib';
+import Button from '../../../components/UI/Button';
 
 const Utilities = () => {
   const { isMobile, showUtilities, setShowUtilities, setShowSettings, setShowDesktopConnect } = useContext(appContext);

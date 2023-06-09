@@ -11,7 +11,7 @@ import DeleteMiniDapp from './DeleteMiniDapp';
 import UpdateMiniDapp from './UpdateMiniDapp';
 import InstallMiniDapp from './InstallMiniDapp';
 import StatusBar from '../../components/StatusBar';
-import Utilities from '../../components/Utilities';
+import Utilities from './Utilities';
 import Confirmation from '../../components/Confirmation';
 import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';

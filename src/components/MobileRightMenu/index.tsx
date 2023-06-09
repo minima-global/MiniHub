@@ -38,11 +38,12 @@ const MobileRightMenu = () => {
           <div className={`block core-black-contrast-2 py-6 p-5 pb-24 lg:hidden text-left`}>
             <div className="flex flex-col gap-2">
               <div className="core-black-contrast py-3.5 px-3.5 rounded" onClick={() => setAppToReadMode(rightMenu)}>
-                <div className={`grid grid-cols-2 ${isRead ? 'opacity-100' : 'opacity-50'}`}>
-                  <div className="col-span-1 cursor-pointer">
+                <div className={`grid grid-cols-12 ${isRead ? 'opacity-100' : 'opacity-50'}`}>
+                  <div className="col-span-10 cursor-pointer">
                     <div>Read mode</div>
+                    <div className="mt-1 text-xs">You will need to accept transactions</div>
                   </div>
-                  <div className="col-span-1 flex items-center justify-end cursor-pointer">
+                  <div className="col-span-2 flex items-center justify-end cursor-pointer">
                     {!isRead && (
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="9.5" fill="#282B2E" opacity="0.5" stroke="white" />
@@ -60,11 +61,12 @@ const MobileRightMenu = () => {
                 </div>
               </div>
               <div className="core-black-contrast py-3.5 px-3.5 rounded" onClick={() => setAppToWriteMode(rightMenu)}>
-                <div className={`grid grid-cols-2 ${!isRead ? 'opacity-100' : 'opacity-50'}`}>
-                  <div className="col-span-1 cursor-pointer">
+                <div className={`grid grid-cols-12 ${!isRead ? 'opacity-100' : 'opacity-50'}`}>
+                  <div className="col-span-10 cursor-pointer">
                     <div>Write mode</div>
+                    <div className="mt-1 text-xs">Allow this app to transact without restriction</div>
                   </div>
-                  <div className="col-span-1 flex items-center justify-end cursor-pointer">
+                  <div className="col-span-2 flex items-center justify-end cursor-pointer">
                     {isRead && (
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="9.5" fill="#282B2E" opacity="0.5" stroke="white" />

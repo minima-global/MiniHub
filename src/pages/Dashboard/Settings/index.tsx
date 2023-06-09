@@ -5,7 +5,7 @@ import ShutdownNode from './ShutdownNode';
 import { appContext } from '../../../AppContext';
 import BatteryOptimisation from './BatteryOptimisation';
 import FullScreen from '../../../components/UI/FullScreen';
-import InScreenTitleBar from '../../../components/InScreenTitleBar';
+import InScreenTitleBar from '../../../components/InScreenStatusBar';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);

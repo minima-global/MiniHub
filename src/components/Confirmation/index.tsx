@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useTransition, animated } from '@react-spring/web';
+import Button from '../UI/Button';
 import { appContext } from '../../AppContext';
 import { modalAnimation } from '../../animations';
-import Button from '../UI/Button';
 
 export function Confirm() {
   const { modal, setModal } = useContext(appContext);
