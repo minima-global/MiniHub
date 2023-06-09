@@ -7,9 +7,6 @@ const TitleBar = () => {
   const { blockInfo, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 
-  // if search is shown, the title bar is black
-  console.log(showSearch);
-
   return (
     <div
       className={`p-4 z-40 ${
