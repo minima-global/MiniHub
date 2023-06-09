@@ -14,7 +14,11 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
   const confirm = async () => {
     await quit();
     setShutdown(true);
-    (window as any).history.back();
+
+    if (window.navigator.userAgent.includes("Minima Browser")) {
+      // @ts-ignore
+      return Android.closeWindow();
+    }
   };
 
   if (shutdown) {
