@@ -23,7 +23,7 @@ export function DesktopConnect() {
   };
 
   const onCopy = () => {
-    setBadgeNotification('Value has been copied to clipboard');
+    setBadgeNotification('Copied to clipboard');
   };
 
   const dismiss = () => setShowDesktopConnect(false);
@@ -39,7 +39,10 @@ export function DesktopConnect() {
             entering the password provided.
           </p>
           <p className="text-core-grey-20 mb-4">Both devices must be on the same WiFi network.</p>
-          <p className="text-core-grey-80">You may be shown a security warning and will have to use a self signed certificate - this is safe to proceed past.</p>
+          <p className="text-core-grey-80">
+            You may be shown a security warning and will have to use a self signed certificate - this is safe to proceed
+            past.
+          </p>
           <div className="flex flex-col gap-5 mt-6">
             <div>
               <Block
