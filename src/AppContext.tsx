@@ -98,8 +98,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         apps = apps.reverse();
       }
 
-      setAppList([
-        ...apps,
+      // order pending, utilities first
+
+      // add utilities to top
+      apps = [
         {
           uid: 'system_03',
           conf: {
@@ -109,6 +111,19 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             onClick: () => setShowUtilities(true),
           },
         },
+        ...apps,
+      ];
+
+      // find pending app
+      const pendingApp = apps.find((a) => a.conf.name === 'Pending');
+
+      // re-order to top
+      if (pendingApp) {
+        apps = [pendingApp, ...apps.filter((a) => a.conf.name !== 'Pending')];
+      }
+
+      setAppList([
+        ...apps,
       ]);
     });
   }, [sort]);
@@ -166,7 +181,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setModal({
       display: true,
       title: 'Are you sure you wish to give this MiniDAPP WRITE permissions?',
-      textContent: 'This MiniDAPP will be able to send funds without triggering a pending request, ONLY do this if you trust this MiniDAPP.',
+      textContent:
+        'This MiniDAPP will be able to send funds without triggering a pending request, ONLY do this if you trust this MiniDAPP.',
       onConfirm: async () => {
         await mdsActionPermission(app.uid, 'write');
         await refreshAppList();

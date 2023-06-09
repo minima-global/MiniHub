@@ -18,7 +18,7 @@ export function PeerList({ display, dismiss }: PeerListProps) {
       peers().then((response) => {
         if (response['peers-list']) {
           const asString = JSON.stringify(response['peers-list']);
-          setPeersInfo(asString);
+          setPeersInfo(asString.replace(/^"/gm, '').replace(/"$/gm, ''));
         }
       });
     }

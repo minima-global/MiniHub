@@ -14,6 +14,7 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
   const confirm = async () => {
     await quit();
     setShutdown(true);
+    (window as any).history.back();
   };
 
   if (shutdown) {

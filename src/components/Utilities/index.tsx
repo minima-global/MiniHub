@@ -95,7 +95,10 @@ const Utilities = () => {
                               className="cursor-pointer flex items-stretch w-full p-4 bg-core-black-contrast-2-50"
                             >
                               <div>
-                                <img className="icon" src={`./assets/app.png`} />
+                                <img
+                                  className="icon"
+                                  src={`${(window as any).MDS.filehost}${securityApp.uid}/${securityApp.conf.icon}`}
+                                />
                               </div>
                               <div className="flex-grow flex justify-start items-center pl-5 text-lg">Security</div>
                             </div>
