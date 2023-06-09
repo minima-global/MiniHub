@@ -18,7 +18,9 @@ export function AppIsInReadMode() {
                 <animated.div style={style}>
                   <div className="text-center text-white pb-12 px-4">
                     <div className="text-2xl mb-4">App is in read mode</div>
-                    <div className="text-sm text-core-grey-80">Please ensure that the MiniHub MiniDapp has write permission</div>
+                    <div className="text-sm text-core-grey-80">
+                      Please ensure that the MiniHub MiniDapp has write permission
+                    </div>
                   </div>
                 </animated.div>
               </div>

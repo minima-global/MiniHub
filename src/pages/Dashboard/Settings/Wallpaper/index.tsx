@@ -1,7 +1,7 @@
-import SlideScreen from '../../UI/SlideScreen';
 import { useContext, useState } from 'react';
 import Preview from './Preview';
-import { appContext } from '../../../AppContext';
+import { appContext } from '../../../../AppContext';
+import SlideScreen from '../../../../components/UI/SlideScreen';
 
 const bgOptions = ['thumbnail-minima', 'thumbnail-feather', 'thumbnail-liquid'];
 const gradientOptions = [

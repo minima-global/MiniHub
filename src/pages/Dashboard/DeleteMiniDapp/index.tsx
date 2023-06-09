@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useTransition, animated } from '@react-spring/web';
-import { uninstallApp } from '../../lib';
-import { appContext } from '../../AppContext';
-import { modalAnimation } from '../../animations';
+import { uninstallApp } from '../../../lib';
+import { appContext } from '../../../AppContext';
+import { modalAnimation } from '../../../animations';
 
 export function ConfirmDelete() {
   const { showDeleteApp: data, setShowDeleteApp, refreshAppList, setRightMenu } = useContext(appContext);

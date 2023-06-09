@@ -1,14 +1,21 @@
 import { useContext, useState } from 'react';
 import { appContext } from '../../AppContext';
-import BlockInfo from './Block';
 import Status from './Status';
+import BlockInfo from './Block';
 
 const TitleBar = () => {
-  const { blockInfo } = useContext(appContext);
+  const { blockInfo, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 
+  // if search is shown, the title bar is black
+  console.log(showSearch);
+
   return (
-    <div className="bg-transparent p-4 z-40">
+    <div
+      className={`p-4 z-40 ${
+        showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl xl:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
+      }`}
+    >
       <BlockInfo display={showBlockInfo} close={() => setShowBlockInfo(false)} />
       <div className="grid grid-cols-12 h-full">
         <div className="svg col-span-3 h-full flex items-center">

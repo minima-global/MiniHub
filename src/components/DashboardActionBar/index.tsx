@@ -1,11 +1,17 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { appContext } from '../../AppContext';
 import Sort from './Sort';
 import MobileSearchItem from './MobileSearchItem';
 
-const ActionBar = () => {
+/**
+ * The dashboard action bar
+ * Currently features sorter, search and install app
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const DashboardActionBar = () => {
+  const { showSearch, setShowSearch } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
-  const [showSearch, setShowSearch] = useState(false);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
   const limitedAppList = query === '' ? [] : filteredAppList.slice(0, 5);
 
@@ -13,7 +19,7 @@ const ActionBar = () => {
   const closeSearch = () => {
     setQuery('');
     setShowSearch(false);
-  }
+  };
 
   return (
     <div className="relative w-full pt-4 sm:pt-6 pb-2 px-8 lg:pt-10 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
@@ -139,4 +145,4 @@ const ActionBar = () => {
   );
 };
 
-export default ActionBar;
+export default DashboardActionBar;

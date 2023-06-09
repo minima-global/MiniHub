@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { peers } from '../../../lib';
-import Block from '../../UI/Block';
-import Button from '../../UI/Button';
-import SlideScreen from '../../UI/SlideScreen';
+import { peers } from '../../../../lib';
+import Block from '../../../../components/UI/Block';
+import Button from '../../../../components/UI/Button';
+import SlideScreen from '../../../../components/UI/SlideScreen';
 
 type PeerListProps = {
   display: boolean;

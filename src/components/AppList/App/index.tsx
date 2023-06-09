@@ -4,14 +4,16 @@ import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 
 const AppList = ({ data }) => {
-  const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
-    useContext(appContext);
+  const { setShowDeleteApp, setShowUpdateApp } = useContext(appContext);
+  const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
   const openApp = async () => {
     if (rightMenu) {
       return setRightMenu(null);
     }
 
+    // if there is an onclick method in app conf (utility app / settings) do that instead of calling
+    // minima method to get session id
     if (data.conf.onClick) {
       return data.conf.onClick();
     }
@@ -19,7 +21,10 @@ const AppList = ({ data }) => {
     const link = await dAppLink(data.conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
 
-    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, isMobile ? "_self" : "_blank");
+    window.open(
+      `${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`,
+      isMobile ? '_self' : '_blank'
+    );
   };
 
   const handleOnContextMenu = (evt: React.MouseEvent<HTMLDivElement>) => {

@@ -1,7 +1,7 @@
-import Modal from '../../UI/Modal';
-import Button from '../../UI/Button';
-import { quit } from '../../../lib';
 import { useState } from 'react';
+import { quit } from '../../../../lib';
+import Modal from '../../../../components/UI/Modal';
+import Button from '../../../../components/UI/Button';
 
 type ShutdownProps = {
   display: boolean;

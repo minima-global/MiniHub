@@ -25,6 +25,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // show desktop connect
   const [showDesktopConnect, setShowDesktopConnect] = useState(false);
 
+  // show search
+  const [showSearch, setShowSearch] = useState(false);
+
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
 
@@ -122,9 +125,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         apps = [pendingApp, ...apps.filter((a) => a.conf.name !== 'Pending')];
       }
 
-      setAppList([
-        ...apps,
-      ]);
+      setAppList([...apps]);
     });
   }, [sort]);
 
@@ -261,6 +262,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     getPeers,
     peersInfo,
+
+    showSearch,
+    setShowSearch,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

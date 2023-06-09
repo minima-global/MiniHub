@@ -1,5 +1,5 @@
-import Button from '../../UI/Button';
-import SlideScreen from '../../UI/SlideScreen';
+import Button from '../../../../components/UI/Button';
+import SlideScreen from '../../../../components/UI/SlideScreen';
 
 type BatteryOptimisationProps = {
   display: boolean;

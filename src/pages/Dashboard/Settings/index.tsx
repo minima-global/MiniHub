@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
-import { appContext } from '../../AppContext';
 import PeerList from './PeerList';
 import Wallpaper from './Wallpaper';
-import FullScreen from '../UI/FullScreen';
 import ShutdownNode from './ShutdownNode';
-import InScreenTitleBar from '../InScreenTitleBar';
+import { appContext } from '../../../AppContext';
 import BatteryOptimisation from './BatteryOptimisation';
+import FullScreen from '../../../components/UI/FullScreen';
+import InScreenTitleBar from '../../../components/InScreenTitleBar';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);

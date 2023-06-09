@@ -1,7 +1,7 @@
-import SlideScreen from '../../../UI/SlideScreen';
-import Button from '../../../UI/Button';
 import { useContext, useEffect, useState } from 'react';
-import { appContext } from '../../../../AppContext';
+import { appContext } from '../../../../../AppContext';
+import Button from '../../../../../components/UI/Button';
+import SlideScreen from '../../../../../components/UI/SlideScreen';
 
 export type PreviewProps = {
   data: any; // TODO

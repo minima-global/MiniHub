@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useTransition, animated } from '@react-spring/web';
-import { modalAnimation } from '../../animations';
+import { modalAnimation } from '../../../animations';
 import { useContext, useState } from 'react';
-import { blobToArrayBuffer, bufferToHex } from '../../utilities';
-import { deleteFile, getPath, saveFile, update } from '../../lib';
-import { appContext } from '../../AppContext';
+import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
+import { deleteFile, getPath, saveFile, update } from '../../../lib';
+import { appContext } from '../../../AppContext';
 
 export function Update() {
   const { refreshAppList, showUpdateApp, setShowUpdateApp } = useContext(appContext);

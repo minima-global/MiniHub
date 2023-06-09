@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
-import { appContext } from '../../AppContext';
-import Block from '../UI/Block';
-import FullScreen from '../UI/FullScreen';
-import { networkRecalculate } from '../../lib';
-import InScreenTitleBar from '../InScreenTitleBar';
+import { appContext } from '../../../AppContext';
+import Block from '../../../components/UI/Block';
+import FullScreen from '../../../components/UI/FullScreen';
+import { networkRecalculate } from '../../../lib';
+import InScreenTitleBar from '../../../components/InScreenTitleBar';
 
 export function DesktopConnect() {
   const [isLoading, setIsLoading] = useState(false);
