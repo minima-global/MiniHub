@@ -52,7 +52,8 @@ export function Install() {
 
         setIsLoading(false);
         setInstalled(installedInfo);
-      } catch {
+      } catch (e) {
+        console.log(e);
         setIsLoading(false);
         setError(true);
       }
@@ -94,8 +95,7 @@ export function Install() {
                           <form onSubmit={handleOnSubmit} className="text-center">
                             <h1 className="mt-1 text-2xl text-center mb-6">Add a MiniDapp</h1>
                             <p className="text-center mb-10 line-height">
-                              Instructions if poss please. Lorem ipsum dolor sit amet consectetur. Enim sit in ac
-                              faucibus posuere dolor.
+                              Only install MiniDapps from trusted sources. For security, all MiniDapps will be installed with Read access only. This can be changed later from the home page.
                             </p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">

@@ -110,7 +110,7 @@ const Utilities = () => {
                             <div>
                               <img className="icon" src="./assets/dappstore.png" />
                             </div>
-                            <div className="flex-grow flex justify-start items-center pl-5 text-lg">MiniDapps</div>
+                            <div className="flex-grow flex justify-start items-center pl-5 text-lg">MiniDAPP Store</div>
                           </a>
                         </>
                         <>

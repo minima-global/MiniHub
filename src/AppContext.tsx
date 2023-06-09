@@ -49,9 +49,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [mdsInfo, setMdsInfo] = useState<any>(null);
   const [rightMenu, setRightMenu] = useState<any>(false);
   const [badgeNotification, setBadgeNotification] = useState<string | null>(null);
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<{
+    display: boolean;
+    title: string;
+    textContent: string | null;
+    onConfirm: any;
+    onClose: any;
+  }>({
     display: false,
     title: '',
+    textContent: null,
+    onConfirm: null,
     onClose: null,
   });
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
@@ -155,15 +163,31 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const setAppToWriteMode = async (app: any) => {
-    await mdsActionPermission(app.uid, 'write');
-    await refreshAppList();
-    setBadgeNotification(`Write permissions enabled`);
+    setModal({
+      display: true,
+      title: 'Are you sure you wish to give this MiniDAPP WRITE permissions?',
+      textContent: 'This MiniDAPP will be able to send funds without triggering a pending request, ONLY do this if you trust this MiniDAPP.',
+      onConfirm: async () => {
+        await mdsActionPermission(app.uid, 'write');
+        await refreshAppList();
+        setBadgeNotification(`Write permissions enabled`);
+      },
+      onClose: null,
+    });
   };
 
   const setAppToReadMode = async (app: any) => {
-    await mdsActionPermission(app.uid, 'read');
-    await refreshAppList();
-    setBadgeNotification(`Read permissions enabled`);
+    setModal({
+      display: true,
+      title: 'Are you sure you wish to give this MiniDAPP READ permissions?',
+      textContent: 'This MiniDAPP will NOT be able to send funds without triggering a pending request.',
+      onConfirm: async () => {
+        await mdsActionPermission(app.uid, 'read');
+        await refreshAppList();
+        setBadgeNotification(`Read permissions enabled`);
+      },
+      onClose: null,
+    });
   };
 
   const homeScreenAppList = appList.filter((i) => !['Health', 'Logs', 'Security'].includes(i.conf.name));
