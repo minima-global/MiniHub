@@ -23,7 +23,7 @@ const AppList = ({ data }) => {
 
     window.open(
       `${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`,
-      isMobile ? '_self' : '_blank'
+      isMobile ? '_blank' : '_blank'
     );
   };
 

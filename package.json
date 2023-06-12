@@ -2,7 +2,7 @@
   "name": "minihub",
   "private": true,
   "description": "Alpha version of the new MiniHUB unified experience",
-  "version": "0.2.0",
+  "version": "0.3.2",
   "type": "module",
   "scripts": {
     "dev": "vite",

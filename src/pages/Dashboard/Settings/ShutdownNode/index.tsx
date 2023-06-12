@@ -15,10 +15,10 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
     await quit();
     setShutdown(true);
 
-    if (window.navigator.userAgent.includes("Minima Browser")) {
+    if (window.navigator.userAgent.includes('Minima Browser')) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return Android.closeWindow();
+      return Android.closeBrowser();
     }
   };
 
