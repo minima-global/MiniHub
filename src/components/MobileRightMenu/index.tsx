@@ -35,7 +35,7 @@ const MobileRightMenu = () => {
               </div>
             </div>
           </div>
-          <div className={`block core-black-contrast-2 py-6 p-5 pb-24 lg:hidden text-left`}>
+          <div className={`block core-black-contrast-2 py-6 p-5 lg:hidden text-left`}>
             <div className="flex flex-col gap-2">
               <div className="core-black-contrast py-3.5 px-3.5 rounded" onClick={() => setAppToReadMode(rightMenu)}>
                 <div className={`grid grid-cols-12 ${isRead ? 'opacity-100' : 'opacity-50'}`}>
@@ -95,6 +95,7 @@ const MobileRightMenu = () => {
               >
                 Delete MiniDApp
               </div>
+              <div className="pb-24" />
             </div>
           </div>
         </>
