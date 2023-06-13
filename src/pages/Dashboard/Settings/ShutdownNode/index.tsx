@@ -12,13 +12,13 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
   const [shutdown, setShutdown] = useState(false);
 
   const confirm = async () => {
-    await quit();
-    setShutdown(true);
-
     if (window.navigator.userAgent.includes('Minima Browser')) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return Android.closeBrowser();
+      return Android.shutdownMinima();
+    } else {
+      await quit();
+      setShutdown(true);
     }
   };
 
