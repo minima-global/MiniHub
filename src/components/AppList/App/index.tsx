@@ -124,7 +124,7 @@ const AppList = ({ data }) => {
               Update
             </div>
             <div onClick={() => setShowDeleteApp(data)} className="cursor-pointer">
-              Delete MiniDApp
+              Delete MiniDapp
             </div>
           </div>
         </div>

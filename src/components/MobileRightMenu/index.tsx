@@ -93,7 +93,7 @@ const MobileRightMenu = () => {
                 onClick={() => setShowDeleteApp(rightMenu)}
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
               >
-                Delete MiniDApp
+                Delete MiniDapp
               </div>
               <div className="pb-24" />
             </div>
