@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import { peers } from '../../../../lib';
+import { useContext, useEffect, useState } from 'react';
+import { addPeers, peers } from '../../../../lib';
 import Block from '../../../../components/UI/Block';
 import Button from '../../../../components/UI/Button';
 import SlideScreen from '../../../../components/UI/SlideScreen';
+import { appContext } from '../../../../AppContext';
 
 type PeerListProps = {
   display: boolean;
@@ -10,11 +11,13 @@ type PeerListProps = {
 };
 
 export function PeerList({ display, dismiss }: PeerListProps) {
+  const { setBadgeNotification } = useContext(appContext);
   const [peersInfo, setPeersInfo] = useState<string | null>(null);
   const [showEntirePeersInfo, setShowEntirePeersInfo] = useState(false);
   const [peersInfoSnippet, setPeersInfoSnippet] = useState<string | null>(null);
   const [moreThan200Characters, setMoreThan200Characters] = useState<boolean>(false);
   const [inputPeerList, setInputPeerList] = useState('');
+  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     if (display) {
@@ -39,7 +42,16 @@ export function PeerList({ display, dismiss }: PeerListProps) {
     setInputPeerList(evt.target.value);
   };
 
-  console.log(moreThan200Characters);
+  const importPeers = async () => {
+    try {
+      setImporting(true);
+      await addPeers(inputPeerList);
+    } catch {
+      setBadgeNotification('Unable to import peers list');
+    } finally {
+      setImporting(false);
+    }
+  };
 
   return (
     <SlideScreen display={display}>
@@ -109,9 +121,9 @@ export function PeerList({ display, dismiss }: PeerListProps) {
                     className="core-black-contrast w-full p-3 mb-5 outline-none"
                     placeholder="Peer list"
                   />
-                  <Button disabled={inputPeerList.length === 0}>Import peers</Button>
+                  <Button onClick={importPeers} disabled={inputPeerList.length === 0 || importing}>Import peers</Button>
                 </div>
-                <p className="text-core-grey-80 text-sm">
+                <p className="text-core-grey-80 text-sm mt-4">
                   This only needs to be done once when using Minima for the first time.
                 </p>
               </div>
