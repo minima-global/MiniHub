@@ -14,13 +14,13 @@ const Status = () => {
     }
 
     setHover(true);
-  }
+  };
 
   const handleOnMouseLeave = () => {
     timeout = setTimeout(() => {
       setHover(false);
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   return (
     <div
@@ -30,8 +30,18 @@ const Status = () => {
         display ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
       }`}
     >
-      <div className={`transition-all origin-right ${hover ? 'duration-300' : 'duration-200'} ${hover ? 'ml-0.5 mr-2 w-[105px]' : 'w-[1px]'}`}>
-        <div className={`absolute top-1 left-3 transition-all delay-100 ${hover ? 'opacity-100' : 'delay-0 duration-0 opacity-0 h-[1px] w-[1px]'}`}>Node unlocked</div>
+      <div
+        className={`transition-all origin-right ${hover ? 'duration-300' : 'duration-200'} ${
+          hover ? 'ml-0.5 mr-2 w-[105px]' : 'w-[1px]'
+        }`}
+      >
+        <div
+          className={`absolute top-1 left-3 transition-all delay-100 ${
+            hover ? 'opacity-100' : 'delay-0 duration-0 opacity-0 h-[0px] w-[0px]'
+          }`}
+        >
+          <span className="pointer-events-none">Node unlocked</span>
+        </div>
       </div>
       <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
