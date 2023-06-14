@@ -77,7 +77,7 @@ const DesktopConnect = ({ display, dismiss }: DesktopConnectProps) => {
               />
             </div>
             <div>
-              <p className="text-core-grey-80 text-sm">
+              <p className="text-core-grey-80">
                 If you have recently switched from mobile data to WiFi, reset your URL by clicking on the Refresh icon.
               </p>
             </div>
