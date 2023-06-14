@@ -9,7 +9,7 @@ import * as _ from 'lodash';
  * @returns {{currentAppListPage: any, hasMoreThanOnePage: boolean, numberOfPages: number, entireAppList: any[] | unknown[][], currentPage: number, maxCount: number, setPage: (value: (((prevState: number) => number) | number)) => void}}
  */
 const useAppList = () => {
-  const { homeScreenAppList: appList, query } = useContext(appContext);
+  const { appList, query } = useContext(appContext);
   const [page, setPage] = useState(1);
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);

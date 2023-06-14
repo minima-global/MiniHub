@@ -91,6 +91,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
               app.conf.name.includes('MiniHUB')
             )
         ),
+        {
+          uid: 'system_03',
+          conf: {
+            name: 'Settings',
+            system: true,
+            overrideIcon: './assets/settings.png',
+            onClick: () => setShowSettings(true),
+          },
+        },
       ];
 
       // let apps = response.minidapps;
@@ -99,30 +108,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
       } else if (sort === 'last_added') {
         apps = apps.reverse();
-      }
-
-      // order pending, utilities first
-
-      // add utilities to top
-      apps = [
-        {
-          uid: 'system_03',
-          conf: {
-            name: 'Utilities',
-            system: true,
-            overrideIcon: './assets/utilities.png',
-            onClick: () => setShowUtilities(true),
-          },
-        },
-        ...apps,
-      ];
-
-      // find pending app
-      const pendingApp = apps.find((a) => a.conf.name === 'Pending');
-
-      // re-order to top
-      if (pendingApp) {
-        apps = [pendingApp, ...apps.filter((a) => a.conf.name !== 'Pending')];
       }
 
       setAppList([...apps]);
@@ -207,8 +192,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
-  const homeScreenAppList = appList.filter((i) => !['Health', 'Logs', 'Security'].includes(i.conf.name));
-
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
   };
@@ -216,8 +199,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const value = {
     mode,
     isMobile: mode === 'mobile',
-
-    homeScreenAppList,
     appList,
     query,
     setQuery,
