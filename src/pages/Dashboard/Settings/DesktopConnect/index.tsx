@@ -1,9 +1,8 @@
-import Preview from '../Wallpaper/Preview';
-import SlideScreen from '../../../../components/UI/SlideScreen';
-import Block from '../../../../components/UI/Block';
 import { useContext, useState } from 'react';
 import { appContext } from '../../../../AppContext';
+import Block from '../../../../components/UI/Block';
 import { networkRecalculate } from '../../../../lib';
+import SlideScreen from '../../../../components/UI/SlideScreen';
 
 type DesktopConnectProps = {
   display: boolean;

@@ -6,7 +6,6 @@ import useAppList from '../../hooks/useAppList';
 import AppIsInReadMode from '../AppIsInReadMode';
 import Settings from './Settings';
 import Blur from '../../components/Blur';
-import DesktopConnect from './DesktopConnect';
 import DeleteMiniDapp from './DeleteMiniDapp';
 import UpdateMiniDapp from './UpdateMiniDapp';
 import InstallMiniDapp from './InstallMiniDapp';
@@ -93,7 +92,6 @@ function Dashboard() {
       <Confirmation />
       <DeleteMiniDapp />
       <MobileRightMenu />
-      <DesktopConnect />
       <Utilities />
 
       <div className="flex flex-col h-full">
