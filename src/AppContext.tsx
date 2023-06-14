@@ -94,6 +94,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         {
           uid: 'system_03',
           conf: {
+            name: 'DappStore',
+            system: true,
+            overrideIcon: './assets/dappstore.png',
+            onClick: () => {
+              window.open('https://minidapps.minima.global/', '_blank')
+            }
+          },
+        },
+        {
+          uid: 'system_03',
+          conf: {
             name: 'Settings',
             system: true,
             overrideIcon: './assets/settings.png',
