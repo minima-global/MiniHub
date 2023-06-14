@@ -92,7 +92,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             )
         ),
         {
-          uid: 'system_03',
+          uid: 'system_01',
           conf: {
             name: 'DappStore',
             system: true,
@@ -103,7 +103,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           },
         },
         {
-          uid: 'system_03',
+          uid: 'system_02',
           conf: {
             name: 'Settings',
             system: true,

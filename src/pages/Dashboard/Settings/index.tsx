@@ -52,7 +52,7 @@ export function Settings() {
             </div>
             <div
               onClick={() => setShowPeerList(true)}
-              className="hidden relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
             >
               Peer list
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
