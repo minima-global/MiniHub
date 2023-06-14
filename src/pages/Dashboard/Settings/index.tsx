@@ -73,7 +73,7 @@ export function Settings() {
             </div>
             <div
               onClick={() => setShutdown(true)}
-              className="relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer"
+              className="hidden lg:block relative text-status-red core-black-contrast py-4 px-5 rounded cursor-pointer"
             >
               Shutdown node
               <div className="absolute right-0 top-0 h-full px-4 flex items-center">

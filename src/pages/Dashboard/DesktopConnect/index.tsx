@@ -8,12 +8,13 @@ import InScreenTitleBar from '../../../components/InScreenStatusBar';
 export function DesktopConnect() {
   const [isLoading, setIsLoading] = useState(false);
   const { mdsInfo, setBadgeNotification } = useContext(appContext);
-  const { setShowDesktopConnect, showDesktopConnect: display } = useContext(appContext);
+  const { setShowDesktopConnect, showDesktopConnect: display, refreshAppList } = useContext(appContext);
 
   const refreshNetwork = async () => {
     try {
       setIsLoading(true);
       await networkRecalculate();
+      await refreshAppList();
       setBadgeNotification('Network URL has been refreshed');
     } finally {
       setTimeout(() => {
