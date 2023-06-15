@@ -94,7 +94,7 @@ function Dashboard() {
       <MobileRightMenu />
       <Utilities />
 
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-screen">
         <StatusBar />
         <DashboardActionBar />
         <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
