@@ -49,7 +49,7 @@ const TitleBar = () => {
               </div>
             )}
             <div className="hidden lg:block">
-              <form action="/logoff.html" method="POST">
+              <form action="/logoff.html" method="GET">
                 <button
                   type="submit"
                   className="flex items-center cursor-pointer rounded-full px-4 pb-1 pt-1 -mt-0.5 text-sm"
