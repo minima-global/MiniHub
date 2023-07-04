@@ -59,6 +59,7 @@ const AppList = ({ data }) => {
         >
           <img
             alt="app_icon"
+            id={`app_icon_${data.conf.name.toLowerCase()}`}
             onClick={openApp}
             className={`icon relative mb-3 active:scale-95 hover:scale-95 ${
               rightMenu && rightMenu.uid !== data.uid ? '' : 'cursor-pointer'

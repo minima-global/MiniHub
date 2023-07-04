@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, saveFile, update } from '../../../lib';
 import { appContext } from '../../../AppContext';
+import reloadImg from '../../../utilities/reloadImageUrl';
 
 export function Update() {
   const { refreshAppList, showUpdateApp, setShowUpdateApp } = useContext(appContext);
@@ -14,7 +15,6 @@ export function Update() {
   const [error, setError] = useState<boolean>(false);
   const [installed, setInstalled] = useState<any | null>(null);
   const transition: any = useTransition(!!showUpdateApp, modalAnimation as any);
-
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
@@ -44,6 +44,12 @@ export function Update() {
 
         // install with full file path
         const installedInfo = await update(showUpdateApp.uid, filePath);
+
+        // reload the image for the app that has just been updated in case the app icon has been
+        // updated
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        await reloadImg(showUpdateApp.conf.name, `${MDS.filehost}/${showUpdateApp.uid}/${showUpdateApp.conf.icon}`);
 
         // delete file after we are done
         await deleteFile(savedFile.canonical);
@@ -93,9 +99,7 @@ export function Update() {
                         {!installed && !error && (
                           <form onSubmit={handleOnSubmit} className="text-center">
                             <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp?.conf?.name}</h1>
-                            <p className="text-center mb-10 line-height">
-                              Please select the update mds file.
-                            </p>
+                            <p className="text-center mb-10 line-height">Please select the update mds file.</p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">
                                 <input type="file" id="file" aria-label="Choose file" onChange={handleOnChange} />
@@ -159,7 +163,9 @@ export function Update() {
                             <div
                               className="icon icon--big mb-12 mx-auto"
                               style={{
-                                backgroundImage: `url(${(window as any).MDS.filehost}/${installed.uid}/${installed.conf.icon})`,
+                                backgroundImage: `url(${(window as any).MDS.filehost}/${installed.uid}/${
+                                  installed.conf.icon
+                                })`,
                               }}
                             />
                             <button
