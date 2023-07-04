@@ -1,8 +1,25 @@
+import { useContext, useState } from 'react';
+import { appContext } from '../../AppContext';
+
 type InScreenTitleBarProps = {
   onExit?: () => void;
 };
 
 const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
+  const { hasShutdown } = useContext(appContext);
+
+  const handleOnExit = () => {
+    if (hasShutdown) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return window.location.assign(MDS.filehost);
+    }
+
+    if (onExit) {
+      onExit();
+    }
+  };
+
   return (
     <div className="backdrop-blur-md bg-black/60 p-4 z-[80]">
       <div className="grid grid-cols-12 h-full">
@@ -18,7 +35,7 @@ const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
           {onExit && (
             <button
               type="button"
-              onClick={onExit}
+              onClick={handleOnExit}
               className="flex items-center cursor-pointer rounded-full px-4 pb-1 pt-1 -mt-0.5 text-sm"
             >
               Exit

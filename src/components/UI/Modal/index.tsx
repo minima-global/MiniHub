@@ -33,7 +33,7 @@ export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
                 <animated.div
                   style={style}
                 >
-                  <div className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-6 lg:p-8 mb-6 mx-auto relative">
+                  <div className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-6 lg:p-8 mb-6 mx-auto relative overflow-hidden">
                     {children}
                   </div>
                   <p className="text-sm text-core-grey-80 text-center mb-8 lg:mb-10">{bottomText}</p>

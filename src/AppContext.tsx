@@ -34,6 +34,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
 
+  // has shutdown
+  const [hasShutdown, setHasShutdown] = useState(false);
+
   // block info
   const [blockInfo, setBlockInfo] = useState<any>({
     blockHeight: null,
@@ -257,6 +260,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showSearch,
     setShowSearch,
+
+    hasShutdown,
+    setHasShutdown,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
