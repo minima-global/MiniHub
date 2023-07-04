@@ -3,16 +3,34 @@ import { appContext } from '../../AppContext';
 import Status from './Status';
 import BlockInfo from './Block';
 import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
+import { dAppLink } from '../../lib';
 
 const TitleBar = () => {
   const openTitleBar = useAndroidShowTitleBar();
-  const { blockInfo, showSearch } = useContext(appContext);
+  const { blockInfo, appList, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 
-  const displayBlockInfo = (evt) => {
+  const displayBlockInfo = async (evt) => {
     evt.stopPropagation();
+    const healthApp = appList.find((i) => i.conf.name.toLowerCase() === 'health');
+
+    // open health app instead of showing block panel if installed
+    if (healthApp) {
+      const link = await dAppLink(healthApp.conf.name);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      // enables context menu on app change
+      if (window.navigator.userAgent.includes('Minima Browser')) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        Android.enableDefaultContextMenu();
+      }
+
+      return window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, '_blank');
+    }
+
     setShowBlockInfo(true);
-  }
+  };
 
   return (
     <div
