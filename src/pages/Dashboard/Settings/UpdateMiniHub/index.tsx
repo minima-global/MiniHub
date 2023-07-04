@@ -84,7 +84,7 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
         <Modal display={success} frosted>
           <div>
             <div className="text-center">
-              <h1 className="text-xl mb-8">Your MiniHub has<br /> been successfully updated</h1>
+              <h1 className="text-xl mb-8">Your MiniHUB has<br /> been successfully updated</h1>
               <Button onClick={goToLoginPage}>Go to login page</Button>
             </div>
           </div>
@@ -107,7 +107,7 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
             </svg>
             Settings
           </div>
-          <h1 className="text-2xl mb-8">Update MiniHub</h1>
+          <h1 className="text-2xl mb-8">Update MiniHUB</h1>
           <form onSubmit={handleOnSubmit} className="text-left">
             <p className="mb-10 line-height">Please select the update mds file.</p>
             <div className="relative mt-3 mb-10">
