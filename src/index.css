@@ -474,3 +474,13 @@ body.theme-light .search-container input {
 .bg-gradient-purple .block-info {
   background-color: #64389d;
 }
+
+@media screen and (min-height: 700px) {
+  .md\:pb-24 {
+    padding-bottom: 96px;
+  }
+
+  .md\:device\:hidden {
+    display: none;
+  }
+}

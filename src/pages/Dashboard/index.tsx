@@ -15,6 +15,7 @@ import Confirmation from '../../components/Confirmation';
 import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
+import { quit } from '../../lib';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
@@ -79,6 +80,15 @@ function Dashboard() {
       document.removeEventListener('keydown', event);
     };
   }, [hasNext, hasPrevious, next, previous]);
+
+  // disable right click on android
+  useEffect(() => {
+    if (window.navigator.userAgent.includes('Minima Browser')) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      Android.disableDefaultContextMenu();
+    }
+  }, []);
 
   return (
     <div

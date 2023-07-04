@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { appContext } from '../../AppContext';
 
 const MobileRightMenu = () => {
-  const { rightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
+  const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
     useContext(appContext);
   const data = appList && rightMenu && appList.find((i) => i.uid === rightMenu?.uid);
   const isRead = data && data.conf.permission === 'read';
@@ -95,7 +95,13 @@ const MobileRightMenu = () => {
               >
                 Delete MiniDapp
               </div>
-              <div className="pb-24" />
+              <div
+                onClick={() => setRightMenu(null)}
+                className="md:device:hidden core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
+              >
+                Close
+              </div>
+              <div className="md:pb-24" />
             </div>
           </div>
         </>
