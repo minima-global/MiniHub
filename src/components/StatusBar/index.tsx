@@ -7,7 +7,7 @@ import { dAppLink } from '../../lib';
 
 const TitleBar = () => {
   const openTitleBar = useAndroidShowTitleBar();
-  const { blockInfo, appList, showSearch } = useContext(appContext);
+  const { blockInfo, statusInfo, appList, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 
   const displayBlockInfo = async (evt) => {
@@ -57,8 +57,13 @@ const TitleBar = () => {
                 onClick={displayBlockInfo}
                 className="flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
               >
-                <div className="ml-0.5">Block</div>
-                <div className="ml-1">{blockInfo.blockHeight}</div>
+                {statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
+                {statusInfo && !statusInfo.noBlocksYet && (
+                  <>
+                    <div className="ml-0.5">Block</div>
+                    <div className="ml-1">{blockInfo.blockHeight}</div>
+                  </>
+                )}
                 <svg
                   className="ml-2 mt-0.5"
                   width="12"

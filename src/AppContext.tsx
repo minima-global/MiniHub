@@ -156,6 +156,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           status().then((response) => {
             setStatusInfo({
               locked: response.locked,
+              noBlocksYet: response.chain.time === 'NO BLOCKS YET',
             });
           });
         }

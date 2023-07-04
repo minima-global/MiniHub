@@ -3,12 +3,14 @@ import { appContext } from '../../../AppContext';
 import Modal from '../../UI/Modal';
 
 const BlockInfo = ({ display, close }: any) => {
-  const { blockInfo } = useContext(appContext);
+  const { blockInfo, statusInfo } = useContext(appContext);
 
   const onClose = (evt) => {
     evt.stopPropagation();
     close();
-  }
+  };
+
+  console.log(statusInfo);
 
   return (
     <div className={`${display ? 'fixed' : 'hidden'} h-screen w-screen top-0 left-0 z-10`}>
@@ -21,9 +23,7 @@ const BlockInfo = ({ display, close }: any) => {
         </svg>
       </div>
       <div onClick={onClose} className="fixed z-[100] right-4 top-4">
-        <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">
-          Close
-        </div>
+        <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">Close</div>
       </div>
       <Modal display={display} frosted close={onClose}>
         <div className="text-center pb-2">
@@ -35,7 +35,8 @@ const BlockInfo = ({ display, close }: any) => {
                 fill="#E9E9EB"
               />
             </svg>
-            Block {blockInfo.blockHeight}
+            {statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
+            {statusInfo && !statusInfo.noBlocksYet && <>Block {blockInfo.blockHeight}</>}
           </div>
           <div className="core-black-contrast p-4 lg:p-5 flex items-center rounded gap-4 text-left text-sm lg:text-base">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
