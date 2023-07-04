@@ -7,7 +7,7 @@ type ModalProps = {
   display: boolean;
   frosted: boolean;
   closeAtBottom?: () => void;
-  close?: () => void;
+  close?: (evt: any) => void;
   bottomText?: string;
   hideCloseAtBottomDesktop?: boolean;
 };
@@ -28,7 +28,7 @@ export const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-[60] flex items-center justify-center text-black">
+            <div onClick={(evt) => evt.stopPropagation()} className="mx-auto absolute w-full h-full z-[60] flex items-center justify-center text-black">
               <div className="relative z-[80] w-full max-w-lg px-5">
                 <animated.div
                   style={style}

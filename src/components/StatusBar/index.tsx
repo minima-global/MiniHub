@@ -2,13 +2,21 @@ import { useContext, useState } from 'react';
 import { appContext } from '../../AppContext';
 import Status from './Status';
 import BlockInfo from './Block';
+import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 
 const TitleBar = () => {
+  const openTitleBar = useAndroidShowTitleBar();
   const { blockInfo, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 
+  const displayBlockInfo = (evt) => {
+    evt.stopPropagation();
+    setShowBlockInfo(true);
+  }
+
   return (
     <div
+      onClick={openTitleBar}
       className={`p-4 z-40 ${
         showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl xl:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
       }`}
@@ -28,7 +36,7 @@ const TitleBar = () => {
             <Status />
             {blockInfo && blockInfo.blockHeight && (
               <div
-                onClick={() => setShowBlockInfo(true)}
+                onClick={displayBlockInfo}
                 className="flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
               >
                 <div className="ml-0.5">Block</div>
@@ -52,6 +60,7 @@ const TitleBar = () => {
               <form action="/logoff.html" method="GET">
                 <button
                   type="submit"
+                  onClick={(evt) => evt.stopPropagation()}
                   className="flex items-center cursor-pointer rounded-full px-4 pb-1 pt-1 -mt-0.5 text-sm"
                 >
                   Log out

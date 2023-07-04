@@ -5,6 +5,11 @@ import Modal from '../../UI/Modal';
 const BlockInfo = ({ display, close }: any) => {
   const { blockInfo } = useContext(appContext);
 
+  const onClose = (evt) => {
+    evt.stopPropagation();
+    close();
+  }
+
   return (
     <div className={`${display ? 'fixed' : 'hidden'} h-screen w-screen top-0 left-0 z-10`}>
       <div className="fixed z-[100] left-4 top-4 mt-0.5">
@@ -15,12 +20,12 @@ const BlockInfo = ({ display, close }: any) => {
           />
         </svg>
       </div>
-      <div onClick={close} className="fixed z-[100] right-4 top-4">
+      <div onClick={onClose} className="fixed z-[100] right-4 top-4">
         <div className="flex cursor-pointer core-black-contrast-2 rounded-full px-4 py-1 text-sm font-bold">
           Close
         </div>
       </div>
-      <Modal display={display} frosted close={close}>
+      <Modal display={display} frosted close={onClose}>
         <div className="text-center pb-2">
           <div className="text-2xl mx-auto mb-6">Chain status</div>
           <div className="core-black-contrast p-4 lg:p-5 flex items-center mb-4 rounded gap-4 text-sm lg:text-base">
