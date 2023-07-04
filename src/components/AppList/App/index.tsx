@@ -21,6 +21,13 @@ const AppList = ({ data }) => {
     const link = await dAppLink(data.conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
 
+    // enables context menu on app change
+    if (window.navigator.userAgent.includes('Minima Browser')) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      Android.enableDefaultContextMenu();
+    }
+
     window.open(
       `${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`,
       isMobile ? '_blank' : '_blank'

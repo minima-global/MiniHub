@@ -81,13 +81,13 @@ function Dashboard() {
   }, [hasNext, hasPrevious, next, previous]);
 
   // disable right click on android
-  // useEffect(() => {
-  //   if (window.navigator.userAgent.includes('Minima Browser')) {
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     Android.disableDefaultContextMenu();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (window.navigator.userAgent.includes('Minima Browser')) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      Android.disableDefaultContextMenu();
+    }
+  }, []);
 
   return (
     <div
