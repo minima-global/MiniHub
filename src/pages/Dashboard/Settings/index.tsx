@@ -7,6 +7,7 @@ import BatteryOptimisation from './BatteryOptimisation';
 import FullScreen from '../../../components/UI/FullScreen';
 import InScreenTitleBar from '../../../components/InScreenStatusBar';
 import DesktopConnect from './DesktopConnect';
+import UpdateMiniHub from './UpdateMiniHub';
 
 export function Settings() {
   const { setShowSettings, showSettings: display } = useContext(appContext);
@@ -15,9 +16,11 @@ export function Settings() {
   const [showWallpaper, setShowWallpaper] = useState(false);
   const [showDesktopConnect, setShowDesktopConnect] = useState(false);
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
+  const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
 
   const dismiss = () => {
     setShowSettings(false);
+    setShowUpdateMinHub(false);
     setShowPeerList(false);
     setShowWallpaper(false);
     setShowDesktopConnect(false);
@@ -30,6 +33,7 @@ export function Settings() {
       <PeerList display={showPeerList} dismiss={() => setShowPeerList(false)} />
       <Wallpaper display={showWallpaper} dismiss={() => setShowWallpaper(false)} />
       <DesktopConnect display={showDesktopConnect} dismiss={() => setShowDesktopConnect(false)} />
+      <UpdateMiniHub display={showUpdateMiniHub} dismiss={() => setShowUpdateMinHub(false)} />
       <BatteryOptimisation display={showBatteryOptimisation} dismiss={() => setShowBatteryOptimisation(false)} />
       <div className="flex flex-col h-full min-h-[700px]">
         <InScreenTitleBar onExit={dismiss} />
@@ -83,6 +87,20 @@ export function Settings() {
               className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
             >
               Desktop Connect
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.04984 5.99995L1.37504 11.6501L0.500244 10.7501L5.24984 5.99995L0.500244 1.24975L1.40024 0.349747L7.04984 5.99995Z"
+                    fill="#F4F4F5"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              onClick={() => setShowUpdateMinHub(true)}
+              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+            >
+              Update MiniHub
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

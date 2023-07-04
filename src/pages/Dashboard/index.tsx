@@ -15,7 +15,6 @@ import Confirmation from '../../components/Confirmation';
 import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
-import { quit } from '../../lib';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);

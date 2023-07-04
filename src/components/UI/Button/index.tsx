@@ -4,6 +4,8 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary';
   onClick?: () => void;
   disabled?: boolean;
+  loading?: boolean;
+  type?: "submit" | "reset" | "button";
 };
 
 const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
@@ -11,6 +13,8 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   disabled,
   variant = 'primary',
   children,
+  loading = false,
+  type,
 }) => {
   let base =
     'relative w-full transition-all px-4 py-3.5 rounded font-bold disabled:opacity-40 disabled:cursor-not-allowed';
@@ -23,9 +27,18 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
     base += ' text-white core-black-contrast-3';
   }
 
+  if (disabled && variant === 'secondary') {
+    base += ' text-white core-black-contrast-3';
+  }
+
+  if (loading) {
+    base += ' opacity-60';
+  }
+
   return (
-    <button className={base} onClick={onClick} disabled={disabled}>
-      {children}
+    <button type={type} className={base} onClick={onClick} disabled={disabled}>
+      {!loading && <>{children}</>}
+      {loading && <div className="text-white spinner spinner--small" />}
     </button>
   );
 };
