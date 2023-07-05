@@ -10,8 +10,6 @@ const BlockInfo = ({ display, close }: any) => {
     close();
   };
 
-  console.log(statusInfo);
-
   return (
     <div className={`${display ? 'fixed' : 'hidden'} h-screen w-screen top-0 left-0 z-10`}>
       <div className="fixed z-[100] left-4 top-4 mt-0.5">
