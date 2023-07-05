@@ -3,7 +3,6 @@ import { quit } from '../../../../lib';
 import Modal from '../../../../components/UI/Modal';
 import Button from '../../../../components/UI/Button';
 import { appContext } from '../../../../AppContext';
-import * as React from 'react';
 
 type ShutdownProps = {
   display: boolean;

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { dAppLink } from '../../../lib';
 import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 
@@ -18,9 +17,6 @@ const AppList = ({ data }) => {
       return data.conf.onClick();
     }
 
-    const link = await dAppLink(data.conf.name);
-    await new Promise((resolve) => setTimeout(resolve, 150));
-
     // enables context menu on app change
     if (window.navigator.userAgent.includes('Minima Browser')) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -29,7 +25,7 @@ const AppList = ({ data }) => {
     }
 
     window.open(
-      `${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`,
+      `${(window as any).MDS.filehost}${data.uid}/index.html?uid=${data.sessionid}`,
       isMobile ? '_blank' : '_blank'
     );
   };
