@@ -17,13 +17,6 @@ const AppList = ({ data }) => {
       return data.conf.onClick();
     }
 
-    // enables context menu on app change
-    if (window.navigator.userAgent.includes('Minima Browser')) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      Android.enableDefaultContextMenu();
-    }
-
     window.open(
       `${(window as any).MDS.filehost}${data.uid}/index.html?uid=${data.sessionid}`,
       isMobile ? '_blank' : '_blank'

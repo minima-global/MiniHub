@@ -48,7 +48,7 @@ export function Install() {
         // delete file after we are done
         await deleteFile(savedFile.canonical);
 
-        refreshAppList();
+        await refreshAppList();
 
         setIsLoading(false);
         setInstalled(installedInfo);

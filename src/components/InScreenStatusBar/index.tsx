@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { appContext } from '../../AppContext';
+import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 
 type InScreenTitleBarProps = {
   onExit?: () => void;
@@ -7,8 +8,11 @@ type InScreenTitleBarProps = {
 
 const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
   const { hasShutdown } = useContext(appContext);
+  const openTitleBar = useAndroidShowTitleBar();
 
-  const handleOnExit = () => {
+  const handleOnExit = (evt) => {
+    evt.stopPropagation();
+
     if (hasShutdown) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -21,7 +25,7 @@ const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
   };
 
   return (
-    <div className="backdrop-blur-md bg-black/60 p-4 z-[80]">
+    <div onClick={openTitleBar} className="backdrop-blur-md bg-black/60 p-4 z-[80]">
       <div className="grid grid-cols-12 h-full">
         <div className="svg col-span-6 h-full flex items-center">
           <svg width="28" height="24" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">

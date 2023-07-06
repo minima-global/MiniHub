@@ -78,7 +78,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, []);
 
   const refreshAppList = useCallback(() => {
-    mds().then((response) => {
+    return mds().then((response) => {
       setMdsInfo({
         installed: response.minidapps.length,
         connect: response.connect,
@@ -125,6 +125,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
 
       setAppList([...apps]);
+
+      return true;
     });
   }, [sort]);
 
