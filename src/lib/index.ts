@@ -201,3 +201,27 @@ export function peers() {
 export function addPeers(peerList: string) {
   return promisfyMds(`peers action:addpeers peerslist:${peerList}`);
 }
+
+export function set(key: string, value: string) {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.keypair.set(key, value, function (response: any) {
+      if (response.status) {
+        return resolve(response.response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function get(key: string) {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.keypair.get(key, function (response: any) {
+      if (response.status) {
+        return resolve(response.value);
+      }
+
+      return reject();
+    });
+  });
+}

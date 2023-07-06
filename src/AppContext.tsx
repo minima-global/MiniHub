@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
+import { block, get, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
 
 export const appContext = createContext({} as any);
@@ -48,6 +48,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     locked: null,
   });
 
+  // warning blocks
+  const [showWarning, setShowWarning] = useState<number | false>(false);
+
   const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
@@ -76,6 +79,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setMode('mobile');
     }
   }, []);
+
+  useEffect(() => {
+    if (appIsInWriteMode && !showWarning) {
+      const fn = async () => {
+        const response = await get('CHAIN_ERROR');
+        if (response === '1') {
+          setShowWarning(1);
+        }
+      }
+
+      const interval = setInterval(fn, 10000);
+
+      fn();
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [appIsInWriteMode, showWarning]);
 
   const refreshAppList = useCallback(() => {
     return mds().then((response) => {
@@ -266,6 +288,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     hasShutdown,
     setHasShutdown,
+
+    showWarning,
+    setShowWarning,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

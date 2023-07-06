@@ -135,6 +135,36 @@ var MDS = {
 	},
 
 	/**
+	 *  Simple GET and SET key value pairs that are saved persistently
+	 */
+	keypair : {
+
+		/**
+		 * GET a value
+		 */
+		get : function(key, callback){
+
+			//Create the single line
+			var commsline = "get&"+key;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"keypair?"+"uid="+MDS.minidappuid, commsline, callback);
+		},
+
+		/**
+		 * SET a value
+		 */
+		set : function(key, value, callback){
+
+			//Create the single line
+			var commsline = "set&"+key+"&"+value;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"keypair?"+"uid="+MDS.minidappuid, commsline, callback);
+		}
+	},
+
+	/**
 	 * Get a link to a different Dapp. READ dapps can only get READ DAPPS. WRITE can get all dapps.
 	 */
 	dapplink : function(dappname, callback){
