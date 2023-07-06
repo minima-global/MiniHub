@@ -15,10 +15,8 @@ import Confirmation from '../../components/Confirmation';
 import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
-import useRewriteHistory from '../../hooks/useRewriteHistory';
 
 function Dashboard() {
-  useRewriteHistory();
   const { setRightMenu } = useContext(appContext);
   const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage });

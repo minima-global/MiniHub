@@ -17,7 +17,10 @@ const MobileSearchItem = ({ data, onRightClick }) => {
 
     const link = await dAppLink(data.conf.name);
     await new Promise((resolve) => setTimeout(resolve, 150));
-    window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, isMobile ? "_self" : "_blank");
+    window.open(
+      `${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`,
+      isMobile ? '_self' : '_blank'
+    );
   };
 
   const handleOnContextMenu = (evt: React.MouseEvent<HTMLDivElement>) => {
@@ -43,9 +46,6 @@ const MobileSearchItem = ({ data, onRightClick }) => {
                 ? data.conf.overrideIcon
                 : `${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`
             }
-            onError={(e) => {
-              e.currentTarget.src = './assets/app.png';
-            }}
           />
         </div>
         <span className="flex-grow flex items-center pl-5">{displayDAppName(data.conf.name)}</span>

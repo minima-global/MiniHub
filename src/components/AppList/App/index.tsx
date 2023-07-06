@@ -65,9 +65,6 @@ const AppList = ({ data }) => {
                 ? data.conf.overrideIcon
                 : `${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`
             }
-            onError={(e) => {
-              e.currentTarget.src = './assets/app.png';
-            }}
           />
           <span className="appLabel">{displayDAppName(data.conf.name)}</span>
         </div>

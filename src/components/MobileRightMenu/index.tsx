@@ -21,9 +21,6 @@ const MobileRightMenu = () => {
                 alt="app_icon"
                 className={`block lg:hidden mt-1 icon icon--small relative active:scale-95 hover:scale-95`}
                 src={`${(window as any).MDS.filehost}${data.uid}/${data.conf.icon}`}
-                onError={(e) => {
-                  e.currentTarget.src = './assets/app.png';
-                }}
               />
               <div className="px-6 lg:px-0 flex items-center">
                 <div>

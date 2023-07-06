@@ -34,7 +34,7 @@ export function Install() {
         setIsLoading(true);
 
         // save the file to folder
-        const fileName = file.name;
+        const fileName = file.name.split(' ').join('_');
         const arrayBuffer = await blobToArrayBuffer(file);
         const hex = bufferToHex(arrayBuffer);
         const savedFile = await saveFile('/' + fileName, hex);
