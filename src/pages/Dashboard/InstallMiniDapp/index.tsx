@@ -48,7 +48,8 @@ export function Install() {
         // delete file after we are done
         await deleteFile(savedFile.canonical);
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // artificial delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         await refreshAppList();
 

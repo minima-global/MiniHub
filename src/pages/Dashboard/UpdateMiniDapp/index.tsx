@@ -54,6 +54,9 @@ export function Update() {
         // delete file after we are done
         await deleteFile(savedFile.canonical);
 
+        // artificial delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         await refreshAppList();
 
         setIsLoading(false);
