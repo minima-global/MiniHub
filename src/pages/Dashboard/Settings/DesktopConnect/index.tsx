@@ -81,7 +81,7 @@ const DesktopConnect = ({ display, dismiss }: DesktopConnectProps) => {
               </p>
             </div>
             <div>
-              <Block copy title="Password" value={mdsInfo?.password} onCopy={onCopy} />
+              <Block title="Password" value={mdsInfo?.password} />
             </div>
           </div>
         </div>
