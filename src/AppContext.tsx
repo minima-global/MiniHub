@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
-import { block, get, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
+import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
 
 export const appContext = createContext({} as any);
