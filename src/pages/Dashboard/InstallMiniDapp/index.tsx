@@ -48,6 +48,8 @@ export function Install() {
         // delete file after we are done
         await deleteFile(savedFile.canonical);
 
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         await refreshAppList();
 
         setIsLoading(false);

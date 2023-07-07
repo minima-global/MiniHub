@@ -80,25 +80,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (appIsInWriteMode && !showWarning) {
-      const fn = async () => {
-        const response = await get('CHAIN_ERROR');
-        if (response === '1') {
-          setShowWarning(1);
-        }
-      }
-
-      const interval = setInterval(fn, 10000);
-
-      fn();
-
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [appIsInWriteMode, showWarning]);
-
   const refreshAppList = useCallback(() => {
     return mds().then((response) => {
       setMdsInfo({
@@ -191,9 +172,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             dateTime: evt.data.txpow.header.date,
           });
         }
+
+        if (evt.event === 'MDS_MINIDAPPS_CHANGE') {
+          refreshAppList();
+        }
+
+        if (evt.event === 'MDS_HEAVIER_CHAIN') {
+          setShowWarning(1);
+        }
       });
     }
-  }, [loaded]);
+  }, [loaded, refreshAppList]);
 
   const deleteApp = async (app: any) => {
     await uninstallApp(app.uid);

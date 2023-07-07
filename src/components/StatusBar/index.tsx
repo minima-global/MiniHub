@@ -19,13 +19,6 @@ const TitleBar = () => {
       const link = await dAppLink(healthApp.conf.name);
       await new Promise((resolve) => setTimeout(resolve, 150));
 
-      // enables context menu on app change
-      if (window.navigator.userAgent.includes('Minima Browser')) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        Android.enableDefaultContextMenu();
-      }
-
       return window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, '_blank');
     }
 
