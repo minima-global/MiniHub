@@ -73,6 +73,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   });
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
+  const [mdsFail, setMDSFail] = useState<string | boolean>(false);
 
   useEffect(() => {
     if (window.innerWidth < 568) {
@@ -180,6 +181,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (evt.event === 'MDS_HEAVIER_CHAIN') {
           setShowWarning(1);
         }
+
+        if (evt.event === 'MDSFAIL') {
+          setMDSFail(true);
+        }
       });
     }
   }, [loaded, refreshAppList]);
@@ -280,6 +285,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showWarning,
     setShowWarning,
+
+    mdsFail,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

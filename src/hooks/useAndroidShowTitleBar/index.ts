@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useAndroidShowTitleBar = () => {
+const useAndroidShowTitleBar = (extraData = false) => {
   const [isMinimaBrowser, setIsMinimaBrowser] = useState(false);
 
   const openTitleBar = () => {
@@ -15,6 +15,13 @@ const useAndroidShowTitleBar = () => {
       setIsMinimaBrowser(true);
     }
   }, []);
+
+  if (extraData) {
+    return {
+      openTitleBar,
+      isMinimaBrowser,
+    }
+  }
 
   return openTitleBar;
 };

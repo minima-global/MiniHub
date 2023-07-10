@@ -15,6 +15,7 @@ import Confirmation from '../../components/Confirmation';
 import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
+import MDSFail from '../../components/MDSFail';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
@@ -102,6 +103,7 @@ function Dashboard() {
       <DeleteMiniDapp />
       <MobileRightMenu />
       <Utilities />
+      <MDSFail />
 
       <div className="flex flex-col h-screen">
         <StatusBar />
