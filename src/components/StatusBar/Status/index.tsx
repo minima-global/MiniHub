@@ -26,6 +26,7 @@ const Status = () => {
     <div
       onMouseOver={handleOnMouseOver}
       onMouseLeave={handleOnMouseLeave}
+      onClick={(evt) => evt.stopPropagation()}
       className={`rounded-full flex items-center bg-status-red h-[26px] px-2.5 text-sm font-bold duration-500 ease-in-out text-black transition-all ${
         display ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
       }`}
