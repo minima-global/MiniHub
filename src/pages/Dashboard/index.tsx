@@ -97,13 +97,13 @@ function Dashboard() {
     >
       <AppIsInReadMode />
       <InstallMiniDapp />
-      <UpdateMiniDapp />
       <Settings />
       <Confirmation />
       <DeleteMiniDapp />
       <MobileRightMenu />
       <Utilities />
       <MDSFail />
+      <UpdateMiniDapp />
 
       <div className="flex flex-col h-screen">
         <StatusBar />

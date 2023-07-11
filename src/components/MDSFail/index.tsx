@@ -6,14 +6,24 @@ import Button from '../UI/Button';
 import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 
 export const MDSFail: React.FC<PropsWithChildren> = () => {
-  const { mdsFail } = useContext(appContext);
-  const { showTitleBar, isMinimaBrowser } = useAndroidShowTitleBar();
+  const { mdsFail, hasUpdated } = useContext(appContext);
+  const { openTitleBar, isMinimaBrowser } = useAndroidShowTitleBar();
   const display = !!mdsFail;
   const transition: any = useTransition(display, modalAnimation as any);
 
   const reload = () => {
     window.location.reload();
   };
+
+  const goToLoginPage = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.location.assign(MDS.filehost);
+  };
+
+  if (hasUpdated) {
+    return <div />;
+  }
 
   return (
     <div>
@@ -33,9 +43,12 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                     </p>
                     <div className="flex flex-col gap-4">
                       <Button onClick={reload}>Reload</Button>
+                      {!isMinimaBrowser && (
+                        <Button onClick={goToLoginPage} variant="secondary">Go to login</Button>
+                      )}
                       {isMinimaBrowser && (
-                        <Button onClick={showTitleBar} variant="secondary">
-                          Show Titlebar
+                        <Button onClick={openTitleBar} variant="secondary">
+                          Show Title bar
                         </Button>
                       )}
                     </div>

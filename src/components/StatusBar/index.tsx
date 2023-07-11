@@ -6,7 +6,7 @@ import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 import { dAppLink } from '../../lib';
 
 const TitleBar = () => {
-  const openTitleBar = useAndroidShowTitleBar();
+  const { openTitleBar } = useAndroidShowTitleBar();
   const { blockInfo, showWarning, statusInfo, appList, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
 

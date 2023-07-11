@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../../../../components/UI/Button';
 import SlideScreen from '../../../../components/UI/SlideScreen';
 import { getPath, mds, saveFile, update } from '../../../../lib';
 import { blobToArrayBuffer, bufferToHex } from '../../../../utilities';
 import getAppUID from '../../../../utilities/getAppUid';
 import Modal from '../../../../components/UI/Modal';
+import { appContext } from '../../../../AppContext';
 
 type UpdateMiniHubProps = {
   display: boolean;
@@ -13,11 +14,13 @@ type UpdateMiniHubProps = {
 };
 
 export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
+  const { setHasUpdated } = useContext(appContext);
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [shutdown, setShutdown] = useState(false);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
@@ -62,6 +65,17 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
         // install with full file path
         await update(appUid, filePath);
 
+        // ensure MDS fail message does not appear
+        setHasUpdated(true);
+
+        if (window.navigator.userAgent.includes('Minima Browser')) {
+          setShutdown(true);
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          return Android.shutdownMinima();
+        }
+
         setSuccess(true);
       } catch {
         setError(true);
@@ -81,6 +95,14 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full bg-black">
+        <Modal display={shutdown} frosted>
+          <div>
+            <div className="text-center">
+              <h1 className="text-xl mb-6">Your MiniHUB has<br /> been successfully updated</h1>
+              <p className="mb-2">Please restart the Minima app.</p>
+            </div>
+          </div>
+        </Modal>
         <Modal display={success} frosted>
           <div>
             <div className="text-center">

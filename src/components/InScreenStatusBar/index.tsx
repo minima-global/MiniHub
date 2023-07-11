@@ -7,8 +7,8 @@ type InScreenTitleBarProps = {
 };
 
 const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
-  const { hasShutdown } = useContext(appContext);
-  const openTitleBar = useAndroidShowTitleBar();
+  const { hasShutdown, hasUpdated } = useContext(appContext);
+  const { openTitleBar } = useAndroidShowTitleBar();
 
   const handleOnExit = (evt) => {
     evt.stopPropagation();
@@ -36,7 +36,7 @@ const InScreenTitleBar = ({ onExit }: InScreenTitleBarProps) => {
           </svg>
         </div>
         <div className="svg col-span-6 flex items-center justify-end">
-          {onExit && (
+          {onExit && !hasUpdated && (
             <button
               type="button"
               onClick={handleOnExit}

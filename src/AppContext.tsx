@@ -37,6 +37,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // has shutdown
   const [hasShutdown, setHasShutdown] = useState(false);
 
+  // has updated
+  const [hasUpdated, setHasUpdated] = useState(false);
+
   // block info
   const [blockInfo, setBlockInfo] = useState<any>({
     blockHeight: null,
@@ -287,6 +290,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowWarning,
 
     mdsFail,
+
+    hasUpdated,
+    setHasUpdated,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
