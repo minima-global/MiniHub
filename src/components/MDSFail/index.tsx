@@ -44,7 +44,7 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                     <div className="flex flex-col gap-4">
                       <Button onClick={reload}>Reload</Button>
                       {!isMinimaBrowser && (
-                        <Button onClick={goToLoginPage} variant="secondary">Go to login</Button>
+                        <Button onClick={goToLoginPage} variant="secondary">Go to login page</Button>
                       )}
                       {isMinimaBrowser && (
                         <Button onClick={openTitleBar} variant="secondary">
