@@ -11,10 +11,6 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
   const display = !!mdsFail;
   const transition: any = useTransition(display, modalAnimation as any);
 
-  const reload = () => {
-    window.location.reload();
-  };
-
   const goToLoginPage = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -42,7 +38,6 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                       Your MDS session is invalid, please click the below button to refresh the page.
                     </p>
                     <div className="flex flex-col gap-4">
-                      <Button onClick={reload}>Reload</Button>
                       {!isMinimaBrowser && (
                         <Button onClick={goToLoginPage} variant="secondary">Go to login page</Button>
                       )}
