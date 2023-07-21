@@ -16,11 +16,12 @@ import DashboardActionBar from '../../components/DashboardActionBar';
 import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
 import MDSFail from '../../components/MDSFail';
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
   const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);

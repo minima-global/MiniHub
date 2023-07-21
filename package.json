@@ -2,7 +2,7 @@
   "name": "minihub",
   "private": true,
   "description": "Alpha version of the new MiniHub unified experience",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,7 +19,9 @@
     "@types/lodash": "^4.14.195",
     "axios": "^1.4.0",
     "colorthief": "^2.4.0",
+    "date-fns": "^2.30.0",
     "embla-carousel-react": "^8.0.0-rc05",
+    "embla-carousel-wheel-gestures": "^8.0.0-rc04",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",

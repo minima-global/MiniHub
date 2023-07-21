@@ -56,7 +56,6 @@ export function Install() {
         setIsLoading(false);
         setInstalled(installedInfo);
       } catch (e) {
-        console.log(e);
         setIsLoading(false);
         setError(true);
       }

@@ -25,8 +25,6 @@ function useWallpaper() {
     if (activeWallpaper !== '') {
       document.body.classList.value = '';
 
-      console.log(activeWallpaper);
-
       if (activeWallpaper.includes('thumbnail-')) {
         document.body.classList.add(`bg-${activeWallpaper.replace('thumbnail-', '')}`);
       } else {

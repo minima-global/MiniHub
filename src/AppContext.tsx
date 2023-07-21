@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
+import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
 
 export const appContext = createContext({} as any);
 
@@ -159,6 +160,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             setBlockInfo({
               blockHeight: blockInfo.block,
               dateTime: blockInfo.date,
+              timemilli: blockInfo.timemilli,
             });
           });
 
@@ -174,6 +176,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           setBlockInfo({
             blockHeight: evt.data.txpow.header.block,
             dateTime: evt.data.txpow.header.date,
+            timemilli: evt.data.txpow.header.timemilli,
+          });
+
+          status().then((response) => {
+            setStatusInfo({
+              locked: response.locked,
+              noBlocksYet: response.chain.time === 'NO BLOCKS YET',
+            });
           });
         }
 
@@ -191,6 +201,28 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       });
     }
   }, [loaded, refreshAppList]);
+
+  /**
+   * Checks status on window focus
+   */
+  useEffect(() => {
+    if (loaded) {
+      const checkStatus = () => {
+        status().then((response) => {
+          setStatusInfo({
+            locked: response.locked,
+            noBlocksYet: response.chain.time === 'NO BLOCKS YET',
+          });
+        });
+      }
+
+      window.addEventListener("focus", checkStatus, false);
+
+      return () => {
+        window.removeEventListener("focus", checkStatus, false);
+      }
+    }
+  }, [loaded])
 
   const deleteApp = async (app: any) => {
     await uninstallApp(app.uid);
@@ -231,6 +263,18 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
   };
+
+  const isNodeFiveMinutesAgoBehind = useMemo(() => {
+    if (blockInfo.blockHeight) {
+      const now = new Date();
+      const fiveMinutesAgo = subMinutes(now, 5);
+      const blockTime = fromUnixTime(Number(blockInfo.timemilli) / 1000);
+
+      return isBefore(blockTime, fiveMinutesAgo);
+    }
+
+    return false;
+  }, [blockInfo]);
 
   const value = {
     mode,
@@ -293,6 +337,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     hasUpdated,
     setHasUpdated,
+
+    isNodeFiveMinutesAgoBehind,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
