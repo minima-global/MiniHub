@@ -102,7 +102,7 @@ export function Update() {
                         {!installed && !error && (
                           <form onSubmit={handleOnSubmit} className="text-center">
                             <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp?.conf?.name}</h1>
-                            <p className="text-center mb-10 line-height">Please select the update mds file.</p>
+                            <p className="text-center mb-10 line-height">Please select the new minidapp (.mds.zip) file.</p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">
                                 <input type="file" id="file" aria-label="Choose file" onChange={handleOnChange} />
