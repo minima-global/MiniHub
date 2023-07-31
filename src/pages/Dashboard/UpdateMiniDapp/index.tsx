@@ -49,7 +49,7 @@ export function Update() {
         // updated
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        await reloadImg(showUpdateApp.conf.name, `${MDS.filehost}/${showUpdateApp.uid}/${showUpdateApp.conf.icon}`);
+        await reloadImg(showUpdateApp.uid, showUpdateApp.conf.name, `${MDS.filehost}/${showUpdateApp.uid}/${showUpdateApp.conf.icon}`);
 
         // delete file after we are done
         await deleteFile(savedFile.canonical);
