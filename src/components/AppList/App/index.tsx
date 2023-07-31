@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
+import { IS_MINIMA_BROWSER } from '../../../env';
 
 const AppList = ({ data }) => {
   const { setShowDeleteApp, setShowUpdateApp } = useContext(appContext);
@@ -15,6 +16,10 @@ const AppList = ({ data }) => {
     // minima method to get session id
     if (data.conf.onClick) {
       return data.conf.onClick();
+    }
+
+    if (data.conf.browser === 'external' && IS_MINIMA_BROWSER) {
+      return (window as any).Android.openExternalBrowser(`${(window as any).MDS.filehost}${data.uid}/index.html?uid=${data.sessionid}`, '_blank');
     }
 
     window.open(

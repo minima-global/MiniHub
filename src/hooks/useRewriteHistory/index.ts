@@ -6,7 +6,7 @@ function useRewriteHistory() {
   useEffect(() => {
     if (times < 10) {
       setTimeout(() => {
-        history.pushState({}, "", `/`);
+        history.pushState({}, "", window.location.href);
         setTimes(prevState => prevState + 1);
       }, 100);
     }

@@ -85,6 +85,24 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
+  /**
+   * Hides the install / update modal if url changes
+   * this is a workaround for the back button on Android phones
+   * when the user presses the back button after installing / updating an app
+   */
+  useEffect(() => {
+    const closeInstallAndUpdate = () => {
+      setShowInstall(false);
+      setShowUpdateApp(false);
+    };
+
+    window.addEventListener('popstate', closeInstallAndUpdate);
+
+    return () => {
+      window.removeEventListener('popstate', closeInstallAndUpdate);
+    };
+  }, [])
+
   const refreshAppList = useCallback(() => {
     return mds().then((response) => {
       setMdsInfo({
