@@ -1,15 +1,22 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import { uninstallApp } from '../../../lib';
 import { appContext } from '../../../AppContext';
 import { modalAnimation } from '../../../animations';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function ConfirmDelete() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { showDeleteApp: data, setShowDeleteApp, refreshAppList, setRightMenu } = useContext(appContext);
   const display = data && data.uid;
   const transition: any = useTransition(display, modalAnimation as any);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setShowDeleteApp(false);
+    }
+  }, [location]);
 
   const confirm = async () => {
     await uninstallApp(data.uid);

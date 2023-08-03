@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, install, saveFile } from '../../../lib';
 import { appContext } from '../../../AppContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Install() {
   // seems to be an issue somewhere with types
   const navigate = useNavigate();
+  const location = useLocation();
   const { refreshAppList, showInstall: display, setShowInstall } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
@@ -17,6 +18,15 @@ export function Install() {
   const [error, setError] = useState<boolean>(false);
   const [installed, setInstalled] = useState<any | null>(null);
   const transition: any = useTransition(display, modalAnimation as any);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setFile(null);
+      setName(null);
+      setError(false);
+      setInstalled(null);
+    }
+  }, [location]);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;

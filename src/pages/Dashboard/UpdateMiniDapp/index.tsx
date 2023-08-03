@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, saveFile, update } from '../../../lib';
 import { appContext } from '../../../AppContext';
 import reloadImg from '../../../utilities/reloadImageUrl';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Update() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { refreshAppList, showUpdateApp, setShowUpdateApp } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,15 @@ export function Update() {
   const [error, setError] = useState<boolean>(false);
   const [installed, setInstalled] = useState<any | null>(null);
   const transition: any = useTransition(!!showUpdateApp, modalAnimation as any);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setFile(null);
+      setName(null);
+      setError(false);
+      setInstalled(null);
+    }
+  }, [location]);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
