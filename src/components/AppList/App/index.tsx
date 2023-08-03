@@ -2,8 +2,10 @@ import { useContext } from 'react';
 import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 import { IS_MINIMA_BROWSER } from '../../../env';
+import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
+  const navigate = useNavigate();
   const { setShowDeleteApp, setShowUpdateApp } = useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
@@ -15,11 +17,17 @@ const AppList = ({ data }) => {
     // if there is an onclick method in app conf (utility app / settings) do that instead of calling
     // minima method to get session id
     if (data.conf.onClick) {
+      if (data.conf.onClick === 'GO_TO_SETTINGS') {
+        return navigate('/settings');
+      }
       return data.conf.onClick();
     }
 
     if (data.conf.browser === 'external' && IS_MINIMA_BROWSER) {
-      return (window as any).Android.openExternalBrowser(`${(window as any).MDS.filehost}${data.uid}/index.html?uid=${data.sessionid}`, '_blank');
+      return (window as any).Android.openExternalBrowser(
+        `${(window as any).MDS.filehost}${data.uid}/index.html?uid=${data.sessionid}`,
+        '_blank'
+      );
     }
 
     window.open(
@@ -119,10 +127,22 @@ const AppList = ({ data }) => {
                 )}
               </div>
             </div>
-            <div onClick={() => setShowUpdateApp(data)} className="cursor-pointer">
+            <div
+              onClick={() => {
+                navigate('/update');
+                setShowUpdateApp(data);
+              }}
+              className="cursor-pointer"
+            >
               Update
             </div>
-            <div onClick={() => setShowDeleteApp(data)} className="cursor-pointer">
+            <div
+              onClick={() => {
+                navigate('/delete');
+                setShowDeleteApp(data);
+              }}
+              className="cursor-pointer"
+            >
               Delete MiniDapp
             </div>
           </div>

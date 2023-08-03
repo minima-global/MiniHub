@@ -126,7 +126,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             name: 'Settings',
             system: true,
             overrideIcon: './assets/settings.png',
-            onClick: () => setShowSettings(true),
+            onClick: 'GO_TO_SETTINGS',
           },
         },
       ];
@@ -303,8 +303,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     deleteApp,
     setAppToReadMode,
     setAppToWriteMode,
+
     showDeleteApp,
     setShowDeleteApp,
+
     showUpdateApp,
     setShowUpdateApp,
 

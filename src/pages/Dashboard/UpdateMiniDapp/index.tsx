@@ -6,8 +6,10 @@ import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, saveFile, update } from '../../../lib';
 import { appContext } from '../../../AppContext';
 import reloadImg from '../../../utilities/reloadImageUrl';
+import { useNavigate } from 'react-router-dom';
 
 export function Update() {
+  const navigate = useNavigate();
   const { refreshAppList, showUpdateApp, setShowUpdateApp } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
@@ -70,6 +72,8 @@ export function Update() {
 
   const onClose = () => {
     setShowUpdateApp(false);
+    navigate(-1);
+
     setTimeout(() => {
       setFile(null);
       setName(null);

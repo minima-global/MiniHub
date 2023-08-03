@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 import { appContext } from '../../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const MobileRightMenu = () => {
+  const navigate = useNavigate();
   const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
     useContext(appContext);
   const data = appList && rightMenu && appList.find((i) => i.uid === rightMenu?.uid);
@@ -81,13 +83,19 @@ const MobileRightMenu = () => {
                 </div>
               </div>
               <div
-                onClick={() => setShowUpdateApp(rightMenu)}
+                onClick={() => {
+                  navigate('/update');
+                  setShowUpdateApp(rightMenu);
+                }}
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
               >
                 Update
               </div>
               <div
-                onClick={() => setShowDeleteApp(rightMenu)}
+                onClick={() => {
+                  navigate('/delete/' + data.uid);
+                  setShowDeleteApp(rightMenu);
+                }}
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
               >
                 Delete MiniDapp

@@ -5,9 +5,11 @@ import { useContext, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, install, saveFile } from '../../../lib';
 import { appContext } from '../../../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 export function Install() {
   // seems to be an issue somewhere with types
+  const navigate = useNavigate();
   const { refreshAppList, showInstall: display, setShowInstall } = useContext(appContext);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string | null>(null);
@@ -64,6 +66,8 @@ export function Install() {
 
   const onClose = () => {
     setShowInstall(false);
+    navigate(-1);
+
     setTimeout(() => {
       setFile(null);
       setName(null);

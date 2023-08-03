@@ -1,15 +1,27 @@
-import "./index.css";
-import AppProvider from "./AppContext";
-import Dashboard from "./pages/Dashboard";
-import useRewriteHistory from './hooks/useRewriteHistory';
+import './index.css';
+import AppProvider from './AppContext';
+import Dashboard from './pages/Dashboard';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+import Install from './pages/proxy/Install';
+import Update from './pages/proxy/Update';
+import Settings from './pages/proxy/Settings';
+import Delete from './pages/proxy/Delete';
 
 function App() {
-  useRewriteHistory();
-
   return (
-    <AppProvider>
-      <Dashboard />
-    </AppProvider>
+    <HashRouter>
+      <AppProvider>
+        <Routes>
+          <Route path="*" element={<Dashboard />} />
+        </Routes>
+        <Routes>
+          <Route path="/install" element={<Install />} />
+          <Route path="/update" element={<Update />} />
+          <Route path="/delete/:id" element={<Delete />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </AppProvider>
+    </HashRouter>
   );
 }
 

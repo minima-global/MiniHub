@@ -8,8 +8,10 @@ import FullScreen from '../../../components/UI/FullScreen';
 import InScreenTitleBar from '../../../components/InScreenStatusBar';
 import DesktopConnect from './DesktopConnect';
 import UpdateMiniHub from './UpdateMiniHub';
+import { useNavigate } from 'react-router-dom';
 
 export function Settings() {
+  const navigate = useNavigate();
   const { setShowSettings, showSettings: display } = useContext(appContext);
   const [showShutdown, setShutdown] = useState(false);
   const [showPeerList, setShowPeerList] = useState(false);
@@ -19,6 +21,7 @@ export function Settings() {
   const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
 
   const dismiss = () => {
+    navigate(-1);
     setShowSettings(false);
     setShowUpdateMinHub(false);
     setShowPeerList(false);

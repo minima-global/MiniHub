@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { appContext } from '../../AppContext';
 import Sort from './Sort';
 import MobileSearchItem from './MobileSearchItem';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * The dashboard action bar
@@ -10,15 +11,24 @@ import MobileSearchItem from './MobileSearchItem';
  * @constructor
  */
 const DashboardActionBar = () => {
+  const navigate = useNavigate();
   const { showSearch, setShowSearch } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
   const limitedAppList = query === '' ? [] : filteredAppList.slice(0, 5);
 
-  const openSearch = () => setShowSearch(true);
+  const openSearch = () => {
+    setShowSearch(true);
+  };
+
   const closeSearch = () => {
     setQuery('');
     setShowSearch(false);
+  };
+
+  const openInstallModal = () => {
+    navigate('/install');
+    setShowInstall(true);
   };
 
   return (
@@ -126,7 +136,7 @@ const DashboardActionBar = () => {
             </svg>
             <svg
               className="cursor-pointer"
-              onClick={() => setShowInstall(true)}
+              onClick={openInstallModal}
               width="20"
               height="20"
               viewBox="0 0 20 20"
