@@ -129,9 +129,9 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
             </svg>
             Settings
           </div>
-          <h1 className="text-2xl mb-8">Update MiniHUB</h1>
+          <h1 className="text-2xl mb-8">Update MinimaOS</h1>
           <form onSubmit={handleOnSubmit} className="text-left">
-            <p className="mb-10 line-height">Please select the updated MiniHUB zip file</p>
+            <p className="mb-10 line-height">Please select your latest MinimaOS zip file.</p>
             <div className="relative mt-3 mb-10">
               <label className="file rounded core-grey-20 w-full">
                 <input type="file" id="file" aria-label="Choose file" onChange={handleOnChange} />

@@ -103,7 +103,7 @@ export function Settings() {
               onClick={() => setShowUpdateMinHub(true)}
               className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
             >
-              Update MiniHUB
+              Update MinimaOS
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
