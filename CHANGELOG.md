@@ -1,5 +1,11 @@
 # Changelog
 
+##### [0.10.0] - 03 August 23
+
+- Minor text changes
+- Added peers functionality in settings
+- Added the ability to set a custom wallpaper
+
 ##### [0.9.1] - 03 August 23
 
 - Added support for going back to the previous page when installing, updating or deleting a Minidapp
