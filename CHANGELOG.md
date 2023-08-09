@@ -1,5 +1,13 @@
 # Changelog
 
+##### [0.10.2] - 09 August 23
+
+- Setting custom wallpaper now uses `copytoweb`
+
+##### [0.10.1] - 09 August 23
+
+- Fixed peers response as the response from the node has changed
+
 ##### [0.10.0] - 08 August 23
 
 - Minor text changes

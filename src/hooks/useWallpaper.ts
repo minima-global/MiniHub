@@ -34,8 +34,10 @@ function useWallpaper(loaded: boolean, miniHUB: any) {
       get('BACKGROUND').then(async (response) => {
         const activeWallpaper = response as string;
 
-        if (activeWallpaper) {
+        if (activeWallpaper || activeWallpaper !== '0') {
           setActiveWallpaper(activeWallpaper);
+        } else {
+          document.body.classList.value = 'bg-minima';
         }
       });
     }

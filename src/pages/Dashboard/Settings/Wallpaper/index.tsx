@@ -23,7 +23,7 @@ type WallpaperProps = {
 };
 
 export function Wallpaper({ display, dismiss }: WallpaperProps) {
-  const { activeWallpaper, setActiveWallpaper } = useContext(appContext);
+  const { activeWallpaper, setActiveWallpaper, customWallpaper } = useContext(appContext);
   const [preview, setPreview] = useState<string | false>(false);
   const [name, setName] = useState('');
   const [file, setFile] = useState<File | null>(null);
@@ -110,6 +110,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
                     <div
                       id="wallpaper-preview"
                       className="border-2 border-white cursor-pointer rounded bg-cover bg-center max-w-[200px] h-[168px]"
+                      style={{ backgroundImage: `url("./my_wallpapers/${customWallpaper}")` }}
                     />
                   </div>
                   <div className="mb-6 text-core-grey-80">Select a custom wallpaper</div>
