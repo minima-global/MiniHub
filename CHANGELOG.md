@@ -2,7 +2,7 @@
 
 ##### [0.10.2] - 09 August 23
 
-- Setting custom wallpaper now uses `copytoweb`
+- Setting a custom wallpaper functionality has been updated
 
 ##### [0.10.1] - 09 August 23
 
