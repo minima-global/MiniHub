@@ -199,6 +199,10 @@ body {
   margin-top: -1px;
 }
 
+.file-label--normal-pad {
+  padding: 0 15px 0 15px;
+}
+
 @keyframes spinner {
   to {
     transform: rotate(360deg);

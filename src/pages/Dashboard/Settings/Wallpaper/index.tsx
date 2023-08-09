@@ -75,7 +75,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
     }
   };
 
-  const showCustomWallpaperBlock = activeWallpaper.includes('custom-');
+  const showCustomWallpaperBlock = activeWallpaper && activeWallpaper.includes('custom-');
 
   return (
     <SlideScreen display={display}>
@@ -123,7 +123,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
                       aria-label="Choose an image (.png, .jpg, .svg)"
                     />
                     <span className="file-custom"></span>
-                    <span className="file-label truncate">{name || 'Choose an image (.png, .jpg, .svg)'}</span>
+                    <span className="file-label file-label--normal-pad truncate">{name || 'Choose an image (.png, .jpg, .svg)'}</span>
                   </label>
                   <Button onClick={setCustomWallpaper} disabled={file === null} variant="secondary">
                     Set wallpaper

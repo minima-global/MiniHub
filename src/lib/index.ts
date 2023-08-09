@@ -203,25 +203,25 @@ export function addPeers(peerList: string) {
 }
 
 export function set(key: string, value: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     (window as any).MDS.keypair.set(key, value, function (response: any) {
       if (response.status) {
         return resolve(response.response);
       }
 
-      return reject();
+      return resolve(false);
     });
   });
 }
 
 export function get(key: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     (window as any).MDS.keypair.get(key, function (response: any) {
       if (response.status) {
         return resolve(response.value);
       }
 
-      return reject();
+      return resolve(false);
     });
   });
 }

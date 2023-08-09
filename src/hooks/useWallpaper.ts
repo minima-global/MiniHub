@@ -34,7 +34,7 @@ function useWallpaper(loaded: boolean, miniHUB: any) {
       get('BACKGROUND').then(async (response) => {
         const activeWallpaper = response as string;
 
-        if (activeWallpaper || activeWallpaper !== '0') {
+        if (activeWallpaper) {
           setActiveWallpaper(activeWallpaper);
         } else {
           document.body.classList.value = 'bg-minima';
@@ -49,7 +49,7 @@ function useWallpaper(loaded: boolean, miniHUB: any) {
    */
   useEffect(() => {
     (async () => {
-      if (activeWallpaper !== '') {
+      if (activeWallpaper !== '' && activeWallpaper) {
         /**
          * If wallpaper is custom, we need to copy the file from the file directory
          * to the web folder so that we can use it as a web file! We do this everytime because
