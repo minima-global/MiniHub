@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { appContext } from '../../../../../AppContext';
 import Button from '../../../../../components/UI/Button';
 import SlideScreen from '../../../../../components/UI/SlideScreen';
+import { set } from '../../../../../lib';
 
 export type PreviewProps = {
   data: any; // TODO
@@ -36,8 +37,9 @@ export function Preview({ display, data, dismiss }: PreviewProps) {
     }
   }, [data]);
 
-  const set = () => {
-    localStorage.setItem('__miniHub_bg', data);
+  const setWallpaper = () => {
+    set('BACKGROUND', data);
+    document.body.style.backgroundImage = '';
     setActiveWallpaper(data);
     setHasSetRecently(true);
   };
@@ -70,7 +72,7 @@ export function Preview({ display, data, dismiss }: PreviewProps) {
             Back
           </div>
           <div className="flex items-end flex-grow left-0 bottom-0 w-full">
-            <Button onClick={set} variant={hasSetRecently ? 'secondary' : 'primary'}>
+            <Button onClick={setWallpaper} variant={hasSetRecently ? 'secondary' : 'primary'}>
               {hasSetRecently && 'Wallpaper updated'}
               <div
                 className={`absolute top-0 right-4 flex items-center h-full transition-all ${

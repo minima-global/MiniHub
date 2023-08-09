@@ -25,9 +25,9 @@ export default ({ mode }) => {
     },
     plugins: [
       react(),
-      legacy({
-        targets: ['defaults', 'not IE 11', 'Android >= 9'],
-      }),
+      // legacy({
+      //   targets: ['defaults', 'not IE 11', 'Android >= 9'],
+      // }),
       createHtmlPlugin({
         inject: {
           data: {

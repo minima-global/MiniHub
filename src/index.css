@@ -196,6 +196,7 @@ body {
   padding: 0 105px 0 15px;
   pointer-events: none;
   cursor: pointer;
+  margin-top: -1px;
 }
 
 @keyframes spinner {
@@ -447,6 +448,10 @@ body.theme-light .search-container input {
 
 .bg-minima .block-info {
   background-color: var(--core-black-contrast-2);
+}
+
+.bg-custom .block-info {
+  background-color: #00000030;
 }
 
 .bg-feather .block-info {

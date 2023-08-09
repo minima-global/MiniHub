@@ -225,3 +225,49 @@ export function get(key: string) {
     });
   });
 }
+
+export function moveFile(originalFilePath: string, newFilePath: string) {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.file.move(originalFilePath, newFilePath, function(response: any) {
+      if (response.status) {
+        return resolve(true);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function upload(file: unknown) {
+  return new Promise((resolve) => {
+    (window as any).MDS.file.upload(file, function(response: any) {
+      if (response.allchunks === response.chunk) {
+        return resolve(true);
+      }
+    });
+  });
+}
+
+export function copyToWeb(filePath: string, newFilePath: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.file.copytoweb(filePath, newFilePath, function(response: any) {
+      if (response.status) {
+        return resolve(response);
+      }
+
+      return reject();
+    });
+  });
+}
+
+export function loadBinary(filePath: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    (window as any).MDS.file.loadbinary(filePath, function(response: any) {
+      if (response.status) {
+        return resolve(response.response.load);
+      }
+
+      return reject();
+    });
+  });
+}

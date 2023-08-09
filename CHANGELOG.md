@@ -1,6 +1,6 @@
 # Changelog
 
-##### [0.10.0] - 03 August 23
+##### [0.10.0] - 08 August 23
 
 - Minor text changes
 - Added peers functionality in settings

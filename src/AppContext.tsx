@@ -9,7 +9,13 @@ export const appContext = createContext({} as any);
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
 
-  const wallpaperProps = useWallpaper();
+  const [appList, setAppList] = useState<any[]>([]);
+
+  const [mdsInfo, setMdsInfo] = useState<any>(null);
+
+  const [miniHUB, setMiniHUB] = useState(false);
+
+  const wallpaperProps = useWallpaper(loaded.current, miniHUB);
 
   // desktop / or / mobile
   const [mode, setMode] = useState('desktop');
@@ -55,11 +61,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // warning blocks
   const [showWarning, setShowWarning] = useState<number | false>(false);
 
-  const [appList, setAppList] = useState<any[]>([]);
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState('');
-  const [mdsInfo, setMdsInfo] = useState<any>(null);
   const [rightMenu, setRightMenu] = useState<any>(false);
   const [badgeNotification, setBadgeNotification] = useState<string | null>(null);
   const [modal, setModal] = useState<{
@@ -101,7 +105,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return () => {
       window.removeEventListener('popstate', closeInstallAndUpdate);
     };
-  }, [])
+  }, []);
 
   const refreshAppList = useCallback(() => {
     return mds().then((response) => {
@@ -130,6 +134,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           },
         },
       ];
+
+      setMiniHUB(
+        response.minidapps.find(
+          (app) =>
+            !(
+              app.conf.name.includes('minihub') ||
+              app.conf.name.includes('MiniHub') ||
+              app.conf.name.includes('MiniHUB')
+            )
+        )
+      );
 
       // let apps = response.minidapps;
 
@@ -221,15 +236,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             noBlocksYet: response.chain.time === 'NO BLOCKS YET',
           });
         });
-      }
+      };
 
-      window.addEventListener("focus", checkStatus, false);
+      window.addEventListener('focus', checkStatus, false);
 
       return () => {
-        window.removeEventListener("focus", checkStatus, false);
-      }
+        window.removeEventListener('focus', checkStatus, false);
+      };
     }
-  }, [loaded])
+  }, [loaded]);
 
   const deleteApp = async (app: any) => {
     await uninstallApp(app.uid);

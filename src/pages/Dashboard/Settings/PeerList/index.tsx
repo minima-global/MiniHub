@@ -15,9 +15,6 @@ type PeerListProps = {
 export function PeerList({ display, dismiss }: PeerListProps) {
   const { setBadgeNotification } = useContext(appContext);
   const [peersInfo, setPeersInfo] = useState<string | null>(null);
-  const [showEntirePeersInfo, setShowEntirePeersInfo] = useState(false);
-  const [peersInfoSnippet, setPeersInfoSnippet] = useState<string | null>(null);
-  const [moreThan200Characters, setMoreThan200Characters] = useState<boolean>(false);
   const [inputPeerList, setInputPeerList] = useState('');
   const [importing, setImporting] = useState(false);
   const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
@@ -25,17 +22,10 @@ export function PeerList({ display, dismiss }: PeerListProps) {
   useEffect(() => {
     if (display) {
       peers().then((response) => {
-        if (response['peers-list']) {
-          const asString = JSON.stringify(response['peers-list']);
+        if (response['peerslist']) {
+          const asString = JSON.stringify(response['peerslist']);
           const cleanString = asString.replace(/^"/gm, '').replace(/"$/gm, '');
-
           setPeersInfo(cleanString);
-          setShowEntirePeersInfo(false);
-
-          if (asString.length > 200) {
-            setMoreThan200Characters(true);
-            setPeersInfoSnippet(cleanString.slice(0, 200));
-          }
         }
       });
     }
@@ -154,19 +144,9 @@ export function PeerList({ display, dismiss }: PeerListProps) {
               {peersInfo && (
                 <div>
                   <Block title="Peers" value={peersInfo} copy>
-                    {!moreThan200Characters && (
-                      <div className="break-all">
-                        <>{peersInfo}</>
-                      </div>
-                    )}
-                    {moreThan200Characters && (
-                      <div>
-                        <div className="break-all">{showEntirePeersInfo ? peersInfo : `${peersInfoSnippet}...`}</div>
-                        <div className="mt-5 cursor-pointer" onClick={() => setShowEntirePeersInfo((prevState) => !prevState)}>
-                          {showEntirePeersInfo ? 'Show less' : 'Show more'}
-                        </div>
-                      </div>
-                    )}
+                    <div className="break-all">
+                      <>{peersInfo}</>
+                    </div>
                   </Block>
                   <div className="mt-5">
                     {!IS_MINIMA_BROWSER && (
