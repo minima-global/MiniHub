@@ -12,16 +12,15 @@ import { useNavigate } from 'react-router-dom';
 
 export function Settings() {
   const navigate = useNavigate();
-  const { setShowSettings, showSettings: display } = useContext(appContext);
+  const { setShowSettings, showSettings: display, setShowPeerList, showPeerList } = useContext(appContext);
   const [showShutdown, setShutdown] = useState(false);
-  const [showPeerList, setShowPeerList] = useState(false);
   const [showWallpaper, setShowWallpaper] = useState(false);
   const [showDesktopConnect, setShowDesktopConnect] = useState(false);
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
   const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
 
   const dismiss = () => {
-    navigate(-1);
+    navigate('/');
     setShowSettings(false);
     setShowUpdateMinHub(false);
     setShowPeerList(false);

@@ -17,6 +17,7 @@ import MobileRightMenu from '../../components/MobileRightMenu';
 import BadgeNotification from '../../components/BadgeNotification';
 import MDSFail from '../../components/MDSFail';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
+import HasNoPeersModal from './HasNoPeersModal';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
@@ -105,6 +106,7 @@ function Dashboard() {
       <Utilities />
       <MDSFail />
       <UpdateMiniDapp />
+      <HasNoPeersModal />
 
       <div className="flex flex-col h-screen">
         <StatusBar />

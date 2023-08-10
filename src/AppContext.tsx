@@ -61,6 +61,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // warning blocks
   const [showWarning, setShowWarning] = useState<number | false>(false);
 
+  // show have peers false modal
+  const [showHasNoPeers, setShowHasNoPeers] = useState<boolean>(false);
+
+  // show peers list section in settings, this has been lifted because of the modal that can
+  // appear if the user does not have any peers when booting up the minihub
+  const [showPeerList, setShowPeerList] = useState(false);
+
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState('');
@@ -176,6 +183,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
             setAppIsInWriteMode(appIsInWriteMode);
+          });
+
+          peers().then((response) => {
+            if (!response.havepeers) {
+              setShowHasNoPeers(true);
+            }
           });
 
           block().then((blockInfo) => {
@@ -361,6 +374,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     hasUpdated,
     setHasUpdated,
+
+    showHasNoPeers,
+    setShowHasNoPeers,
+
+    showPeerList,
+    setShowPeerList,
 
     isNodeFiveMinutesAgoBehind,
   };

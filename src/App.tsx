@@ -7,6 +7,7 @@ import Update from './pages/proxy/Update';
 import Settings from './pages/proxy/Settings';
 import Delete from './pages/proxy/Delete';
 import Root from './pages/proxy/Root';
+import SettingsPeerList from './pages/proxy/SettingsPeerList';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/update" element={<Update />} />
           <Route path="/delete/:id" element={<Delete />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/peer-list" element={<SettingsPeerList />} />
           <Route path="/" element={<Root />} />
         </Routes>
       </AppProvider>

@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.11.0] - 10 August 23
+
+- The user will be presented with a no peers modal if `haspeers` is false
+
 ##### [0.10.2] - 09 August 23
 
 - Setting a custom wallpaper functionality has been updated
