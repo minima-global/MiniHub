@@ -43,20 +43,16 @@ export function HasNoPeers() {
                             </g>
                           </svg>
                         </div>
-                        <h1 className="mt-1 text-2xl text-center mb-6">Peers required</h1>
-                        <p className="text-center mb-4 line-height">You need least one peer node to join Minima.</p>
-                        <p className="text-center mb-4 line-height">
-                          There are no longer central servers that control the gateway to the Minima network.
-                        </p>
+                        <h1 className="mt-1 text-2xl text-center mb-6">No peers found</h1>
+                        <p className="text-center mb-4 line-height">There are no longer any central servers that control access to the Minima network. </p>
                         <p className="text-center mb-10 line-height">
-                          Please go to <span className="font-extrabold">Settings <strong>&gt;</strong> Peer list</span> to enter a list of peers provided to you
-                          by another node runner.
+                          To join the network, upload a list of peers provided by an active node runner.
                         </p>
                         <button
                           onClick={goToPeers}
                           className="w-full px-4 py-3.5 rounded font-bold text-black core-grey-5 mb-4 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                          Go to Peers list
+                          Upload peers
                         </button>
                         <button
                           type="button"
