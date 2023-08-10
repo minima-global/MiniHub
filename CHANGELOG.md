@@ -2,7 +2,7 @@
 
 ##### [0.11.0] - 10 August 23
 
-- The user will be presented with a no peers modal if `haspeers` is false
+- The user will be presented with a no peers modal if `haspeers` is false on app load
 
 ##### [0.10.2] - 09 August 23
 
