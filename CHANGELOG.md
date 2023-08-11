@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.11.1] - 11 August 23
+
+- Fixes an issue with UI overlap when the peers list extends beyond the viewports height
+
 ##### [0.11.0] - 10 August 23
 
 - The user will be presented with a no peers modal if `haspeers` is false on app load

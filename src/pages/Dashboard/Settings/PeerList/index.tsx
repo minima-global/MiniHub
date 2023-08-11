@@ -112,7 +112,7 @@ export function PeerList({ display, dismiss }: PeerListProps) {
         </div>
       </Modal>
       <div className="flex flex-col h-full w-full bg-black">
-        <div className="pt-20 px-4 lg:px-0 w-full pb-6 flex flex-col">
+        <div className="pt-20 px-4 lg:px-0 w-full pb-6 flex flex-col bg-black">
           <div className="max-w-xl mx-auto">
             <div onClick={dismiss} className="sticky top-0 cursor-pointer flex items-center">
               <svg
