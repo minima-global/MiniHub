@@ -111,7 +111,7 @@ export function Install() {
                           <form onSubmit={handleOnSubmit} className="text-center">
                             <h1 className="mt-1 text-2xl text-center mb-6">Add a MiniDapp</h1>
                             <p className="text-center mb-10 line-height">
-                              Only install MiniDapps from trusted sources. For security, all MiniDapps will be installed with Read access only. This can be changed later from the home page.
+                              Only install MiniDapps from trusted sources. MiniDapps will be installed with Read access by default, this can be changed from the Home screen. To update the MiniHub, please go to Settings instead.
                             </p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">

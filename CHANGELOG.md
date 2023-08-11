@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.11.2] - 11 August 23
+
+- Minor text changes
+
 ##### [0.11.1] - 11 August 23
 
 - Fixes an issue with UI overlap when the peers list extends beyond the viewports height
