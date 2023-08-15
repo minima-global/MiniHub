@@ -1,8 +1,8 @@
 {
   "name": "minihub",
   "private": true,
-  "description": "Alpha version of the new MiniHub unified experience",
-  "version": "0.11.2",
+  "description": "MinimaOS home screen",
+  "version": "0.11.3",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.11.3] - 15 August 23
+
+- Minor text changes
+
 ##### [0.11.2] - 11 August 23
 
 - Minor text changes
