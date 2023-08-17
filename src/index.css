@@ -539,5 +539,5 @@ body.theme-light .search-container input {
   height: 23px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('./assets/check_small.svg');
+  background-image: url('./check_small.svg');
 }
