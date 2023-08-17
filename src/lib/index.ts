@@ -178,8 +178,8 @@ export function promisfyMds(command: string): any {
   });
 }
 
-export function quit() {
-  return promisfyMds('quit compact:true');
+export function quit(compact) {
+  return promisfyMds(`quit compact:${compact ? 'true' : 'false'}`);
 }
 
 export function networkRecalculate() {

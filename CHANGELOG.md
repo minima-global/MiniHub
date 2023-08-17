@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.12.0] - 17 August 23
+
+- Compacting the database when shutting down is now optional
+
 ##### [0.11.3] - 15 August 23
 
 - Minor text changes

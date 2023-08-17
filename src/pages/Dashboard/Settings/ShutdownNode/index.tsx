@@ -13,20 +13,25 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
   const { setHasShutdown } = useContext(appContext);
   const [shutdown, setShutdown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [compactDatabase, setCompactDatabase] = useState(false);
 
   const confirm = async () => {
     if (window.navigator.userAgent.includes('Minima Browser')) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return Android.shutdownMinima();
+      return Android.shutdownMinima(compactDatabase);
     } else {
       setIsLoading(true);
-      await quit();
+      await quit(compactDatabase);
       setIsLoading(false);
       setShutdown(true);
       setHasShutdown(true);
     }
   };
+
+  const toggleCompactDatabase = () => {
+    setCompactDatabase(prevState => !prevState);
+  }
 
   if (shutdown) {
     return (
@@ -46,7 +51,6 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
       display={display}
       closeAtBottom={dismiss}
       hideCloseAtBottomDesktop
-      bottomText="Your node's databases will be compacted and will stop receiving blocks whilst offline."
     >
       <div
         className={`absolute z-20 top-0 left-0 w-full h-full core-black-contrast-2 text-white ${
@@ -61,7 +65,13 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
       <div className="mb-1">
         <div className="text-center">
           <h5 className="text-2xl mb-6">Shutdown node</h5>
-          <p className="mb-10">If your node does not restart automatically, please restart it to resync to the chain</p>
+          <p className="mb-8">If your node does not restart automatically, please restart it to resync to the chain</p>
+          <div className="mb-10 flex item-center justify-center">
+            <label className="flex items-center">
+              <input type="checkbox" className="checkbox mr-4" onClick={toggleCompactDatabase} />
+              Compact database
+            </label>
+          </div>
           <Button onClick={confirm}>Shutdown node</Button>
           <div className="hidden lg:block mt-4">
             <Button onClick={dismiss} variant="secondary">

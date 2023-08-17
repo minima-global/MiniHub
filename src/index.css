@@ -504,3 +504,40 @@ body.theme-light .search-container input {
 .text-hidden {
   color: transparent !important;
 }
+
+.checkbox {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  min-width: 25px;
+  background: #D3D3D8;
+  border-radius: 4px;
+  position: relative;
+  transition: 0.2s all;
+  cursor: pointer;
+  border: 1px solid #00000026;
+}
+
+.checkbox ~ label {
+  cursor: pointer;
+}
+
+.checkbox:active {
+  transform: scale(0.8);
+}
+
+.checkbox:checked {
+  background-color: #17191c;
+}
+
+.checkbox:checked:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 23px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('./assets/check_small.svg');
+}
