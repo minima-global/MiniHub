@@ -2,7 +2,7 @@
 
 ##### [0.12.2] - 21 August 23
 
-- MDS Fail event will now show a shutdown button on Internal browser
+- The MDS Fail event will now show the shutdown node button on internal browser
 
 ##### [0.12.1] - 18 August 23
 
