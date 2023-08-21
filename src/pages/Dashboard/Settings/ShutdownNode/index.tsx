@@ -73,7 +73,7 @@ export function ShutdownNode({ display, dismiss }: ShutdownProps) {
             </label>
           </div>
           <Button onClick={confirm}>Shutdown node</Button>
-          <div className="hidden lg:block mt-4">
+          <div className="block mt-4">
             <Button onClick={dismiss} variant="secondary">
               Cancel
             </Button>
