@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.12.2] - 21 August 23
+
+- MDS Fail will now show a shutdown button on Internal browser
+
 ##### [0.12.1] - 18 August 23
 
 - Fixes an issue on windows when setting a wallpaper over an existing custom wallpaper

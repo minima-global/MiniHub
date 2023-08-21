@@ -1,9 +1,10 @@
 import { PropsWithChildren, useContext } from 'react';
 import { useTransition, animated } from '@react-spring/web';
+import Button from '../UI/Button';
 import { appContext } from '../../AppContext';
 import { modalAnimation } from '../../animations';
-import Button from '../UI/Button';
 import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
+import { IS_MINIMA_BROWSER } from '../../env';
 
 export const MDSFail: React.FC<PropsWithChildren> = () => {
   const { mdsFail, hasUpdated } = useContext(appContext);
@@ -16,6 +17,12 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
     // @ts-ignore
     window.location.assign(MDS.filehost);
   };
+
+  const shutdownNode = () => {
+    if (IS_MINIMA_BROWSER) {
+      return Android.shutdownMinima();
+    }
+  }
 
   if (hasUpdated) {
     return <div />;
@@ -49,9 +56,14 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                         <Button onClick={goToLoginPage} variant="secondary">Login</Button>
                       )}
                       {isMinimaBrowser && (
-                        <Button onClick={openTitleBar} variant="secondary">
-                          Open title bar
-                        </Button>
+                        <>
+                          <Button onClick={openTitleBar} variant="secondary">
+                            Open title bar
+                          </Button>
+                          <Button onClick={shutdownNode} variant="secondary">
+                            Shutdown
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>
