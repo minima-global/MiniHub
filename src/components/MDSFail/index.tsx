@@ -18,9 +18,9 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
     window.location.assign(MDS.filehost);
   };
 
-  const shutdownNode = () => {
+  const closeWindow = () => {
     if (IS_MINIMA_BROWSER) {
-      return Android.shutdownMinima();
+      return Android.closeWindow();
     }
   }
 
@@ -60,8 +60,8 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                           <Button onClick={openTitleBar} variant="secondary">
                             Open title bar
                           </Button>
-                          <Button onClick={shutdownNode} variant="secondary">
-                            Shutdown node
+                          <Button onClick={closeWindow} variant="secondary">
+                            Close window
                           </Button>
                         </>
                       )}

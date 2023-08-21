@@ -1,5 +1,10 @@
 # Changelog
 
+##### [0.12.4] - 21 August 23
+
+- Updating MiniHUB now closes the window instead of shutting down
+- If connection has failed in internal browser, there will be a button to close the window to allow the user to re-open MinimaOS with a new session id
+
 ##### [0.12.3] - 21 August 23
 
 - Minor text changes

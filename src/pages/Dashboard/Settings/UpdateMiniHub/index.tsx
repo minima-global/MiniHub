@@ -68,12 +68,16 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
         // ensure MDS fail message does not appear
         setHasUpdated(true);
 
+        /**
+         * If user updates MiniHUB in internal browser, we want to close
+         * the window.
+         */
         if (window.navigator.userAgent.includes('Minima Browser')) {
           setShutdown(true);
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          return Android.shutdownMinima();
+          return Android.closeWindow();
         }
 
         setSuccess(true);
