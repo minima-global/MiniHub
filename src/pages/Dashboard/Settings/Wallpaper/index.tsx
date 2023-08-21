@@ -4,7 +4,7 @@ import { appContext } from '../../../../AppContext';
 import SlideScreen from '../../../../components/UI/SlideScreen';
 import Button from '../../../../components/UI/Button';
 import * as React from 'react';
-import { copyToWeb, moveFile, set, upload } from '../../../../lib';
+import { copyToWeb, deleteFile, moveFile, set, upload } from '../../../../lib';
 
 const bgOptions = ['thumbnail-minima', 'thumbnail-feather', 'thumbnail-liquid'];
 const gradientOptions = [
@@ -43,11 +43,14 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
      */
     if (file) {
       await upload(file);
+
       const ext = /(?:\.([^.]+))?$/g.exec(name)![1];
       const fileName = 'custom_wallpaper.' + ext;
 
       // reset wallpaper
       document.body.style.backgroundImage = '';
+
+      await deleteFile(`/${fileName}`);
 
       // move file to root with new name
       await moveFile(`/fileupload/${file.name}`, `/${fileName}`);
