@@ -61,7 +61,7 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                             Open title bar
                           </Button>
                           <Button onClick={shutdownNode} variant="secondary">
-                            Shutdown
+                            Shutdown node
                           </Button>
                         </>
                       )}
