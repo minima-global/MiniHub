@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.12.1] - 18 August 23
+
+- Fixes an issue on windows when setting a wallpaper over an existing custom wallpaper
+
 ##### [0.12.0] - 17 August 23
 
 - Compacting the database when shutting down is now optional
