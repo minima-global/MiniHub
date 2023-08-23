@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
 import { appContext } from '../../../AppContext';
