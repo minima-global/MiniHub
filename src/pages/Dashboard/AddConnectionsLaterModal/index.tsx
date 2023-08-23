@@ -53,7 +53,7 @@ export function AddConnectionsLaterModal() {
                           onClick={dismiss}
                           className="w-full px-4 py-3.5 rounded font-bold text-white core-black-contrast-3 mb-1"
                         >
-                          Not now
+                          Close
                         </button>
                       </div>
                     </div>

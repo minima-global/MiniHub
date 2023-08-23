@@ -388,6 +388,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowAddConnectionsLater,
 
     isNodeFiveMinutesAgoBehind,
+
+    loaded: loaded.current,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

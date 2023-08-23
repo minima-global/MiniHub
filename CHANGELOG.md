@@ -1,5 +1,10 @@
 # Changelog
 
+##### [0.12.8] - 23 August 23
+
+- Fixed issue with continue to add connections later modal from popping up when user is wanting to add connections
+- Minor ui tweaks for adding / sharing connections
+
 ##### [0.12.6] - 23 August 23
 
 - Updated the copy on the peers section

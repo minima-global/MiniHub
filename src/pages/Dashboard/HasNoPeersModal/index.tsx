@@ -10,7 +10,7 @@ export function HasNoPeers() {
   const transition: any = useTransition(display, modalAnimation as any);
 
   const goToPeers = () => {
-    dismiss();
+    setShowHasNoPeers(false);
     navigate('/settings/add-connections');
   };
 

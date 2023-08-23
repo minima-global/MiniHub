@@ -56,7 +56,6 @@ export function ShareConnections({ display, dismiss }: ShareConnectionsProps) {
               Share connections
             </div>
             <div className="flex flex-col gap-5">
-              <h5 className="text-xl font-bold">Instructions</h5>
               <p>Help a new Minima user to join the network:</p>
               <ol className="list-decimal ml-4 text-gray-400 mb-2">
                 {IS_MINIMA_BROWSER && <li>Copy your connections or press the 'Share connections' button</li>}

@@ -195,7 +195,7 @@ export function status() {
 }
 
 export function peers() {
-  return promisfyMds('peers max:10');
+  return promisfyMds('peers max:5');
 }
 
 export function addPeers(peerList: string) {

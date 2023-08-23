@@ -72,7 +72,6 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               Add connections
             </div>
             <div className="flex flex-col gap-5">
-              <h5 className="text-xl font-bold">Instructions</h5>
               <p>Ask someone on the network to:</p>
               <ol className="list-decimal ml-4 text-gray-400">
                 <li>Open Settings & select 'Share connections'</li>
