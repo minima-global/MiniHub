@@ -6,7 +6,7 @@ import { appContext } from '../../../AppContext';
 
 export function HasNoPeers() {
   const navigate = useNavigate();
-  const { showHasNoPeers: display, setShowHasNoPeers } = useContext(appContext);
+  const { showHasNoPeers: display, setShowHasNoPeers, setShowAddConnectionsLater } = useContext(appContext);
   const transition: any = useTransition(display, modalAnimation as any);
 
   const goToPeers = () => {
@@ -16,6 +16,7 @@ export function HasNoPeers() {
 
   const dismiss = () => {
     setShowHasNoPeers(false);
+    setShowAddConnectionsLater(true);
   };
 
   return (
@@ -55,7 +56,7 @@ export function HasNoPeers() {
                           onClick={dismiss}
                           className="w-full px-4 py-3.5 rounded font-bold text-white core-black-contrast-3 mb-1"
                         >
-                          Not now
+                          I'll do it later
                         </button>
                       </div>
                     </div>

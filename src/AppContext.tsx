@@ -61,8 +61,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // warning blocks
   const [showWarning, setShowWarning] = useState<number | false>(false);
 
-  // show have peers false modal
+  // show user does not have any peers modal
   const [showHasNoPeers, setShowHasNoPeers] = useState<boolean>(false);
+
+  // show user does not want to add peers at this moment in time modal
+  const [showAddConnectionsLater, setShowAddConnectionsLater] = useState<boolean>(true);
 
   // show peers list section in settings, this has been lifted because of the modal that can
   // appear if the user does not have any peers when booting up the minihub
@@ -380,6 +383,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showAddConnections,
     setShowAddConnections,
+
+    showAddConnectionsLater,
+    setShowAddConnectionsLater,
 
     isNodeFiveMinutesAgoBehind,
   };
