@@ -29,7 +29,7 @@ export function Settings() {
   useEffect(() => {
     if (display && loaded) {
       peers().then((response) => {
-        if (response['peerslist'] !== '' || response['peers-list'] === '') {
+        if (response['peerslist'] && response['peerslist'] !== '') {
           setShowShareConnectionsNav(true);
         }
       });
