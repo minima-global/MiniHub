@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.12.9] - 23 August 23
+
+- Added monkey patch for p2p disabled nodes as it still shows the 'Share connections' nav button
+
 ##### [0.12.8] - 23 August 23
 
 - Fixed issue with continue to add connections later modal from popping up when user is wanting to add connections
