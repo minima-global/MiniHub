@@ -107,7 +107,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
             <p className="mb-4">You are connecting to the network!</p>
             <p className="mb-9">Please wait a few minutes before sending transactions.</p>
           </div>
-          <Button onClick={dismissImportSuccess}>Close</Button>
+          <Button onClick={dismissImportSuccess}>Continue</Button>
         </div>
       </FixedModal>
       <div className="flex flex-col h-full w-full bg-black">
@@ -137,7 +137,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               <p>Ask someone on the network to:</p>
               <ol className="list-decimal ml-4 text-gray-400">
                 <li>Open Settings & select 'Share connections'</li>
-                <li>Copy the connections or press the 'Share connections' button</li>
+                <li>Copy their connections or press the 'Share connections' button</li>
               </ol>
               <p className="mb-2">Once they have shared them, paste the connections below.</p>
               <div className="block mb-8">

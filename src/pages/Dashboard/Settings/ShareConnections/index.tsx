@@ -60,7 +60,7 @@ export function ShareConnections({ display, dismiss }: ShareConnectionsProps) {
               <p>Help a new Minima user to join the network:</p>
               <ol className="list-decimal ml-4 text-gray-400 mb-2">
                 {IS_MINIMA_BROWSER && <li>Copy your connections or press the 'Share connections' button</li>}
-                {!IS_MINIMA_BROWSER && <li>Copy the connections below</li>}
+                {!IS_MINIMA_BROWSER && <li>Copy your connections below </li>}
                 <li>Share your connections with a new user</li>
               </ol>
               {peersInfo && (
