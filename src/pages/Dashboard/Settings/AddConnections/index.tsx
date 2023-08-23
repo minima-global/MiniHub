@@ -1,18 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { addPeers, peers } from '../../../../lib';
-import Block from '../../../../components/UI/Block';
-import Button from '../../../../components/UI/Button';
-import SlideScreen from '../../../../components/UI/SlideScreen';
 import { appContext } from '../../../../AppContext';
-import Modal from '../../../../components/UI/Modal';
-import { IS_MINIMA_BROWSER } from '../../../../env';
+import Button from '../../../../components/UI/Button';
+import FixedModal from '../../../../components/UI/FixedModal';
+import SlideScreen from '../../../../components/UI/SlideScreen';
 
-type PeerListProps = {
+type AddConnectionsProps = {
   display: boolean;
   dismiss: () => void;
 };
 
-export function PeerList({ display, dismiss }: PeerListProps) {
+export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const { setBadgeNotification } = useContext(appContext);
   const [peersInfo, setPeersInfo] = useState<string | null>(null);
   const [inputPeerList, setInputPeerList] = useState('');
@@ -102,15 +100,16 @@ export function PeerList({ display, dismiss }: PeerListProps) {
 
   return (
     <SlideScreen display={display}>
-      <Modal display={displayImportSuccess} frosted={true} className="max-w-md">
+      <FixedModal display={displayImportSuccess} frosted={true} className="max-w-md">
         <div className="text-center">
           <div>
-            <h5 className="text-2xl -mt-0.5 mx-auto mb-4">Success</h5>
-            <p className="mb-9">You have successfully imported your peers</p>
+            <h5 className="text-2xl -mt-0.5 mx-auto mb-5">Connections added</h5>
+            <p className="mb-4">You are connecting to the network!</p>
+            <p className="mb-9">Please wait a few minutes before sending transactions.</p>
           </div>
           <Button onClick={dismissImportSuccess}>Close</Button>
         </div>
-      </Modal>
+      </FixedModal>
       <div className="flex flex-col h-full w-full bg-black">
         <div className="pt-20 px-4 lg:px-0 w-full pb-6 flex flex-col bg-black">
           <div className="max-w-xl mx-auto">
@@ -130,56 +129,30 @@ export function PeerList({ display, dismiss }: PeerListProps) {
               </svg>
               Settings
             </div>
-            <div className="mt-6 text-2xl mb-8">Peer list</div>
+            <div className="text-2xl mt-6 mb-6">
+              Add connections
+            </div>
             <div className="flex flex-col gap-5">
-              <div>
-                <p className="text-core-grey mb-4">
-                  Your peers are a list of other Minima nodes that your node can connect to.
-                </p>
-                <p className="mb-2">
-                  Every node must have at least one peer when joining the network to receive the initial blockchain
-                  download.
-                </p>
-              </div>
-              {peersInfo && (
-                <div>
-                  <Block title="Peers" value={peersInfo} copy>
-                    <div className="break-all">
-                      <>{peersInfo}</>
-                    </div>
-                  </Block>
-                  <div className="mt-5">
-                    {!IS_MINIMA_BROWSER && (
-                      <Button variant="secondary" onClick={downloadPeers}>Export</Button>
-                    )}
-                    {IS_MINIMA_BROWSER && (
-                      <Button variant="secondary" onClick={sharePeers}>Share</Button>
-                    )}
-                  </div>
-                </div>
-              )}
-              <p className="text-core-grey-80 text-sm">
-                Share your list of peers with a new node runner, this will enable them to join the network and receive
-                the blockchain.
-              </p>
-              <div className="block">
+              <h5 className="text-xl font-bold">Instructions</h5>
+              <p>Ask someone on the network to:</p>
+              <ol className="list-decimal ml-4 text-gray-400">
+                <li>Open Settings & select 'Share connections'</li>
+                <li>Copy the connections or press the 'Share connections' button</li>
+              </ol>
+              <p className="mb-2">Once they have shared them, paste the connections below.</p>
+              <div className="block mb-8">
                 <div className="core-black-contrast-2 p-4 rounded">
-                  <div className="text-lg -mt-0.5 mb-4">Import peers</div>
-                  <div className="mb-6 text-core-grey-80">
-                    Import a list of peers that another node runner has shared with you.
-                  </div>
                   <input
                     value={inputPeerList}
                     onChange={handleOnChange}
                     type="text"
                     className="core-black-contrast w-full p-3 mb-5 outline-none placeholder-gray-500"
-                    placeholder="Peer list"
+                    placeholder="Enter connections"
                   />
-                  <Button onClick={importPeers} disabled={inputPeerList.length === 0 || importing}>Import peers</Button>
+                  <Button onClick={importPeers} disabled={inputPeerList.length === 0 || importing}>
+                    Add connections
+                  </Button>
                 </div>
-                <p className="text-core-grey-80 text-sm mt-4">
-                  This only needs to be done once when using Minima for the first time.
-                </p>
               </div>
             </div>
           </div>
@@ -189,4 +162,4 @@ export function PeerList({ display, dismiss }: PeerListProps) {
   );
 }
 
-export default PeerList;
+export default AddConnections;

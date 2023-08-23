@@ -93,10 +93,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div
-      className="app bg overflow-hidden xl:overflow-visible custom-scrollbar"
-      onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
-    >
+    <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
       <AppIsInReadMode />
       <InstallMiniDapp />
       <Settings />
@@ -108,7 +105,7 @@ function Dashboard() {
       <UpdateMiniDapp />
       <HasNoPeersModal />
 
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen" onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}>
         <StatusBar />
         <DashboardActionBar />
         <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>

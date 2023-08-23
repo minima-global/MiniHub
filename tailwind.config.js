@@ -26,6 +26,7 @@ export default {
       emerald: colors.emerald,
       indigo: colors.indigo,
       yellow: colors.yellow,
+      blue: colors.blue,
       'b': '#3f3cbb',
     },
     screens: {

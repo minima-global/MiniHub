@@ -66,7 +66,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show peers list section in settings, this has been lifted because of the modal that can
   // appear if the user does not have any peers when booting up the minihub
-  const [showPeerList, setShowPeerList] = useState(false);
+  const [showAddConnections, setShowAddConnections] = useState(false);
 
   const [appIsInWriteMode, setAppIsInWriteMode] = useState<boolean | null>(null);
   const [query, setQuery] = useState('');
@@ -378,8 +378,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showHasNoPeers,
     setShowHasNoPeers,
 
-    showPeerList,
-    setShowPeerList,
+    showAddConnections,
+    setShowAddConnections,
 
     isNodeFiveMinutesAgoBehind,
   };

@@ -1,5 +1,14 @@
 # Changelog
 
+##### [0.12.6] - 23 August 23
+
+- Updated the copy on the peers section
+- Separated the peers section to 'Add connections' and 'Share connections'
+
+##### [0.12.5] - 23 August 23
+
+- Fixes paste button in peers section
+
 ##### [0.12.4] - 21 August 23
 
 - Updating MiniHUB now closes the window instead of shutting down
