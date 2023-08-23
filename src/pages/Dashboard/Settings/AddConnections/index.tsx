@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { addPeers, peers } from '../../../../lib';
+import { useContext, useState } from 'react';
+import { addPeers } from '../../../../lib';
 import { appContext } from '../../../../AppContext';
 import Button from '../../../../components/UI/Button';
 import FixedModal from '../../../../components/UI/FixedModal';
@@ -12,22 +12,9 @@ type AddConnectionsProps = {
 
 export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const { setBadgeNotification } = useContext(appContext);
-  const [peersInfo, setPeersInfo] = useState<string | null>(null);
   const [inputPeerList, setInputPeerList] = useState('');
   const [importing, setImporting] = useState(false);
   const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
-
-  useEffect(() => {
-    if (display) {
-      peers().then((response) => {
-        if (response['peerslist']) {
-          const asString = JSON.stringify(response['peerslist']);
-          const cleanString = asString.replace(/^"/gm, '').replace(/"$/gm, '');
-          setPeersInfo(cleanString);
-        }
-      });
-    }
-  }, [display]);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputPeerList(evt.target.value);
@@ -49,54 +36,6 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const dismissImportSuccess = () => {
     setDisplayImportSuccess(false);
   }
-
-  const sharePeers = () => {
-    // remove wrapping quotes
-    const content = JSON.stringify(peersInfo).replace(/^"/gm, '').replace(/"$/gm, '');
-
-    Android.shareText(content);
-  };
-
-  const downloadPeers = () => {
-    const dateString = new Date().toISOString();
-    const timeString = new Date().toTimeString();
-    const date = dateString.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g)![0];
-    const month = date.split('-')[1];
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    const time = timeString.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/g)![0];
-    const actualMonth = monthNames[Number(month) - 1];
-    const fileName = `minima_peers_${date.split('-')[2]}${actualMonth}${date.split('-')[0]}_${time
-      .split(':')
-      .join('')}.txt`;
-
-    // remove wrapping quotes
-    const content = JSON.stringify(peersInfo).replace(/^"/gm, '').replace(/"$/gm, '');
-
-    const blob = new Blob([content]);
-    const url = (window as any).URL.createObjectURL(blob, { type: 'plain/text' });
-    const anchor = document.createElement('a');
-    anchor.style.display = 'none';
-    anchor.id = 'download';
-    anchor.setAttribute('href', url);
-    anchor.setAttribute('download', fileName);
-    document.body.appendChild(anchor);
-    document.getElementById('download')!.click();
-    (window as any).URL.revokeObjectURL(url);
-    anchor.remove();
-  };
 
   return (
     <SlideScreen display={display}>
