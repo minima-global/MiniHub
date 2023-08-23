@@ -65,7 +65,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showHasNoPeers, setShowHasNoPeers] = useState<boolean>(false);
 
   // show user does not want to add peers at this moment in time modal
-  const [showAddConnectionsLater, setShowAddConnectionsLater] = useState<boolean>(true);
+  const [showAddConnectionsLater, setShowAddConnectionsLater] = useState<boolean>(false);
 
   // show peers list section in settings, this has been lifted because of the modal that can
   // appear if the user does not have any peers when booting up the minihub
