@@ -4,6 +4,7 @@ import { appContext } from '../../../../AppContext';
 import Button from '../../../../components/UI/Button';
 import FixedModal from '../../../../components/UI/FixedModal';
 import SlideScreen from '../../../../components/UI/SlideScreen';
+import { useNavigate } from 'react-router-dom';
 
 type AddConnectionsProps = {
   display: boolean;
@@ -11,6 +12,7 @@ type AddConnectionsProps = {
 };
 
 export function AddConnections({ display, dismiss }: AddConnectionsProps) {
+  const navigate = useNavigate();
   const { setBadgeNotification } = useContext(appContext);
   const [inputPeerList, setInputPeerList] = useState('');
   const [importing, setImporting] = useState(false);
@@ -35,6 +37,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
 
   const dismissImportSuccess = () => {
     setDisplayImportSuccess(false);
+    navigate('/');
   }
 
   return (

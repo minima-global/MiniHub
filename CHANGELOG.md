@@ -1,5 +1,13 @@
 # Changelog
 
+##### [0.12.11] - 25 August 23
+
+- The user is navigated back to the home screen after adding a peer list
+
+##### [0.12.10] - 24 August 23
+
+- Additional fix to the monkey patch for p2p disabled nodes as it still shows the 'Share connections' nav button
+
 ##### [0.12.9] - 23 August 23
 
 - Added monkey patch for p2p disabled nodes as it still shows the 'Share connections' nav button
