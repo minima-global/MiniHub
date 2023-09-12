@@ -1,5 +1,10 @@
 # Changelog
 
+##### [0.13.1] - 12 September 23
+
+- Added time to block info in status bar
+- New mds.js
+
 ##### [0.12.11] - 25 August 23
 
 - The user is navigated back to the home screen after adding a peer list
