@@ -77,7 +77,7 @@ const TitleBar = () => {
                   <>
                     <div className="ml-0.5">Block</div>
                     <div className="ml-1">
-                      {blockInfo.blockHeight} @ {format(parseInt(blockInfo.timemilli), 'hh:mm a')}
+                      {blockInfo.blockHeight} @ {format(parseInt(blockInfo.timemilli), 'HH:mm')}
                     </div>
                   </>
                 )}
