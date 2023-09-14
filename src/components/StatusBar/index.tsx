@@ -4,6 +4,7 @@ import Status from './Status';
 import BlockInfo from './Block';
 import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 import { dAppLink } from '../../lib';
+import { format } from 'date-fns';
 
 const TitleBar = () => {
   const { openTitleBar } = useAndroidShowTitleBar();
@@ -75,7 +76,9 @@ const TitleBar = () => {
                 {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
                   <>
                     <div className="ml-0.5">Block</div>
-                    <div className="ml-1">{blockInfo.blockHeight}</div>
+                    <div className="ml-1">
+                      {blockInfo.blockHeight} @ {format(parseInt(blockInfo.timemilli), 'HH:mm')}
+                    </div>
                   </>
                 )}
                 <svg

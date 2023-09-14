@@ -17,6 +17,7 @@ const Status = () => {
   };
 
   const handleOnMouseLeave = () => {
+    // @ts-ignore
     timeout = setTimeout(() => {
       setHover(false);
     }, 1000);

@@ -23,6 +23,7 @@ import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
   const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
+  // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hasPrevious, setHasPrevious] = useState(false);
