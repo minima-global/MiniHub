@@ -10,7 +10,7 @@ import * as _ from 'lodash';
  */
 const useAppList = () => {
   const { appList, query } = useContext(appContext);
-  const [page, setPage] = useState(1);
+
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);
   const maxCount = maxColumn * maxRows;
@@ -20,14 +20,81 @@ const useAppList = () => {
   const [folderMaxRows, setFolderMaxRows] = useState(3);
   const maxFolderCount = folderMaxColumns * folderMaxRows;
 
+  // display
+  const [displayMaxColumns, setDisplayMaxColumns] = useState(4);
+  const [displayMaxRows, setDisplayMaxRows] = useState(3);
+  const maxDisplay = displayMaxColumns * displayMaxRows;
+
   // set max per page based on width and height of screen
   useEffect(() => {
     const handler = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
 
+      /**
+       * Folder outer display
+       */
+      if (width > 769) {
+        setDisplayMaxRows(3);
+        setDisplayMaxColumns(4);
+      }
+      if (width < 769) {
+        setDisplayMaxRows(2);
+        setDisplayMaxColumns(2);
+      }
+
+      if (height > 590) {
+        setFolderMaxColumns(4);
+        setFolderMaxRows(3);
+      }
+
+      if (height < 590) {
+        setFolderMaxColumns(4);
+        setFolderMaxRows(2);
+      } else {
+        setFolderMaxColumns(4);
+        setFolderMaxRows(3);
+      }
+
+      if (height < 453) {
+        setFolderMaxColumns(2);
+        setFolderMaxRows(2);
+      }
+
+      if (width < 400) {
+        if (height > 628) {
+          setFolderMaxColumns(4);
+          setFolderMaxRows(3);
+        } else {
+          setFolderMaxColumns(4);
+          setFolderMaxRows(2);
+        }
+        if (height < 545) {
+          setFolderMaxColumns(2);
+          setFolderMaxRows(2);
+        }
+      }
+
       // desktop
       if (width > 1024) {
+        if (height > 700) {
+          setFolderMaxColumns(4);
+          setFolderMaxRows(3);
+        }
+
+        if (height < 700) {
+          setFolderMaxColumns(4);
+          setFolderMaxRows(2);
+        } else {
+          setFolderMaxColumns(4);
+          setFolderMaxRows(3);
+        }
+
+        if (height < 558) {
+          setFolderMaxColumns(2);
+          setFolderMaxRows(2);
+        }
+
         if (height > 960) {
           setMaxRows(5);
         } else if (height > 830) {
@@ -152,7 +219,15 @@ const useAppList = () => {
      *  {"Finance" -> [{uid, conf, sessionid}]}
      * ]
      */
-  }, [appList]);
+  }, [appList, maxFolderCount]);
+
+  const chunkFolderViewOnly: any = useMemo(() => {
+    if (!appList) {
+      return [];
+    }
+
+    return _.chunk(appList, maxFolderCount);
+  }, [appList, maxDisplay]);
 
   const chunkedAppList = useMemo(() => {
     if (!categorizedAppList) {
@@ -168,16 +243,17 @@ const useAppList = () => {
   }, [categorizedAppList, query, maxRows, maxColumn]);
 
   const entireAppList = chunkedAppList;
-  const currentAppListPage = chunkedAppList && chunkedAppList[page - 1];
   const numberOfPages = chunkedAppList && chunkedAppList.length;
 
   return {
-    setPage,
     maxCount,
+    maxDisplay,
+    maxFolderCount,
     entireAppList,
     numberOfPages,
-    currentPage: page,
-    currentAppListPage,
+
+    chunkFolderViewOnly,
+
     hasMoreThanOnePage: numberOfPages > 1,
   };
 };

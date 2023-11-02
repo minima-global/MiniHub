@@ -75,6 +75,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState('');
   const [rightMenu, setRightMenu] = useState<any>(false);
+  const [folderMenu, setFolderMenu] = useState(false);
   const [badgeNotification, setBadgeNotification] = useState<string | null>(null);
   const [modal, setModal] = useState<{
     display: boolean;
@@ -334,6 +335,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     deleteApp,
     setAppToReadMode,
     setAppToWriteMode,
+
+    folderMenu,
+    setFolderMenu,
 
     showDeleteApp,
     setShowDeleteApp,

@@ -6,19 +6,19 @@ import { appContext } from '../../AppContext';
 
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
-import useFolders from '../../hooks/useFolders';
+import useAppList from '../../hooks/useAppList';
 
 const Page = ({ data }: any) => {
   return data.map((app) => <App data={app} />);
 };
 
 const AppFolder = ({ title, data }: any) => {
+  const { maxDisplay, maxFolderCount, chunkFolderViewOnly } = useAppList();
   const [scale, setScale] = useState(false);
   const { rightMenu } = useContext(appContext);
-  const { maxDisplay } = useFolders();
 
   const numberOfPages = data && data[0].length;
-  const empty = maxDisplay - numberOfPages;
+  const empty = maxFolderCount - numberOfPages;
   const emptySlots = empty > 0 ? [...Array(empty).keys()] : [];
 
   //@ts-ignore
@@ -96,20 +96,21 @@ const AppFolder = ({ title, data }: any) => {
   };
   return (
     <>
-      <div
-        onClick={dismiss}
-        className={`z-20 w-screen h-screen backdrop-blur-sm top-0 left-0 ${scale ? 'fixed' : 'hidden'}`}
-      />
-
       {scale &&
         createPortal(
-          <div className="grid grid-cols-1 grid-rows-[112px_1fr] absolute left-0 right-0 bottom-0 top-0">
+          <div className="grid grid-cols-1 grid-rows-[112px_1fr] absolute left-0 right-0 bottom-0 top-0 overflow-hidden">
             <header />
             <main>
-              <div className="grid grid-cols-[1fr_minmax(0,560px)_1fr] grid-rows-1">
+              <div
+                onClick={dismiss}
+                className={`z-30 w-screen h-screen backdrop-blur-sm top-0 left-0 right-0 bottom-0 ${
+                  scale ? 'fixed' : 'hidden'
+                }`}
+              />
+              <div className="grid grid-cols-[1fr_minmax(0,560px)_1fr] grid-rows-1 h-full">
                 <div />
 
-                <div className="mx-2 my-4 bg-white bg-opacity-40 p-4 rounded-lg self-center z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max">
+                <div className="mx-2 my-4 bg-white bg-opacity-40 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max">
                   <h1 className="font-semibold text-2xl text-center text-white mb-4">{title}</h1>
                   <div
                     className={`embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2 ${
@@ -185,14 +186,18 @@ const AppFolder = ({ title, data }: any) => {
           document.body
         )}
 
-      <div onClick={() => setScale(true)}>
+      <div
+        onClick={() => {
+          setScale(true);
+        }}
+      >
         <div className="app-grid__icon">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
               className={`hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3 gap-1`}
             >
-              {data &&
-                data[0]
+              {chunkFolderViewOnly &&
+                chunkFolderViewOnly[0]
                   .filter((_, index) => index < maxDisplay)
                   .map((app) => (
                     <li className="flex justify-center items-center">

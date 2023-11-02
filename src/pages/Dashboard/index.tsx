@@ -21,7 +21,7 @@ import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 
 function Dashboard() {
-  const { setRightMenu } = useContext(appContext);
+  const { setRightMenu, folderMenu } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
@@ -31,13 +31,12 @@ function Dashboard() {
   const isDev = import.meta.env.MODE === 'development';
 
   const pages = maxCount - entireAppList.length;
-  const numberOfPages = [...Array(pages).keys()];
   /**
    * Navigate to the next page
    * @type {() => void}
    */
   const next = useCallback(() => {
-    emblaApi?.scrollTo(selectedIndex + 1);
+    if (!folderMenu) emblaApi?.scrollTo(selectedIndex + 1);
   }, [emblaApi, selectedIndex]);
 
   /**
@@ -95,8 +94,6 @@ function Dashboard() {
       Android.disableDefaultContextMenu();
     }
   }, []);
-
-  console.log('entireAppList', entireAppList);
 
   return (
     <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
