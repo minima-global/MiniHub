@@ -17,9 +17,9 @@ const AppFolder = ({ title, data }: any) => {
   const { rightMenu } = useContext(appContext);
   const { maxDisplay } = useFolders();
 
-  const numberOfPages = data && data.length;
-  const empty = 12 - data.length;
-  const emptySlots = [...Array(empty).keys()];
+  const numberOfPages = data && data[0].length;
+  const empty = maxDisplay - numberOfPages;
+  const emptySlots = empty > 0 ? [...Array(empty).keys()] : [];
 
   //@ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: data.length > 1 }, [WheelGesturesPlugin()]);
@@ -207,6 +207,8 @@ const AppFolder = ({ title, data }: any) => {
                       />
                     </li>
                   ))}
+
+              {!!empty && emptySlots.map((k) => <div key={`empty_${k}`} className="opacity-0" />)}
             </ul>
 
             <h1 className="appLabel">{title}</h1>
