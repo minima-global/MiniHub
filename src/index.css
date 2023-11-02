@@ -366,7 +366,14 @@ body.theme-light .search-container input {
   color: #4f4f4f;
   background-color: white !important;
 }
-
+.folder_icon {
+  width: 16px;
+  height: 16px;
+}
+.folder {
+  width: 46px;
+  height: 46px;
+}
 .icon {
   width: 46px;
   height: 46px;
@@ -384,13 +391,17 @@ body.theme-light .search-container input {
   height: 96px;
 }
 @media (min-width: 390px) {
-  .icon {
+  .icon, .folder {
     width: 56px;
     height: 56px;
   }
+  .folder_icon {
+    width: 16px;
+    height: 16px;
+  }
 }
 @media (min-width: 768px) {
-  .icon {
+  .icon, .folder {
     width: 80px;
     height: 80px;
   }

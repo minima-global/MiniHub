@@ -22,7 +22,7 @@ import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 
 function Dashboard() {
   const { setRightMenu } = useContext(appContext);
-  const { entireAppList, maxCount, hasMoreThanOnePage } = useAppList();
+  const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -30,6 +30,8 @@ function Dashboard() {
   const [hasNext, setHasNext] = useState(false);
   const isDev = import.meta.env.MODE === 'development';
 
+  const pages = maxCount - entireAppList.length;
+  const numberOfPages = [...Array(pages).keys()];
   /**
    * Navigate to the next page
    * @type {() => void}
@@ -94,6 +96,8 @@ function Dashboard() {
     }
   }, []);
 
+  console.log('entireAppList', entireAppList);
+
   return (
     <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
       <AppIsInReadMode />
@@ -141,6 +145,7 @@ function Dashboard() {
                 </svg>
               </div>
             </div>
+
             {entireAppList &&
               entireAppList.map((_page, index) => (
                 <div key={`page_${index}`} onClick={() => emblaApi?.scrollTo(index)} className="cursor-pointer p-1.5">

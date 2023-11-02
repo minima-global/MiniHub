@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.14.0] - 02 November 23
+
+- Added v1 Folders
+
 ##### [0.13.1] - 12 September 23
 
 - Added time to block info in status bar
