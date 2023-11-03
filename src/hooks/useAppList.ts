@@ -16,7 +16,7 @@ const useAppList = () => {
   const maxCount = maxColumn * maxRows;
 
   // chunkFolders
-  const [folderMaxColumns, setFolderMaxColumns] = useState(4);
+  const [folderMaxColumns, setFolderMaxColumns] = useState(3);
   const [folderMaxRows, setFolderMaxRows] = useState(3);
   const maxFolderCount = folderMaxColumns * folderMaxRows;
 
@@ -36,7 +36,7 @@ const useAppList = () => {
        */
       if (width > 769) {
         setDisplayMaxRows(3);
-        setDisplayMaxColumns(4);
+        setDisplayMaxColumns(3);
       }
       if (width < 769) {
         setDisplayMaxRows(2);
@@ -170,10 +170,18 @@ const useAppList = () => {
      * category should exist in the new MiniDapps
      * so we can remove this block after
      */
+    let i = 0;
     for (const _app of appList) {
       if (!_app.uid.includes('system_01')) {
-        _app.conf.category = 'Finance';
+        if (i < 5) {
+          _app.conf.category = 'Finance';
+        } else if (i < 10) {
+          _app.conf.category = 'Sports';
+        } else {
+          _app.conf.category = 'Utiltiies';
+        }
       }
+      i++;
     }
 
     const categoryMap = new Map();
@@ -253,6 +261,7 @@ const useAppList = () => {
     numberOfPages,
 
     chunkFolderViewOnly,
+    appListWithCategories: appList,
 
     hasMoreThanOnePage: numberOfPages > 1,
   };

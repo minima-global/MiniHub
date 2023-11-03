@@ -19,8 +19,26 @@ import MDSFail from '../../components/MDSFail';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
+import Joyride from 'react-joyride';
 
 function Dashboard() {
+  const [onboard, setOnboard] = useState([
+    {
+      title: 'Dashboard',
+      target: '.dashboard',
+      content:
+        'From here you can access all your minidapps.  Right click/ Hold down on one to learn more, change its permissions, update or delete it.',
+    },
+    {
+      target: '.my-first-step',
+      content: 'This is my awesome feature!',
+    },
+    {
+      target: '.my-other-step',
+      content: 'This another awesome feature!',
+    },
+  ]);
+
   const { setRightMenu, folderMenu } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
@@ -96,75 +114,85 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
-      <AppIsInReadMode />
-      <InstallMiniDapp />
-      <Settings />
-      <Confirmation />
-      <DeleteMiniDapp />
-      <MobileRightMenu />
-      <Utilities />
-      <MDSFail />
-      <UpdateMiniDapp />
-      <HasNoPeersModal />
-      <AddConnectionsLaterModal />
+    <>
+      {/* <Joyride steps={onboard} continuous={true} showSkipButton={true} /> */}
 
-      <div className="flex flex-col h-screen" onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}>
-        <StatusBar />
-        <DashboardActionBar />
-        <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
-          <div className="embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
-            <div className="flex items-start h-full">
-              {entireAppList.map((appList, index) => (
+      <div className="dashboard app bg overflow-hidden xl:overflow-visible custom-scrollbar">
+        <AppIsInReadMode />
+        <InstallMiniDapp />
+        <Settings />
+        <Confirmation />
+        <DeleteMiniDapp />
+        <MobileRightMenu />
+        <Utilities />
+        <MDSFail />
+        <UpdateMiniDapp />
+        <HasNoPeersModal />
+        <AddConnectionsLaterModal />
+
+        <div className="flex flex-col h-screen" onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}>
+          <StatusBar />
+          <DashboardActionBar />
+          <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
+            <div className="embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
+              <div className="flex items-start h-full">
+                {entireAppList.map((appList, index) => (
+                  <div
+                    key={`appList_${index}`}
+                    className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6"
+                  >
+                    <AppList data={appList} maxCount={maxCount} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Blur />
+          </div>
+          <div>
+            <div
+              className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${
+                selectedIndex === 0 && !hasNext ? 'hidden' : ''
+              }`}
+            >
+              <div onClick={hasPrevious ? previous : undefined} className="hidden mr-4">
                 <div
-                  key={`appList_${index}`}
-                  className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6"
+                  className={`mt-0.5 ${hasPrevious ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'}}`}
                 >
-                  <AppList data={appList} maxCount={maxCount} />
+                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z"
+                      fill="currentColor"
+                    />
+                  </svg>
                 </div>
-              ))}
-            </div>
-          </div>
-          <Blur />
-        </div>
-        <div>
-          <div
-            className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${
-              selectedIndex === 0 && !hasNext ? 'hidden' : ''
-            }`}
-          >
-            <div onClick={hasPrevious ? previous : undefined} className="hidden mr-4">
-              <div
-                className={`mt-0.5 ${hasPrevious ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'}}`}
-              >
-                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z" fill="currentColor" />
-                </svg>
               </div>
-            </div>
 
-            {entireAppList &&
-              entireAppList.map((_page, index) => (
-                <div key={`page_${index}`} onClick={() => emblaApi?.scrollTo(index)} className="cursor-pointer p-1.5">
-                  <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
+              {entireAppList &&
+                entireAppList.map((_page, index) => (
+                  <div key={`page_${index}`} onClick={() => emblaApi?.scrollTo(index)} className="cursor-pointer p-1.5">
+                    <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
+                  </div>
+                ))}
+              <div onClick={hasNext ? next : undefined} className="hidden ml-4">
+                <div
+                  className={`mt-0.5 text-core-grey-40 ${
+                    hasNext ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'
+                  }}`}
+                >
+                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z"
+                      fill="currentColor"
+                    />
+                  </svg>
                 </div>
-              ))}
-            <div onClick={hasNext ? next : undefined} className="hidden ml-4">
-              <div
-                className={`mt-0.5 text-core-grey-40 ${
-                  hasNext ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'
-                }}`}
-              >
-                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z" fill="currentColor" />
-                </svg>
               </div>
             </div>
           </div>
         </div>
+        <BadgeNotification />
       </div>
-      <BadgeNotification />
-    </div>
+    </>
   );
 }
 

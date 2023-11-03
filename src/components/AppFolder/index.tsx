@@ -12,8 +12,8 @@ const Page = ({ data }: any) => {
   return data.map((app) => <App key={app.uid} data={app} />);
 };
 
-const AppFolder = ({ title, data }: any) => {
-  const { maxDisplay, maxFolderCount, chunkFolderViewOnly } = useAppList();
+const AppFolder = ({ title, data, display }: any) => {
+  const { maxDisplay, maxFolderCount } = useAppList();
   const [scale, setScale] = useState(false);
   const { rightMenu } = useContext(appContext);
 
@@ -27,6 +27,7 @@ const AppFolder = ({ title, data }: any) => {
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);
 
+  console.log('display', display);
   /**
    * Navigate to the next page
    * @type {() => void}
@@ -194,10 +195,10 @@ const AppFolder = ({ title, data }: any) => {
         <div className="app-grid__icon">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
-              className={`hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3 gap-1`}
+              className={`hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
             >
-              {chunkFolderViewOnly &&
-                chunkFolderViewOnly[0]
+              {display &&
+                display
                   .filter((_, index) => index < maxDisplay)
                   .map((app) => (
                     <li key={app.uid} className="flex justify-center items-center">
