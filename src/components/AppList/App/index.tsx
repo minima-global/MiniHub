@@ -55,8 +55,10 @@ const AppList = ({ data }) => {
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
-          className={`item w-full z-30 ${
-            rightMenu && rightMenu.uid !== data.uid ? 'blur-md opacity-20 lg:blur-md lg:opacity-20 !opacity-0' : ''
+          className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
+            data.conf.name.includes('Pending') ? 'onboard_pending' : ''
+          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} item w-full z-30 ${
+            rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
           <img

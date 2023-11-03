@@ -111,7 +111,11 @@ const AppFolder = ({ title, data, display }: any) => {
               <div className="grid grid-cols-[1fr_minmax(0,560px)_1fr] grid-rows-1 h-full">
                 <div />
 
-                <div className="mx-2 my-4 bg-white bg-opacity-40 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max">
+                <div
+                  className={`mx-2 my-4 bg-white bg-opacity-40 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max ${
+                    title === 'Social' ? 'folder_social' : ''
+                  }`}
+                >
                   <h1 className="font-semibold text-2xl text-center text-white mb-4">{title}</h1>
                   <div
                     className={`embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2 ${
@@ -123,7 +127,7 @@ const AppFolder = ({ title, data, display }: any) => {
                       {data.map((apps, index) => (
                         <div
                           key={`appList_${index}`}
-                          className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4"
+                          className={`app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4`}
                         >
                           <Page data={apps} />
                         </div>
@@ -195,7 +199,9 @@ const AppFolder = ({ title, data, display }: any) => {
         <div className="app-grid__icon">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
-              className={`hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
+              className={`${title === 'Social' ? 'folder_social' : ''} ${
+                title === 'Finance' ? 'folder_finance' : ''
+              } hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
             >
               {display &&
                 display

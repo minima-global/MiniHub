@@ -135,7 +135,7 @@ const DashboardActionBar = () => {
               />
             </svg>
             <svg
-              className="cursor-pointer"
+              className="cursor-pointer onboard_install"
               onClick={openInstallModal}
               width="20"
               height="20"

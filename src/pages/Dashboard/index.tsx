@@ -22,20 +22,72 @@ import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 import Joyride from 'react-joyride';
 
 function Dashboard() {
-  const [onboard, setOnboard] = useState([
+  const [onboard, _] = useState([
     {
       title: 'Dashboard',
       target: '.dashboard',
       content:
         'From here you can access all your minidapps.  Right click/ Hold down on one to learn more, change its permissions, update or delete it.',
+      placement: 'center',
     },
     {
-      target: '.my-first-step',
-      content: 'This is my awesome feature!',
+      title: 'Install New MiniDapps',
+      target: '.onboard_install',
+      content: 'You can install new MiniDapps (.mds.zip) here!',
     },
     {
-      target: '.my-other-step',
-      content: 'This another awesome feature!',
+      title: 'Dapp Store',
+      target: '.dapp_store',
+      content:
+        'New MiniDapps or updates will be available in the Dapp Store.  Anyone can create & share their own Dapp Store to showcase their own MiniDapps.',
+    },
+    {
+      title: 'The Blockchain',
+      target: '.block_info',
+      content:
+        'Once connected to the network, your latest block will show here.  Tap on it to check the status and health of your node.  It is normal for the blockchain to split (fork) from time to time, keeping your node online helps it to remain on the correct chain!',
+    },
+    {
+      title: 'Get Social',
+      target: '.folder_social',
+      content:
+        'Get your friends on Minima and add them as contacts using the MaxContacts MiniDapp.  Chat on MaxSolo or interact with all your contacts and their network on Chatter.  Stay green - a green network and chain icon in MaxContacts indicates that you are connected and on the same chain.',
+    },
+    {
+      title: 'Fill up your pockets',
+      target: '.folder_finance',
+      content:
+        'Use your Wallet to check your balance and send/receive coins.  Have a go at creating your own tokens and NFTs too!',
+    },
+    {
+      title: 'Pending',
+      target: '.onboard_pending',
+      content:
+        'You will need to approve transactions you make from the Pending MiniDapp if the app is in read mode only.',
+    },
+    {
+      title: 'Stay Secure',
+      target: '.onboard_security',
+      content:
+        'First things first, keep your node secure.  Head to the Security MiniDapp to write down your seed phrase - this is the single key to your coins.',
+    },
+    {
+      title: 'Padlock',
+      target: '.onboard_security_1',
+      content:
+        "A red padlock icon indicates that your node is not password protected, lock your node to make sure your sneaky dog doesn't spend your coins without you realising!",
+    },
+    {
+      title: 'Auto-backups',
+      target: '.onboard_security',
+      content:
+        'Set up auto-backups to make restoring quick and simple.  If you ever lose access to your node, you can restore it without needing your seed phrase.',
+    },
+    {
+      title: 'Join The Network!',
+      target: '.dashboard',
+      content: 'You will now be prompted to join the network.',
+      placement: 'center',
     },
   ]);
 
@@ -115,9 +167,26 @@ function Dashboard() {
 
   return (
     <>
-      {/* <Joyride steps={onboard} continuous={true} showSkipButton={true} /> */}
+      <Joyride
+        showProgress={true}
+        steps={onboard}
+        styles={{
+          options: {
+            arrowColor: '#FAFAFF',
+            backgroundColor: '#FAFAFF',
+            primaryColor: '#08090B',
+            textColor: '#08090B',
+          },
+          tooltipTitle: {
+            fontSize: 16,
+            fontWeight: 800,
+          },
+        }}
+        continuous={true}
+        showSkipButton={true}
+      />
 
-      <div className="dashboard app bg overflow-hidden xl:overflow-visible custom-scrollbar">
+      <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
         <AppIsInReadMode />
         <InstallMiniDapp />
         <Settings />
@@ -130,11 +199,14 @@ function Dashboard() {
         <HasNoPeersModal />
         <AddConnectionsLaterModal />
 
-        <div className="flex flex-col h-screen" onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}>
+        <div
+          className="dashboard flex flex-col h-screen"
+          onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
+        >
           <StatusBar />
           <DashboardActionBar />
           <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
-            <div className="embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
+            <div className=" embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
               <div className="flex items-start h-full">
                 {entireAppList.map((appList, index) => (
                   <div

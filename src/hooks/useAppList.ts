@@ -188,7 +188,7 @@ const useAppList = () => {
       if (!excludeApps.includes(_app.conf.name) && i < 5) {
         _app.conf.category = 'Finance';
       } else if (!excludeApps.includes(_app.conf.name) && i < 10) {
-        _app.conf.category = 'Sports';
+        _app.conf.category = 'Social';
       } else if (!excludeApps.includes(_app.conf.name)) {
         _app.conf.category = 'Utiltiies';
       }
