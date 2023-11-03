@@ -26,10 +26,10 @@ const AppList = ({ data, maxCount }: any) => {
 
         const isAFolder = !category.includes('None');
         if (!isAFolder) {
-          return apps.map((app) => <App data={app} />);
+          return apps.map((app) => <App key={app.uid} data={app} />);
         }
         if (isAFolder) {
-          return <AppFolder title={category} data={apps} />;
+          return <AppFolder key={`appFolder_${key}`} title={category} data={apps} />;
         }
       }
     });

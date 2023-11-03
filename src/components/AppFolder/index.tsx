@@ -9,7 +9,7 @@ import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import useAppList from '../../hooks/useAppList';
 
 const Page = ({ data }: any) => {
-  return data.map((app) => <App data={app} />);
+  return data.map((app) => <App key={app.uid} data={app} />);
 };
 
 const AppFolder = ({ title, data }: any) => {
@@ -200,7 +200,7 @@ const AppFolder = ({ title, data }: any) => {
                 chunkFolderViewOnly[0]
                   .filter((_, index) => index < maxDisplay)
                   .map((app) => (
-                    <li className="flex justify-center items-center">
+                    <li key={app.uid} className="flex justify-center items-center">
                       <img
                         className={`folder_icon rounded`}
                         alt="app_icon"
