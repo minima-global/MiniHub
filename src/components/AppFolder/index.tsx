@@ -27,7 +27,6 @@ const AppFolder = ({ title, data, display }: any) => {
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);
 
-  console.log('display', display);
   /**
    * Navigate to the next page
    * @type {() => void}

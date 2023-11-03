@@ -20,6 +20,7 @@ import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 import Joyride from 'react-joyride';
+import Introduction from '../../components/Introduction';
 
 function Dashboard() {
   const [onboard, _] = useState([
@@ -27,71 +28,63 @@ function Dashboard() {
       title: 'Dashboard',
       target: '.dashboard',
       content:
-        'From here you can access all your minidapps.  Right click/ Hold down on one to learn more, change its permissions, update or delete it.',
+        'All your minidapps are found here. Right click or long press on an icon to learn more, change permissions, update or delete it.',
       placement: 'center',
     },
     {
-      title: 'Install New MiniDapps',
+      title: 'Install new dapps',
       target: '.onboard_install',
-      content: 'You can install new MiniDapps (.mds.zip) here!',
+      content: 'Click on the + to install new minidapps that you have downloaded.',
     },
     {
       title: 'Dapp Store',
       target: '.dapp_store',
-      content:
-        'New MiniDapps or updates will be available in the Dapp Store.  Anyone can create & share their own Dapp Store to showcase their own MiniDapps.',
+      content: 'Install or update the latest dapps from the Minima Dapp Store.  You can also create your own store!',
     },
     {
       title: 'The Blockchain',
       target: '.block_info',
       content:
-        'Once connected to the network, your latest block will show here.  Tap on it to check the status and health of your node.  It is normal for the blockchain to split (fork) from time to time, keeping your node online helps it to remain on the correct chain!',
+        'Once connected to the network, your latest block will show here. Tap on it to check the status and health of your node.',
     },
     {
-      title: 'Get Social',
+      title: 'Be sociable',
       target: '.folder_social',
       content:
-        'Get your friends on Minima and add them as contacts using the MaxContacts MiniDapp.  Chat on MaxSolo or interact with all your contacts and their network on Chatter.  Stay green - a green network and chain icon in MaxContacts indicates that you are connected and on the same chain.',
+        'Add your friends as contacts in MaxContacts, chat 1 on 1 in MaxSolo or interact with all your contacts and beyond on Chatter.',
     },
     {
-      title: 'Fill up your pockets',
+      title: 'Your coins',
       target: '.folder_finance',
       content:
-        'Use your Wallet to check your balance and send/receive coins.  Have a go at creating your own tokens and NFTs too!',
+        'Use the Wallet to check your balance, addresses and to send coins. You can also create your own tokens and NFTs!',
     },
     {
       title: 'Pending',
       target: '.onboard_pending',
-      content:
-        'You will need to approve transactions you make from the Pending MiniDapp if the app is in read mode only.',
+      content: 'Check and approve the transactions you make from read-only minidapps.',
     },
     {
       title: 'Stay Secure',
       target: '.onboard_security',
       content:
-        'First things first, keep your node secure.  Head to the Security MiniDapp to write down your seed phrase - this is the single key to your coins.',
+        'Check your seed phrase and lock, backup or restore your node. Turn on auto-backup to take daily backups that you can restore without your seed phrase. ',
     },
     {
-      title: 'Padlock',
+      title: 'Lock your node',
       target: '.onboard_security_1',
       content:
-        "A red padlock icon indicates that your node is not password protected, lock your node to make sure your sneaky dog doesn't spend your coins without you realising!",
+        'A red padlock here indicates that your node is not locked. Use Security to set a password so that your coins cannot be spent without it.',
     },
     {
-      title: 'Auto-backups',
-      target: '.onboard_security',
-      content:
-        'Set up auto-backups to make restoring quick and simple.  If you ever lose access to your node, you can restore it without needing your seed phrase.',
-    },
-    {
-      title: 'Join The Network!',
+      title: 'All set!',
       target: '.dashboard',
-      content: 'You will now be prompted to join the network.',
+      content: 'You can now start playing!',
       placement: 'center',
     },
   ]);
 
-  const { setRightMenu, folderMenu } = useContext(appContext);
+  const { setRightMenu, folderMenu, showOnboard, maximaName } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
@@ -100,7 +93,6 @@ function Dashboard() {
   const [hasNext, setHasNext] = useState(false);
   const isDev = import.meta.env.MODE === 'development';
 
-  const pages = maxCount - entireAppList.length;
   /**
    * Navigate to the next page
    * @type {() => void}
@@ -168,7 +160,9 @@ function Dashboard() {
   return (
     <>
       <Joyride
+        run={showOnboard}
         showProgress={true}
+        // @ts-ignore
         steps={onboard}
         styles={{
           options: {
@@ -185,8 +179,8 @@ function Dashboard() {
         continuous={true}
         showSkipButton={true}
       />
-
       <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
+        <Introduction />
         <AppIsInReadMode />
         <InstallMiniDapp />
         <Settings />
@@ -204,6 +198,39 @@ function Dashboard() {
           onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
         >
           <StatusBar />
+          <span
+            onClick={() =>
+              (window as any).MDS.dapplink('MaxContacts', function (msg) {
+                return window.open(
+                  `${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`,
+                  '_blank'
+                );
+              })
+            }
+            className="w-max ml-3 mr-2 flex gap-2 items-center bg-white rounded-2xl px-2 py-1 hover:cursor-pointer hover:bg-[#7A17F9] text-white bg-opacity-20 hover:text-white"
+          >
+            <svg
+              className="fill-gray-100"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="#2c3e50"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M20.985 12.528a9 9 0 1 0 -8.45 8.456" />
+              <path d="M16 19h6" />
+              <path d="M19 16v6" />
+              <path d="M9 10h.01" />
+              <path d="M15 10h.01" />
+              <path d="M9.5 15c.658 .64 1.56 1 2.5 1s1.842 -.36 2.5 -1" />
+            </svg>
+            <h3 className="text-sm  font-semibold">{maximaName}</h3>
+          </span>
           <DashboardActionBar />
           <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
             <div className=" embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>

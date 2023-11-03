@@ -3,11 +3,14 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
 import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
+import * as utils from './utilities';
 
 export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
+
+  const [maximaName, setMaximaName] = useState('');
 
   const [appList, setAppList] = useState<any[]>([]);
 
@@ -37,6 +40,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
+
+  // show introduction
+  const [showIntroduction, setShowIntroduction] = useState<null | boolean>(null);
+
+  // show onboard tour
+  const [showOnboard, setShowOnboard] = useState(false);
 
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
@@ -179,10 +188,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // init mds
   useEffect(() => {
+    const ls = localStorage.getItem(utils.getAppUID());
+    const firstTimeOpeningDapp = !ls;
     if (!loaded.current) {
       loaded.current = true;
+      // setShowIntroduction(true);
+
+      // if it is their first time
+      if (firstTimeOpeningDapp) {
+        setShowIntroduction(true);
+        localStorage.setItem(utils.getAppUID(), '1');
+      }
+
+      if (!firstTimeOpeningDapp) {
+        setShowIntroduction(false);
+      }
+
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
+          getMaximaName();
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
@@ -299,6 +323,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const getMaximaName = () => {
+    (window as any).MDS.cmd('maxima', (resp: any) => {
+      if (resp.status) {
+        setMaximaName(resp.response.name);
+      }
+    });
+  };
+
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
   };
@@ -394,6 +426,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     isNodeFiveMinutesAgoBehind,
 
     loaded: loaded.current,
+
+    showIntroduction,
+    setShowIntroduction,
+
+    showOnboard,
+    setShowOnboard,
+    maximaName,
+    getMaximaName,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

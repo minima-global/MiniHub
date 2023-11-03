@@ -21,7 +21,7 @@ const AppList = ({ data, maxCount }: any) => {
       return null;
     }
 
-    return categorizedApps.map((_category, index) => {
+    return categorizedApps.map((_category) => {
       for (const [key, value] of _category) {
         const category = key;
         const apps = value;

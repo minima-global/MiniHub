@@ -27,7 +27,7 @@ export default {
       indigo: colors.indigo,
       yellow: colors.yellow,
       blue: colors.blue,
-      'b': '#3f3cbb',
+      b: '#3f3cbb',
     },
     screens: {
       sm: '390px',
@@ -46,6 +46,20 @@ export default {
         'thumbnail-desert': "url('../assets/thumbnails/desert.png')",
         'thumbnail-galaxy': "url('../assets/thumbnails/galaxy.png')",
         'thumbnail-feather': "url('../assets/thumbnails/feather.png')",
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s',
+        fadeIn1: 'fadeIn 1s',
+        fadeIn2: 'fadeIn 2s',
+        fadeIn3: 'fadeIn 3s',
+        fadeIn5: 'fadeIn 5s',
+        fadeIn7: 'fadeIn 7s',
       },
     },
   },

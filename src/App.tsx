@@ -7,6 +7,7 @@ import Update from './pages/proxy/Update';
 import Settings from './pages/proxy/Settings';
 import Delete from './pages/proxy/Delete';
 import Root from './pages/proxy/Root';
+import Introduction from './components/Introduction';
 import SettingsAddConnections from './pages/proxy/SettingsAddConnections';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="*" element={<Dashboard />} />
         </Routes>
         <Routes>
+          <Route path="/introduction" element={<Introduction />}></Route>
           <Route path="/install" element={<Install />} />
           <Route path="/update" element={<Update />} />
           <Route path="/delete/:id" element={<Delete />} />
