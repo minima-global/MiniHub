@@ -171,23 +171,37 @@ const useAppList = () => {
      * so we can remove this block after
      */
     let i = 0;
+    const excludeApps = [
+      'Security',
+      'security',
+      'Dapp Store',
+      'dapp store',
+      'dappstore',
+      'Logs',
+      'logs',
+      'Settings',
+      'settings',
+    ];
     for (const _app of appList) {
-      if (!_app.uid.includes('system_01')) {
-        if (i < 5) {
-          _app.conf.category = 'Finance';
-        } else if (i < 10) {
-          _app.conf.category = 'Sports';
-        } else {
-          _app.conf.category = 'Utiltiies';
-        }
+      if (!excludeApps.includes(_app.conf.name) && i < 5) {
+        _app.conf.category = 'Finance';
+      } else if (!excludeApps.includes(_app.conf.name) && i < 10) {
+        _app.conf.category = 'Sports';
+      } else if (!excludeApps.includes(_app.conf.name)) {
+        _app.conf.category = 'Utiltiies';
       }
+
+      if (excludeApps.includes(_app.conf.name)) {
+        _app.conf.category = 'None';
+      }
+
       i++;
     }
 
     const categoryMap = new Map();
     appList.map((_app) => {
       const key = _app.conf.category;
-      const appsByCategory = categoryMap.get(key ? key : 'None');
+      const appsByCategory = categoryMap.get(key);
 
       // None
       if (!key) {
