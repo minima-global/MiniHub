@@ -181,6 +181,8 @@ const useAppList = () => {
       'logs',
       'Settings',
       'settings',
+      'Pending',
+      'pending',
     ];
     for (const _app of appList) {
       if (!excludeApps.includes(_app.conf.name) && i < 5) {
