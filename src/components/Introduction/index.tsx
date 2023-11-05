@@ -5,7 +5,13 @@ import { useTransition, animated } from '@react-spring/web';
 
 const Introduction = () => {
   const [step, setStep] = useState(0);
-  const { setShowIntroduction, showIntroduction: display, setShowOnboard, getMaximaName } = useContext(appContext);
+  const {
+    setShowIntroduction,
+    showIntroduction: display,
+    setShowOnboard,
+    getMaximaName,
+    checkPeers,
+  } = useContext(appContext);
   const [name, setName] = useState('');
 
   const randomNameGenerator = (): Promise<string> => {
@@ -118,6 +124,7 @@ const Introduction = () => {
                         <button
                           onClick={() => {
                             setShowIntroduction(false);
+                            checkPeers();
                           }}
                           className="border-b pb-1 text-sm text-white max-w-max border-stone-200"
                         >

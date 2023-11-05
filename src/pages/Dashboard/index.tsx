@@ -84,7 +84,7 @@ function Dashboard() {
     },
   ]);
 
-  const { setRightMenu, folderMenu, showOnboard, maximaName } = useContext(appContext);
+  const { setRightMenu, folderMenu, showOnboard, maximaName, checkPeers, setShowOnboard } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
@@ -161,15 +161,32 @@ function Dashboard() {
     <>
       <Joyride
         run={showOnboard}
+        callback={(evt: any) => {
+          console.log('evt', evt);
+          const finishTutorial = evt.action === 'reset';
+
+          if (finishTutorial) {
+            setShowOnboard(false);
+            checkPeers();
+          }
+        }}
         showProgress={true}
         // @ts-ignore
         steps={onboard}
+        floaterProps={{
+          styles: {
+            wrapper: {
+              zIndex: 50,
+            },
+          },
+        }}
         styles={{
           options: {
             arrowColor: '#FAFAFF',
             backgroundColor: '#FAFAFF',
-            primaryColor: '#08090B',
+            primaryColor: '#7A17F9',
             textColor: '#08090B',
+            zIndex: 5,
           },
           tooltipTitle: {
             fontSize: 16,

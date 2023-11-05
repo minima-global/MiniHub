@@ -192,20 +192,20 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const firstTimeOpeningDapp = !ls;
     if (!loaded.current) {
       loaded.current = true;
-      // setShowIntroduction(true);
-
-      // if it is their first time
-      if (firstTimeOpeningDapp) {
-        setShowIntroduction(true);
-        localStorage.setItem(utils.getAppUID(), '1');
-      }
-
-      if (!firstTimeOpeningDapp) {
-        setShowIntroduction(false);
-      }
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
+          // if it is their first time
+          if (firstTimeOpeningDapp) {
+            setShowIntroduction(true);
+            localStorage.setItem(utils.getAppUID(), '1');
+          }
+
+          if (!firstTimeOpeningDapp) {
+            setShowIntroduction(false);
+            checkPeers();
+          }
+
           getMaximaName();
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
@@ -213,11 +213,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             setAppIsInWriteMode(appIsInWriteMode);
           });
 
-          peers().then((response) => {
-            if (!response.havepeers) {
-              setShowHasNoPeers(true);
-            }
-          });
+          // this will now have to be implicitly called
+          // peers().then((response) => {
+          //   if (!response.havepeers) {
+          //     setShowHasNoPeers(true);
+          //   }
+          // });
 
           block().then((blockInfo) => {
             setBlockInfo({
@@ -323,6 +324,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const checkPeers = () => {
+    peers().then((response) => {
+      if (!response.havepeers) {
+        setShowHasNoPeers(true);
+      }
+    });
+  };
+
   const getMaximaName = () => {
     (window as any).MDS.cmd('maxima', (resp: any) => {
       if (resp.status) {
@@ -399,6 +408,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     getPeers,
     peersInfo,
+    checkPeers,
 
     showSearch,
     setShowSearch,

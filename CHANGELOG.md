@@ -1,5 +1,11 @@
 # Changelog
 
+##### [0.14.1] - 05 November 23
+
+- check peers/add peers when onboarding is skipped or ended
+- toggle onboard tutorial in Settings
+- design tweak on onboard tool
+
 ##### [0.14.0] - 02 November 23
 
 - Added v1 Folders
