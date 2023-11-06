@@ -68,7 +68,13 @@ function Dashboard() {
       title: 'Stay Secure',
       target: '.onboard_security',
       content:
-        'Check your seed phrase and lock, backup or restore your node. Turn on auto-backup to take daily backups that you can restore without your seed phrase. ',
+        'Check your seed phrase and lock, backup or restore your node. Turn on auto-backup to take daily backups that you can restore without your seed phrase.',
+    },
+    {
+      title: 'Settings',
+      target: '.onboard_settings',
+      content:
+        'Android users can use their node from a desktop on the same WiFi network, your login details can be found in Settings under Desktop Connect. You can also change or upload your own wallpaper!',
     },
     {
       title: 'Lock your node',
