@@ -57,7 +57,9 @@ const AppList = ({ data }) => {
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
           className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
             data.conf.name.includes('Pending') ? 'onboard_pending' : ''
-          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} item w-full z-30 ${
+          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} ${
+            data.conf.name.includes('Settings') ? 'onboard_settings' : ''
+          } item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
