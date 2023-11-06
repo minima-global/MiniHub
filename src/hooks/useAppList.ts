@@ -170,20 +170,20 @@ const useAppList = () => {
      * category should exist in the new MiniDapps
      * so we can remove this block after
      */
-    let i = 0;
-    const excludeApps = [
-      'Security',
-      'security',
-      'Dapp Store',
-      'dapp store',
-      'dappstore',
-      'Logs',
-      'logs',
-      'Settings',
-      'settings',
-      'Pending',
-      'pending',
-    ];
+    // let i = 0;
+    // const excludeApps = [
+    //   'Security',
+    //   'security',
+    //   'Dapp Store',
+    //   'dapp store',
+    //   'dappstore',
+    //   'Logs',
+    //   'logs',
+    //   'Settings',
+    //   'settings',
+    //   'Pending',
+    //   'pending',
+    // ];
 
     const folders = new Map();
     appList
