@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext } from 'react';
+import { PropsWithChildren, useContext, useEffect } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import Button from '../UI/Button';
 import { appContext } from '../../AppContext';
@@ -20,9 +20,10 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
 
   const closeWindow = () => {
     if (IS_MINIMA_BROWSER) {
+      // @ts-ignore
       return Android.closeWindow();
     }
-  }
+  };
 
   if (hasUpdated) {
     return <div />;
@@ -42,18 +43,19 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
                   <div className="modal text-center text-white core-black-contrast-2 box-shadow-lg rounded p-6 lg:p-8 mb-6 mx-auto relative overflow-hidden">
                     <h5 className="text-xl -mt-1 mb-4 font-bold">Connection failed</h5>
                     {!isMinimaBrowser && (
-                      <p className="mb-6">
-                        Your session is invalid, please click the button below to log in again.
-                      </p>
+                      <p className="mb-6">Your session is invalid, please click the button below to log in again.</p>
                     )}
                     {isMinimaBrowser && (
                       <p className="mb-6">
-                        Your session is invalid, press the button below to open the title bar, then press the three vertical dots and select refresh from the menu.
+                        Your session is invalid, press the button below to open the title bar, then press the three
+                        vertical dots and select refresh from the menu.
                       </p>
                     )}
                     <div className="flex flex-col gap-4">
                       {!isMinimaBrowser && (
-                        <Button onClick={goToLoginPage} variant="secondary">Login</Button>
+                        <Button onClick={goToLoginPage} variant="secondary">
+                          Login
+                        </Button>
                       )}
                       {isMinimaBrowser && (
                         <>

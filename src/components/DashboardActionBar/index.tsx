@@ -66,7 +66,7 @@ const DashboardActionBar = () => {
                 <div className="text-core-grey-80 my-14">No results could be found for this query...</div>
               )}
               {limitedAppList.map((app) => (
-                <MobileSearchItem data={app} onRightClick={closeSearch} />
+                <MobileSearchItem key={app.uid} data={app} onRightClick={closeSearch} />
               ))}
             </div>
           </div>

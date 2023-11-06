@@ -162,7 +162,6 @@ function Dashboard() {
       <Joyride
         run={showOnboard}
         callback={(evt: any) => {
-          console.log('evt', evt);
           const finishTutorial = evt.action === 'reset';
 
           if (finishTutorial) {

@@ -11,6 +11,7 @@ import UpdateMiniHub from './UpdateMiniHub';
 import { useNavigate } from 'react-router-dom';
 import ShareConnections from './ShareConnections';
 import { peers } from '../../../lib';
+import Toggle from '../../../components/UI/Toggle';
 
 export function Settings() {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ export function Settings() {
     showAddConnections,
     setShowAddConnections,
     setShowOnboard,
+    folderStatus,
+    toggleFolderStatus,
   } = useContext(appContext);
   const [showShutdown, setShutdown] = useState(false);
   const [showWallpaper, setShowWallpaper] = useState(false);
@@ -169,6 +172,12 @@ export function Settings() {
                     fill="#F4F4F5"
                   />
                 </svg>
+              </div>
+            </div>
+            <div className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer">
+              Folder layout
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <Toggle checkedStatus={folderStatus} onChange={toggleFolderStatus} />
               </div>
             </div>
             <div

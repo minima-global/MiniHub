@@ -12,7 +12,8 @@ const Introduction = () => {
     getMaximaName,
     checkPeers,
   } = useContext(appContext);
-  const [name, setName] = useState('');
+
+  const { maximaName: name, setMaximaName: setName } = useContext(appContext);
 
   const randomNameGenerator = (): Promise<string> => {
     return new Promise((resolve) => {

@@ -1,5 +1,13 @@
 # Changelog
 
+##### [0.14.2] - 06 November 23
+
+- toggle folders layout
+- pull in Maxima name on introduction screen, if already set
+- add desktop connect on product onboard, update settings copy
+- make MDS Fail screen take precedent over introduction page
+- removed simulated folders
+
 ##### [0.14.1] - 05 November 23
 
 - check peers/add peers when onboarding is skipped or ended

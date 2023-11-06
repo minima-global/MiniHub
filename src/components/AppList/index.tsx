@@ -7,8 +7,8 @@ import * as _ from 'lodash';
 import useAppList from '../../hooks/useAppList';
 
 const AppList = ({ data, maxCount }: any) => {
-  const { setRightMenu } = useContext(appContext);
-  const { appListWithCategories } = useAppList();
+  const { setRightMenu, folderStatus } = useContext(appContext);
+  const { appListWithCategories, isQueryingApps } = useAppList();
   const empty = maxCount - Object.keys(data).length;
   const emptySlots = empty && empty > 0 ? [...Array(empty).keys()] : [];
 
@@ -21,25 +21,32 @@ const AppList = ({ data, maxCount }: any) => {
       return null;
     }
 
-    return categorizedApps.map((_category) => {
-      for (const [key, value] of _category) {
+    if (!folderStatus) {
+      return data.map((app) => <App key={app.uid} data={app} />);
+    }
+
+    if (isQueryingApps) {
+      return data.map((app) => <App key={app.uid} data={app} />);
+    }
+
+    return categorizedApps.map((app) => {
+      if (!(app instanceof Map)) {
+        return <App key={app.uid} data={app} />;
+      }
+
+      // if we make it this far then it's a folder..
+      for (const [key, value] of app) {
         const category = key;
         const apps = value;
-        const isAFolder = !category.includes('None');
 
-        if (!isAFolder) {
-          return apps.map((app) => <App key={app.uid} data={app} />);
-        }
-        if (isAFolder) {
-          return (
-            <AppFolder
-              key={`appFolder_${key}`}
-              title={category}
-              data={apps}
-              display={appListWithCategories.filter((_app) => _app.conf.category && _app.conf.category.includes(key))}
-            />
-          );
-        }
+        return (
+          <AppFolder
+            key={`appFolder_${key}`}
+            title={category}
+            data={apps}
+            display={appListWithCategories.filter((_app) => _app.conf.category && _app.conf.category.includes(key))}
+          />
+        );
       }
     });
   };

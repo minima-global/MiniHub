@@ -26,6 +26,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
 
+  // toggling folder mode on/off
+  const [folderStatus, setFolders] = useState(false);
+
   // shows fake utilities group folder
   const [showUtilities, setShowUtilities] = useState(false);
 
@@ -195,6 +198,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
+          // get folder status
+          getFolderStatus();
+
           // if it is their first time
           if (firstTimeOpeningDapp) {
             setShowIntroduction(true);
@@ -335,7 +341,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const getMaximaName = () => {
     (window as any).MDS.cmd('maxima', (resp: any) => {
       if (resp.status) {
-        setMaximaName(resp.response.name);
+        if (resp.response.name !== 'noname') setMaximaName(resp.response.name);
       }
     });
   };
@@ -355,6 +361,32 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return false;
   }, [blockInfo]);
+
+  const getFolderStatus = () => {
+    (window as any).MDS.keypair.get('folders', (resp: any) => {
+      // if it doesn't exist, set it to default (true)
+      if (!resp.status) {
+        (window as any).MDS.keypair.set('folders', JSON.stringify({ status: true }));
+      }
+
+      if (resp.status) {
+        const data = JSON.parse(resp.value);
+        setFolders(data.status);
+      }
+    });
+  };
+
+  const toggleFolderStatus = () => {
+    return new Promise((resolve) => {
+      (window as any).MDS.keypair.set('folders', JSON.stringify({ status: !folderStatus }), (resp: any) => {
+        setFolders((prevState) => !prevState);
+
+        if (resp.status) {
+          resolve(true);
+        }
+      });
+    });
+  };
 
   const value = {
     mode,
@@ -443,7 +475,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showOnboard,
     setShowOnboard,
     maximaName,
+    setMaximaName,
     getMaximaName,
+
+    toggleFolderStatus,
+    folderStatus,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

@@ -9,7 +9,7 @@ import * as _ from 'lodash';
  * @returns {{currentAppListPage: any, hasMoreThanOnePage: boolean, numberOfPages: number, entireAppList: any[] | unknown[][], currentPage: number, maxCount: number, setPage: (value: (((prevState: number) => number) | number)) => void}}
  */
 const useAppList = () => {
-  const { appList, query } = useContext(appContext);
+  const { appList, query, folderStatus } = useContext(appContext);
 
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);
@@ -184,56 +184,32 @@ const useAppList = () => {
       'Pending',
       'pending',
     ];
-    for (const _app of appList) {
-      if (!excludeApps.includes(_app.conf.name) && i < 5) {
-        _app.conf.category = 'Finance';
-      } else if (!excludeApps.includes(_app.conf.name) && i < 10) {
-        _app.conf.category = 'Social';
-      } else if (!excludeApps.includes(_app.conf.name)) {
-        _app.conf.category = 'Utiltiies';
-      }
 
-      if (excludeApps.includes(_app.conf.name)) {
-        _app.conf.category = 'None';
-      }
+    const folders = new Map();
+    appList
+      .filter((app) => !!app.conf.category)
+      .map((_app) => {
+        const key = _app.conf.category;
+        const alreadyExists = folders.has(key);
 
-      i++;
-    }
-
-    const categoryMap = new Map();
-    appList.map((_app) => {
-      const key = _app.conf.category;
-      const appsByCategory = categoryMap.get(key);
-
-      // None
-      if (!key) {
-        if (!categoryMap.has('None')) {
-          return categoryMap.set('None', [_app]);
+        if (alreadyExists) {
+          const prevVals = folders.get(key);
+          return folders.set(key, [...prevVals, _app]);
         }
-        // this category already exists
-        return categoryMap.set('None', [...appsByCategory, _app]);
-        // Other
-      } else {
-        if (!categoryMap.has(key)) {
-          return categoryMap.set(key, [_app]);
-        }
-        // this category already exists
-        return categoryMap.set(key, [...appsByCategory, _app]);
-      }
-    });
 
-    const cats: any = [];
+        return folders.set(key, [_app]);
+      });
 
-    for (const [key, value] of categoryMap) {
+    const allApps = appList.filter((app) => !app.conf.category);
+
+    for (const [key, value] of folders) {
       const map = new Map();
-
-      const isFolder = key !== 'None';
       // chunk only folders
-      map.set(key, isFolder ? _.chunk(value, maxFolderCount) : value);
-      cats.push(map);
+      map.set(key, _.chunk(value, maxFolderCount));
+      allApps.push(map);
     }
 
-    return cats;
+    return allApps;
     /**
      * After structuring appList, it should look like this
      * The specs we need is that it can be chunked for the dashboard's indexing of pages, and also each
@@ -257,19 +233,23 @@ const useAppList = () => {
     if (!categorizedAppList) {
       return [];
     }
-
     return _.chunk(
       query !== ''
         ? appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()))
-        : categorizedAppList,
+        : folderStatus
+        ? categorizedAppList
+        : appList,
       maxRows * maxColumn
     );
-  }, [categorizedAppList, query, maxRows, maxColumn]);
+  }, [categorizedAppList, query, maxRows, maxColumn, folderStatus]);
 
   const entireAppList = chunkedAppList;
   const numberOfPages = chunkedAppList && chunkedAppList.length;
 
   return {
+    appList,
+    isQueryingApps: query.length,
+
     maxCount,
     maxDisplay,
     maxFolderCount,
