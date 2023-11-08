@@ -195,7 +195,7 @@ const AppFolder = ({ title, data, display }: any) => {
           setScale(true);
         }}
       >
-        <div className="app-grid__icon">
+        <div className="app-grid__icon mb-6">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
               className={`${title === 'Social' ? 'folder_social' : ''} ${

@@ -219,13 +219,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             setAppIsInWriteMode(appIsInWriteMode);
           });
 
-          // this will now have to be implicitly called
-          // peers().then((response) => {
-          //   if (!response.havepeers) {
-          //     setShowHasNoPeers(true);
-          //   }
-          // });
-
           block().then((blockInfo) => {
             setBlockInfo({
               blockHeight: blockInfo.block,

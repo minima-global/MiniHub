@@ -29,13 +29,11 @@ const AppList = ({ data, maxCount }: any) => {
       return data.map((app) => <App key={app.uid} data={app} />);
     }
 
-    return categorizedApps.map((app) => {
-      if (!(app instanceof Map)) {
-        return <App key={app.uid} data={app} />;
-      }
+    const apps = categorizedApps.filter((_a) => !(_a instanceof Map));
+    const folders = categorizedApps.filter((_a) => _a instanceof Map);
 
-      // if we make it this far then it's a folder..
-      for (const [key, value] of app) {
+    const renderFolders = folders.map((f) => {
+      for (const [key, value] of f) {
         const category = key;
         const apps = value;
 
@@ -49,6 +47,12 @@ const AppList = ({ data, maxCount }: any) => {
         );
       }
     });
+
+    const renderApps = apps.map((app) => {
+      return <App key={app.uid} data={app} />;
+    });
+
+    return [...renderFolders, ...renderApps];
   };
 
   return (

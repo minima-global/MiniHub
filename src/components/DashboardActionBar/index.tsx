@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { appContext } from '../../AppContext';
-import Sort from './Sort';
 import MobileSearchItem from './MobileSearchItem';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
  */
 const DashboardActionBar = () => {
   const navigate = useNavigate();
-  const { showSearch, setShowSearch } = useContext(appContext);
+  const { showSearch, setShowSearch, maximaName } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
   const limitedAppList = query === '' ? [] : filteredAppList.slice(0, 5);
@@ -107,7 +106,20 @@ const DashboardActionBar = () => {
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
         <div className="grid grid-cols-12">
           <div className="col-span-6">
-            <Sort />
+            <span
+              onClick={(e: any) => {
+                e.stopPropagation();
+                (window as any).MDS.dapplink('MaxContacts', function (msg) {
+                  return window.open(
+                    `${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`,
+                    '_blank'
+                  );
+                });
+              }}
+              className="flex w-max gap-2 items-center bg-[#13394f] rounded-2xl px-2 py-1 hover:cursor-pointer hover:bg-[#7A17F9] text-white hover:text-white"
+            >
+              <h3 className="text-sm font-semibold">{maximaName}</h3>
+            </span>
           </div>
           <div className="col-span-6 flex items-center justify-end gap-4">
             <svg

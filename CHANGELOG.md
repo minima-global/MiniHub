@@ -1,5 +1,13 @@
 # Changelog
 
+##### [0.14.3] - 08 November 23
+
+- Tweak where Maxima name is
+- Set folders first
+- Alphabetically order folders
+- Remove order by filters
+- design tweaks
+
 ##### [0.14.2] - 06 November 23
 
 - toggle folders layout

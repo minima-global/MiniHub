@@ -90,7 +90,7 @@ function Dashboard() {
     },
   ]);
 
-  const { setRightMenu, folderMenu, showOnboard, maximaName, checkPeers, setShowOnboard } = useContext(appContext);
+  const { setRightMenu, folderMenu, showOnboard, checkPeers, setShowOnboard } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
@@ -220,39 +220,6 @@ function Dashboard() {
           onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
         >
           <StatusBar />
-          <span
-            onClick={() =>
-              (window as any).MDS.dapplink('MaxContacts', function (msg) {
-                return window.open(
-                  `${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`,
-                  '_blank'
-                );
-              })
-            }
-            className="w-max ml-3 mr-2 flex gap-2 items-center bg-white rounded-2xl px-2 py-1 hover:cursor-pointer hover:bg-[#7A17F9] text-white bg-opacity-20 hover:text-white"
-          >
-            <svg
-              className="fill-gray-100"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#2c3e50"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M20.985 12.528a9 9 0 1 0 -8.45 8.456" />
-              <path d="M16 19h6" />
-              <path d="M19 16v6" />
-              <path d="M9 10h.01" />
-              <path d="M15 10h.01" />
-              <path d="M9.5 15c.658 .64 1.56 1 2.5 1s1.842 -.36 2.5 -1" />
-            </svg>
-            <h3 className="text-sm  font-semibold">{maximaName}</h3>
-          </span>
           <DashboardActionBar />
           <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
             <div className=" embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>

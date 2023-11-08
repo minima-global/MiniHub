@@ -47,6 +47,7 @@ const TitleBar = () => {
         <div className="svg col-span-9 flex justify-end">
           <div className="absolute top-0 right-3 flex p-4 pr-0 items-center justify-end gap-2 overflow-hidden">
             <Status />
+
             {blockInfo && blockInfo.blockHeight && (
               <div
                 onClick={displayBlockInfo}

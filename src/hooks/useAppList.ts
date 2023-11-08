@@ -2,6 +2,16 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { appContext } from '../AppContext';
 import * as _ from 'lodash';
 
+const sortByType = (a: any) => {
+  if (a instanceof Map) {
+    return -1;
+  } else if (!(a instanceof Map)) {
+    return 1;
+  }
+
+  return 0;
+};
+
 /**
  * Handles the grid list for apps
  * 6 columns for desktop
@@ -170,21 +180,6 @@ const useAppList = () => {
      * category should exist in the new MiniDapps
      * so we can remove this block after
      */
-    // let i = 0;
-    // const excludeApps = [
-    //   'Security',
-    //   'security',
-    //   'Dapp Store',
-    //   'dapp store',
-    //   'dappstore',
-    //   'Logs',
-    //   'logs',
-    //   'Settings',
-    //   'settings',
-    //   'Pending',
-    //   'pending',
-    // ];
-
     const folders = new Map();
     appList
       .filter((app) => !!app.conf.category)
@@ -209,7 +204,7 @@ const useAppList = () => {
       allApps.push(map);
     }
 
-    return allApps;
+    return allApps.sort(sortByType);
     /**
      * After structuring appList, it should look like this
      * The specs we need is that it can be chunked for the dashboard's indexing of pages, and also each
