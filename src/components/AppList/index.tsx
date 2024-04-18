@@ -14,7 +14,6 @@ const AppList = ({ data, maxCount }: any) => {
 
   const dismissRightMenu = () => setRightMenu(null);
 
-  // data should look like [[Map], [Map], [Map]... n]
   const renderApps = () => {
     const categorizedApps = data;
     if (!categorizedApps.length) {

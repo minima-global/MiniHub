@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { appContext } from '../AppContext';
 import * as _ from 'lodash';
+import { AppData } from '../types/app';
 
 const sortByType = (a: any) => {
   if (a instanceof Map) {
@@ -20,6 +21,8 @@ const sortByType = (a: any) => {
  */
 const useAppList = () => {
   const { appList, query, folderStatus } = useContext(appContext);
+
+  console.log(appList);
 
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);
@@ -166,37 +169,27 @@ const useAppList = () => {
       return [];
     }
 
-    /**
-     * Apps data structure
-     * [
-     *  {uid, conf, sessionid}
-     *  {uid, conf, sessionid}
-     *  {uid, conf, sessionid} ...
-     * ]
-     */
+    const excludedFromFolders = ['Pending'];
 
-    /**
-     * I mutate appList to add categories
-     * category should exist in the new MiniDapps
-     * so we can remove this block after
-     */
-    const folders = new Map();
-    appList
-      .filter((app) => !!app.conf.category)
-      .map((_app) => {
-        const key = _app.conf.category;
-        const alreadyExists = folders.has(key);
+    // Initialize a Map to hold categorized apps
+    const folders: Map<string, AppData[]> = new Map<string, AppData[]>();
 
-        if (alreadyExists) {
-          const prevVals = folders.get(key);
-          return folders.set(key, [...prevVals, _app]);
-        }
+    // Filter out apps excluded from folders
+    const excludedApps: AppData[] = appList.filter((app) => excludedFromFolders.includes(app.conf.name));
+    
+    const systemApps = ['Settings', 'Health', 'Logs', 'Security'];
 
-        return folders.set(key, [_app]);
-      });
+    // Categorize apps
+    appList.filter(app => !app.conf.name.includes(excludedApps.map(app => app.conf.name))).forEach((app) => {
+      const category = systemApps.includes(app.conf.name) ? "System" : app.conf.category || 'Other'; // Default to "Other" category if no category is specified
+      if (folders.has(category)) {
+        folders.get(category)?.push(app);
+      } else {
+        folders.set(category, [app]);
+      }
+    });
 
-    const allApps = appList.filter((app) => !app.conf.category);
-
+    const allApps: any = [...excludedApps];
     for (const [key, value] of folders) {
       const map = new Map();
       // chunk only folders
@@ -205,15 +198,6 @@ const useAppList = () => {
     }
 
     return allApps.sort(sortByType);
-    /**
-     * After structuring appList, it should look like this
-     * The specs we need is that it can be chunked for the dashboard's indexing of pages, and also each
-     * app should fall under it's own category
-     * [
-     *  {"None" -> [{uid, conf, sessionid}]}
-     *  {"Finance" -> [{uid, conf, sessionid}]}
-     * ]
-     */
   }, [appList, maxFolderCount]);
 
   const chunkFolderViewOnly: any = useMemo(() => {

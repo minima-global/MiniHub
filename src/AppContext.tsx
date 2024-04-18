@@ -4,6 +4,7 @@ import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallA
 import useWallpaper from './hooks/useWallpaper';
 import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
 import * as utils from './utilities';
+import { AppData } from './types/app';
 
 export const appContext = createContext({} as any);
 
@@ -12,7 +13,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [maximaName, setMaximaName] = useState('');
 
-  const [appList, setAppList] = useState<any[]>([]);
+  const [appList, setAppList] = useState<AppData[]>([]);
 
   const [mdsInfo, setMdsInfo] = useState<any>(null);
 
@@ -138,7 +139,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         password: response.password,
       });
 
-      let apps = [
+      const apps = [
         ...response.minidapps.filter(
           (app) =>
             !(
@@ -171,17 +172,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       // let apps = response.minidapps;
 
-      if (sort === 'alphabetical') {
-        apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
-      } else if (sort === 'last_added') {
-        apps = apps.reverse();
-      }
+      // if (sort === 'alphabetical') {
+      //   apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
+      // } else if (sort === 'last_added') {
+      //   apps = apps.reverse();
+      // }
 
       setAppList([...apps]);
 
       return true;
     });
-  }, [sort]);
+  }, []);
 
   useEffect(() => {
     if (appIsInWriteMode) {
@@ -355,7 +356,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return false;
   }, [blockInfo]);
 
-  const getFolderStatus = () => {
+  /**
+   * This tracks the status of folders in settings (Folders can be activated and deactivated)
+   */
+  const getFolderStatus = () => {    
     (window as any).MDS.keypair.get('folders', (resp: any) => {
       // if it doesn't exist, set it to default (true)
       if (!resp.status) {
