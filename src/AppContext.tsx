@@ -30,6 +30,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // toggling folder mode on/off
   const [folderStatus, setFolders] = useState(false);
 
+  // open a Folder
+  const [openFolder, setOpenFolder] = useState<string[]>([]);
+
   // shows fake utilities group folder
   const [showUtilities, setShowUtilities] = useState(false);
 
@@ -356,6 +359,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return false;
   }, [blockInfo]);
 
+  const toggleFolder = (folderId: string) => {
+    setOpenFolder([folderId]);
+  };
+
   /**
    * This tracks the status of folders in settings (Folders can be activated and deactivated)
    */
@@ -477,6 +484,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     toggleFolderStatus,
     folderStatus,
+
+    openFolder,
+    toggleFolder
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

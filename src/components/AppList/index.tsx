@@ -5,6 +5,7 @@ import AppFolder from '../AppFolder';
 
 import * as _ from 'lodash';
 import useAppList from '../../hooks/useAppList';
+import { excludedFromFolders, systemApps } from '../../constants';
 
 const AppList = ({ data, maxCount }: any) => {
   const { setRightMenu, folderStatus } = useContext(appContext);
@@ -35,6 +36,31 @@ const AppList = ({ data, maxCount }: any) => {
       for (const [key, value] of f) {
         const category = key;
         const apps = value;
+
+        console.log('display Apps for folders..', appListWithCategories)
+        console.log('Rendering Folder Category', category);
+
+        if (category === "System") {
+          return (
+            <AppFolder
+              key={`appFolder_${key}`}
+              title={category}
+              data={apps}
+              display={appListWithCategories.filter((_app) => systemApps.includes(_app.conf.name))}
+            />
+          );
+        }
+
+        if (category === "Other") {
+          return (
+            <AppFolder
+              key={`appFolder_${key}`}
+              title={category}
+              data={apps}
+              display={appListWithCategories.filter((_app) => !_app.conf.category && !excludedFromFolders.includes(_app.conf.name))}
+            />
+          );
+        }
 
         return (
           <AppFolder

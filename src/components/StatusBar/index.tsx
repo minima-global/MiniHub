@@ -76,9 +76,9 @@ const TitleBar = () => {
                 {!showWarning && statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
                 {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
                   <>
-                    <div className="ml-0.5">Block</div>
-                    <div className="ml-1">
-                      {blockInfo.blockHeight} @ {format(parseInt(blockInfo.timemilli), 'HH:mm')}
+                    <div>
+                      <span>{blockInfo.blockHeight}</span>{' @ '} 
+                      <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>                     
                     </div>
                   </>
                 )}

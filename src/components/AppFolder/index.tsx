@@ -7,6 +7,9 @@ import { appContext } from '../../AppContext';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import useAppList from '../../hooks/useAppList';
+import styles from './Styles.module.css';
+import { animated, config, useSpring } from 'react-spring';
+import Blur from '../Blur';
 
 const Page = ({ data }: any) => {
   return data.map((app) => <App key={app.uid} data={app} />);
@@ -14,8 +17,7 @@ const Page = ({ data }: any) => {
 
 const AppFolder = ({ title, data, display }: any) => {
   const { maxDisplay, maxFolderCount } = useAppList();
-  const [scale, setScale] = useState(false);
-  const { rightMenu } = useContext(appContext);
+  const { rightMenu, openFolder, toggleFolder } = useContext(appContext);
 
   const numberOfPages = data && data[0].length;
   const empty = maxFolderCount - numberOfPages;
@@ -91,27 +93,28 @@ const AppFolder = ({ title, data, display }: any) => {
     }
   }, []);
 
-  const dismiss = () => {
-    setScale(false);
-  };
+  const springProps = useSpring({
+    opacity: openFolder.includes(title) ? 1 : 0,
+    transform: openFolder.includes(title) ? 'translateY(0%) scale(1)' : 'translateY(-50%) scale(0.8)',
+    config: config['wobbly'],
+  });
+
   return (
     <>
-      {scale &&
+      {openFolder.includes(title) &&
         createPortal(
-          <div className="grid grid-cols-1 grid-rows-[112px_1fr] absolute left-0 right-0 bottom-0 top-0 overflow-hidden">
-            <header />
-            <main>
-              <div
-                onClick={dismiss}
-                className={`z-30 w-screen h-screen backdrop-blur-sm top-0 left-0 right-0 bottom-0 ${
-                  scale ? 'fixed' : 'hidden'
-                }`}
-              />
-              <div className="grid grid-cols-[1fr_minmax(0,560px)_1fr] grid-rows-1 h-full">
+          <div className="absolute z-[30] left-0 right-0 bottom-0 top-0 grid grid-cols-[1fr_minmax(0,_560px)_1fr] overflow-y-scroll">
+            <div
+              onClick={() => toggleFolder([])}
+              id="backdrop"
+              className="backdrop-blur-sm fixed left-0 right-0 top-0 bottom-0 z-[30]"
+            />
+            <div />
+            <animated.div className="z-[31]" style={springProps}>
+              <div className="grid grid-rows-[112px_1fr]">
                 <div />
-
                 <div
-                  className={`mx-2 my-4 bg-white bg-opacity-40 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max ${
+                  className={`mx-2 my-4 bg-white bg-opacity-10 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max ${
                     title === 'Social' ? 'folder_social' : ''
                   }`}
                 >
@@ -182,25 +185,20 @@ const AppFolder = ({ title, data, display }: any) => {
                     </div>
                   </div>
                 </div>
-
-                <div />
               </div>
-            </main>
+            </animated.div>
+            <div />
           </div>,
           document.body
         )}
 
-      <div
-        onClick={() => {
-          setScale(true);
-        }}
-      >
+      <div onClick={() => toggleFolder(title)}>
         <div className="app-grid__icon mb-6">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
               className={`${title === 'Social' ? 'folder_social' : ''} ${
                 title === 'Finance' ? 'folder_finance' : ''
-              } hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-50 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
+              } hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-10 pl-1 py-1 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
             >
               {display &&
                 display

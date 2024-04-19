@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { appContext } from '../AppContext';
 import * as _ from 'lodash';
 import { AppData } from '../types/app';
+import { excludedFromFolders, systemApps } from '../constants';
 
 const sortByType = (a: any) => {
   if (a instanceof Map) {
@@ -22,7 +23,6 @@ const sortByType = (a: any) => {
 const useAppList = () => {
   const { appList, query, folderStatus } = useContext(appContext);
 
-  console.log(appList);
 
   const [maxColumn, setMaxColumns] = useState(4);
   const [maxRows, setMaxRows] = useState(4);
@@ -169,15 +169,12 @@ const useAppList = () => {
       return [];
     }
 
-    const excludedFromFolders = ['Pending'];
-
     // Initialize a Map to hold categorized apps
     const folders: Map<string, AppData[]> = new Map<string, AppData[]>();
 
     // Filter out apps excluded from folders
     const excludedApps: AppData[] = appList.filter((app) => excludedFromFolders.includes(app.conf.name));
     
-    const systemApps = ['Settings', 'Health', 'Logs', 'Security'];
 
     // Categorize apps
     appList.filter(app => !app.conf.name.includes(excludedApps.map(app => app.conf.name))).forEach((app) => {
