@@ -7,9 +7,7 @@ import { appContext } from '../../AppContext';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import useAppList from '../../hooks/useAppList';
-import styles from './Styles.module.css';
 import { animated, config, useSpring } from 'react-spring';
-import Blur from '../Blur';
 
 const Page = ({ data }: any) => {
   return data.map((app) => <App key={app.uid} data={app} />);
@@ -103,18 +101,18 @@ const AppFolder = ({ title, data, display }: any) => {
     <>
       {openFolder.includes(title) &&
         createPortal(
-          <div className="absolute z-[30] left-0 right-0 bottom-0 top-0 grid grid-cols-[1fr_minmax(0,_560px)_1fr] overflow-y-scroll">
+          <div onClick={() => toggleFolder([])} className="absolute z-[30] left-0 right-0 bottom-0 top-0 grid grid-cols-[1fr_minmax(0,_560px)_1fr] overflow-y-scroll">
             <div
-              onClick={() => toggleFolder([])}
               id="backdrop"
               className="backdrop-blur-sm fixed left-0 right-0 top-0 bottom-0 z-[30]"
             />
             <div />
             <animated.div className="z-[31]" style={springProps}>
-              <div className="grid grid-rows-[112px_1fr]">
+              <div onClick={() => toggleFolder([])}  className="grid grid-rows-[112px_auto]">
                 <div />
                 <div
-                  className={`mx-2 my-4 bg-white bg-opacity-10 p-4 rounded-lg  z-[30] grid grid-cols-1 grid-rows-[auto_1fr] h-max ${
+                  onClick={(e) => e.stopPropagation()}
+                  className={`mx-2 my-4 bg-white bg-opacity-10 p-4 rounded-lg  z-[30] grid grid-cols-1 h-max ${
                     title === 'Social' ? 'folder_social' : ''
                   }`}
                 >
