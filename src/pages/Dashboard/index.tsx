@@ -21,6 +21,7 @@ import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 import Joyride from 'react-joyride';
 import Introduction from '../../components/Introduction';
+import Tooltip from '../../components/Tooltip';
 
 function Dashboard() {
   const [onboard, _] = useState([
@@ -32,10 +33,16 @@ function Dashboard() {
       placement: 'center',
     },
     {
+      title: 'Lock your node',
+      target: '.onboard_security_1',
+      content:
+        'A red padlock here indicates that your node is not locked. Use Security to set a password so that your coins cannot be spent without it.',
+    },
+    {
       title: 'Install new dapps',
       target: '.onboard_install',
       content: 'Click on the + to install new minidapps that you have downloaded.',
-    },
+    },    
     {
       title: 'Dapp Store',
       target: '.dapp_store',
@@ -75,13 +82,7 @@ function Dashboard() {
       target: '.onboard_settings',
       content:
         'Android users can use their node from a desktop on the same WiFi network, your login details can be found in Settings under Desktop Connect. You can also change or upload your own wallpaper!',
-    },
-    {
-      title: 'Lock your node',
-      target: '.onboard_security_1',
-      content:
-        'A red padlock here indicates that your node is not locked. Use Security to set a password so that your coins cannot be spent without it.',
-    },
+    },    
     {
       title: 'All set!',
       target: '.dashboard',
@@ -214,6 +215,7 @@ function Dashboard() {
         <UpdateMiniDapp />
         <HasNoPeersModal />
         <AddConnectionsLaterModal />
+        <Tooltip />
 
         <div
           className="dashboard flex flex-col h-screen"

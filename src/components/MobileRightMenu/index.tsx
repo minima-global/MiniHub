@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const MobileRightMenu = () => {
   const navigate = useNavigate();
-  const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
+  const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp, shareApp, promptTooltip } =
     useContext(appContext);
   const data = appList && rightMenu && appList.find((i) => i.uid === rightMenu?.uid);
   const isRead = data && data.conf.permission === 'read';
@@ -90,6 +90,27 @@ const MobileRightMenu = () => {
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
               >
                 Update
+              </div>
+              <div
+                onClick={async () => {
+                  try {
+                    await shareApp(data.uid);
+                    if (window.navigator.userAgent.includes('Minima Browser')) {
+                      return promptTooltip("Sharing file...", 10000);
+                    }
+
+                    promptTooltip("Downloaded file!", 10000);
+
+                  } catch (error) {
+                    if (error instanceof Error) {
+                      return promptTooltip("Download failed, " + error.message);
+                    }
+                    promptTooltip("Download failed!");                  
+                  }
+                }}
+                className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
+              >
+                Share App
               </div>
               <div
                 onClick={() => {

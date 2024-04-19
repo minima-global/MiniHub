@@ -6,12 +6,16 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, setShowUpdateApp } = useContext(appContext);
+  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp } = useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
   const openApp = async () => {
     if (rightMenu) {
       return setRightMenu(null);
+    }
+
+    if (toggleFolder.length) {
+      toggleFolder([]);
     }
 
     // if there is an onclick method in app conf (utility app / settings) do that instead of calling
@@ -140,6 +144,27 @@ const AppList = ({ data }) => {
             >
               Update
             </div>
+            <div
+              onClick={async () => {
+                try {
+                  await shareApp(data.uid);
+                  if (window.navigator.userAgent.includes('Minima Browser')) {
+                    return promptTooltip('Sharing file...', 10000);
+                  }
+
+                  promptTooltip('Downloaded file!', 10000);
+                } catch (error) {
+                  if (error instanceof Error) {
+                    return promptTooltip('Download failed, ' + error.message);
+                  }
+                  promptTooltip('Download failed!');
+                }
+              }}
+              className="cursor-pointer"
+            >
+              Share App
+            </div>
+
             <div
               onClick={() => {
                 navigate('/delete');

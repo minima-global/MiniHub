@@ -27,6 +27,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
 
+  // If sharing app state
+  const [_tooltip, setToolTip] = useState<null | string>(null);
+
   // toggling folder mode on/off
   const [folderStatus, setFolders] = useState(false);
 
@@ -366,7 +369,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   /**
    * This tracks the status of folders in settings (Folders can be activated and deactivated)
    */
-  const getFolderStatus = () => {    
+  const getFolderStatus = () => {
     (window as any).MDS.keypair.get('folders', (resp: any) => {
       // if it doesn't exist, set it to default (true)
       if (!resp.status) {
@@ -388,6 +391,31 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (resp.status) {
           resolve(true);
         }
+      });
+    });
+  };
+
+  const promptTooltip = (message: string, duration = 2000) => {
+    setToolTip(message);
+
+    setTimeout(() => {
+      setToolTip(null);
+    }, duration);
+  };
+
+  const shareApp = async (uid: string) => {
+    return new Promise((resolve, reject) => {
+      (window as any).MDS.cmd(`mds action:download uid:${uid}`, (resp) => {
+        if (!resp.status) reject('Something went wrong downloading App...');
+        const saveLocation = resp.response.original;
+        const copy = resp.response.copy;
+        if ((window as any).navigator.userAgent.includes('Minima Browser')) {
+          resolve(copy);
+
+          return Android.shareFile(saveLocation, '*/*');
+        }
+
+        resolve(copy);
       });
     });
   };
@@ -486,7 +514,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     folderStatus,
 
     openFolder,
-    toggleFolder
+    toggleFolder,
+
+    shareApp,
+
+    _tooltip,
+    promptTooltip,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
