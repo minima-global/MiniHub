@@ -196,7 +196,7 @@ const AppFolder = ({ title, data, display }: any) => {
             <ul
               className={`${title === 'Social' ? 'folder_social' : ''} ${
                 title === 'Finance' ? 'folder_finance' : ''
-              } hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-10 pl-1 py-1 pr-2 md:pr-0 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
+              } hover:scale-95 active:scale-95 hover:cursor-pointer bg-white bg-opacity-10 pl-1 py-1 pr-1 md:pr-0 rounded-lg mb-3 overflow-hidden folder grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-3`}
             >
               {display &&
                 display
