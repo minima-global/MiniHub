@@ -120,25 +120,7 @@ const DashboardActionBar = () => {
               }}
               className="overflow-hidden flex items-center gap-1 cursor-pointer"
             >
-              <div className="relative inset-0 bg-gray-800 opacity-0 hover:opacity-50 transition-opacity duration-300"></div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"                
-                width="28"
-                height="32"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className='mix-blend-difference'
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-              </svg>
-              <h1 className="text-2xl text-white mix-blend-difference truncate">{maximaName}</h1>
+              <h1 className="text-base text-white mix-blend-difference truncate">{maximaName}</h1>
             </div>
           </div>
           <div className="col-span-6 flex items-center justify-end gap-4">

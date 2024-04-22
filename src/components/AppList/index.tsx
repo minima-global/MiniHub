@@ -55,7 +55,12 @@ const AppList = ({ data, maxCount }: any) => {
               key={`appFolder_${key}`}
               title={category}
               data={apps}
-              display={appListWithCategories.filter((_app) => !_app.conf.category && !excludedFromFolders.includes(_app.conf.name))}
+              display={appListWithCategories.filter(_app =>
+                !_app.conf.category &&
+                !_app.uid.includes("system") &&
+                !systemApps.includes(_app.conf.name) &&
+                !excludedFromFolders.includes(_app.conf.name)
+              )}
             />
           );
         }
