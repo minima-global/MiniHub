@@ -37,8 +37,6 @@ const AppList = ({ data, maxCount }: any) => {
         const category = key;
         const apps = value;
 
-        console.log('display Apps for folders..', appListWithCategories)
-        console.log('Rendering Folder Category', category);
 
         if (category === "System") {
           return (

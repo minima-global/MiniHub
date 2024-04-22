@@ -17,7 +17,7 @@ const Tooltip = () => {
 
   return (
     <animated.div
-      onMouseEnter={() => promptTooltip(_tooltip, 10000000)}
+      onMouseEnter={() => promptTooltip(_tooltip, 2000)}
       onMouseLeave={() => promptTooltip(null)}
       style={springProps}
       className="fixed bottom-4 right-4 z-[20000]"

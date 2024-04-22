@@ -1,5 +1,4 @@
 export const createDownloadLink = (mdsfile: string) => {
-  console.log('Creating download link', mdsfile);
   const newFilePath = `/my_downloads/${mdsfile}_minima_download_as_file_`;
 
   (window as any).MDS.file.copytoweb(mdsfile, newFilePath, function () {

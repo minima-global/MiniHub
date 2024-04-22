@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 import { IS_MINIMA_BROWSER } from '../../../env';
@@ -8,6 +8,25 @@ const AppList = ({ data }) => {
   const navigate = useNavigate();
   const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp } = useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
+
+  const handleEscapeKey = (event) => {
+    if (event.keyCode === 27) {
+      // Call your set method here
+      setRightMenu(null);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      handleEscapeKey(event);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const openApp = async () => {
     if (rightMenu) {
