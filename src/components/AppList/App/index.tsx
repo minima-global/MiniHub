@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp } = useContext(appContext);
+  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } = useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
   const handleEscapeKey = (event) => {
@@ -29,6 +29,10 @@ const AppList = ({ data }) => {
   }, []);
 
   const openApp = async () => {
+    if (tutorialMode) {
+      return null;
+    }
+
     if (rightMenu) {
       return setRightMenu(null);
     }
@@ -61,6 +65,9 @@ const AppList = ({ data }) => {
 
   const handleOnContextMenu = (evt: React.MouseEvent<HTMLDivElement>) => {
     evt.preventDefault();
+    if (tutorialMode) {
+      return null;
+    }
     setRightMenu(data);
   };
 
@@ -80,8 +87,8 @@ const AppList = ({ data }) => {
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
           className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
             data.conf.name.includes('Pending') ? 'onboard_pending' : ''
-          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} ${
-            data.conf.name.includes('Settings') ? 'onboard_settings' : ''
+          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} ${data.conf.name.includes('MaxContacts') ? 'folder_social' : ''} ${
+            data.conf.name.includes('Settings') ? 'onboard_settings' : data.conf.name.includes('Wallet') ? 'onboard_wallet' : ''
           } item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}

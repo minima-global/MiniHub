@@ -19,13 +19,30 @@ import MDSFail from '../../components/MDSFail';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
-import Joyride from 'react-joyride';
+import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS, Step } from 'react-joyride';
 import Introduction from '../../components/Introduction';
 import Tooltip from '../../components/Tooltip';
 
+function findPageIndexContainingApp(name, apps) {
+  // Loop through each inner array
+  for (let i = 0; i < apps.length; i++) {
+    const innerArray = apps[i];
+    // Check if the inner array contains an object with the specified name
+    const foundObjectIndex = innerArray.findIndex((obj) => obj.conf.name === name);
+    // If found, return the index of the inner array
+    if (foundObjectIndex !== -1) {
+      return i;
+    }
+  }
+
+  throw new Error();
+}
+
 function Dashboard() {
-  const [onboard, _] = useState([
+  // onboard tutorial content
+  const [onboard, _] = useState<Step[]>([
     {
+      //1
       title: 'Dashboard',
       target: '.dashboard',
       content:
@@ -33,57 +50,68 @@ function Dashboard() {
       placement: 'center',
     },
     {
-      title: 'Lock your node',
-      target: '.onboard_security_1',
-      content:
-        'A red padlock here indicates that your node is not locked. Use Security to set a password so that your coins cannot be spent without it.',
-    },
-    {
-      title: 'Install new dapps',
-      target: '.onboard_install',
-      content: 'Click on the + to install new minidapps that you have downloaded.',
-    },    
-    {
-      title: 'Dapp Store',
-      target: '.dapp_store',
-      content: 'Install or update the latest dapps from the Minima Dapp Store.  You can also create your own store!',
-    },
-    {
-      title: 'The Blockchain',
-      target: '.block_info',
-      content:
-        'Once connected to the network, your latest block will show here. Tap on it to check the status and health of your node.',
-    },
-    {
-      title: 'Be sociable',
-      target: '.folder_social',
-      content:
-        'Add your friends as contacts in MaxContacts, chat 1 on 1 in MaxSolo or interact with all your contacts and beyond on Chatter.',
-    },
-    {
-      title: 'Your coins',
-      target: '.folder_finance',
-      content:
-        'Use the Wallet to check your balance, addresses and to send coins. You can also create your own tokens and NFTs!',
-    },
-    {
-      title: 'Pending',
-      target: '.onboard_pending',
-      content: 'Check and approve the transactions you make from read-only minidapps.',
-    },
-    {
+      //2
       title: 'Stay Secure',
       target: '.onboard_security',
       content:
         'Check your seed phrase and lock, backup or restore your node. Turn on auto-backup to take daily backups that you can restore without your seed phrase.',
     },
     {
+      //3
+      title: 'Install new dapps',
+      target: '.onboard_install',
+      content: 'Click on the + to install new minidapps that you have downloaded.',
+    },
+    {
+      //4
+      title: 'Dapp Store',
+      target: '.dapp_store',
+      content: 'Install or update the latest dapps from the Minima Dapp Store.  You can also create your own store!',
+    },
+    {
+      //5
+      title: 'The Blockchain',
+      target: '.block_info',
+      content:
+        'Once connected to the network, your latest block will show here. Tap on it to check the status and health of your node.',
+    },
+    {
+      //6
+      title: 'Be sociable',
+      target: '.folder_social',
+      placement: 'top',
+      content:
+        'Add your friends as contacts in MaxContacts, chat 1 on 1 in MaxSolo or interact with all your contacts and beyond on Chatter.',
+    },
+    {
+      //7
+      title: 'Your coins',
+      target: '.onboard_wallet',
+      content:
+        'Use the Wallet to check your balance, addresses and to send coins. You can also create your own tokens and NFTs!',
+    },
+    {
+      //8
+      title: 'Pending',
+      target: '.onboard_pending',
+      content: 'Check and approve the transactions you make from read-only minidapps.',
+    },
+    {
+      //9
+      title: 'Lock your node',
+      target: '.onboard_security_1',
+      content:
+        'A red padlock here indicates that your node is not locked. Use Security to set a password so that your coins cannot be spent without it.',
+    },
+    {
+      //10
       title: 'Settings',
       target: '.onboard_settings',
       content:
         'Android users can use their node from a desktop on the same WiFi network, your login details can be found in Settings under Desktop Connect. You can also change or upload your own wallpaper!',
-    },    
+    },
     {
+      //11
       title: 'All set!',
       target: '.dashboard',
       content: 'You can now start playing!',
@@ -91,7 +119,18 @@ function Dashboard() {
     },
   ]);
 
-  const { setRightMenu, folderMenu, showOnboard, checkPeers, setShowOnboard } = useContext(appContext);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  const {
+    setRightMenu,
+    folderMenu,
+    showOnboard,
+    checkPeers,
+    setShowOnboard,
+    setTutorialMode,
+    folderStatus,
+    toggleFolder,
+  } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
   const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
@@ -164,20 +203,238 @@ function Dashboard() {
     }
   }, []);
 
+  const handleJoyrideCallback = async (data: CallBackProps) => {
+    const { action, index, type, status } = data;
+
+    // When the tutorial started put the application in tutorial Mode (de-activate opening apps and clicking out of folders)
+    if (([ACTIONS.START] as string[]).includes(action)) {
+      setTutorialMode(true);
+    }
+
+    if (([STATUS.FINISHED] as string[]).includes(status)) {
+      setStepIndex(0);
+      setTutorialMode(false);
+      checkPeers();
+      return setShowOnboard(false);
+    }
+    // If we skip or close, switch off everything
+    if (([ACTIONS.SKIP, ACTIONS.CLOSE] as string[]).includes(action)) {
+      setStepIndex(0);
+      setTutorialMode(false);
+      checkPeers();
+      return setShowOnboard(false);
+    }
+
+    // Only do this logic if in folder mode...
+    if (folderStatus) {
+      if (([STATUS.FINISHED, STATUS.SKIPPED, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+        setShowOnboard(false);
+        // Run check peers, incase they require to add peers at the end of the initial tutorial
+        checkPeers();
+      } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+        const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+        const userPressedNext = action === ACTIONS.NEXT;
+        const userPressedBack = action === ACTIONS.PREV;
+        const PREVIOUS_REQUIRES_ACTION = [1, 3, 5, 6, 7, 9].includes(index - 1);
+        const NEXT_REQUIRES_ACTION = [0, 2, 4, 5, 8].includes(index);
+
+        if (userPressedNext) {
+          if (NEXT_REQUIRES_ACTION) {
+            setShowOnboard(false);
+            let folderName: string | null = null;
+
+            if ([0, 2, 8].includes(index)) {
+              folderName = 'System';
+            }
+
+            if (index === 4) {
+              folderName = 'Social';
+            }
+
+            if (index === 5) {
+              folderName = 'Finance';
+            }
+
+            toggleFolder(folderName);
+
+            setTimeout(() => {
+              setStepIndex(nextStepIndex);
+              setShowOnboard(true);
+            }, 500);
+          } else {
+            toggleFolder(null);
+            setStepIndex(nextStepIndex);
+          }
+        } else if (userPressedBack) {
+          if (PREVIOUS_REQUIRES_ACTION) {
+
+            setShowOnboard(false);
+            let folderName: string | null = null;
+
+            if ([1, 3, 9].includes(index - 1)) {
+              folderName = 'System';
+            }
+
+            if (index - 1 === 5) {
+              folderName = 'Social';
+            }
+
+            if (index - 1 === 6) {
+              folderName = 'Finance';
+            }
+
+            toggleFolder(folderName);
+
+            setTimeout(() => {
+              setStepIndex(nextStepIndex);
+              setShowOnboard(true);
+            }, 500);
+          } else {
+            toggleFolder(null);
+            setStepIndex(nextStepIndex);
+          }
+        }
+      }
+    }
+
+    // only do this logic if not in folder mode...
+    if (!folderStatus) {
+      if (([STATUS.FINISHED, STATUS.SKIPPED, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+        setTutorialMode(false);
+        setShowOnboard(false);
+        // Run check peers, incase they require to add peers at the end of the initial tutorial
+        checkPeers();
+      } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+        const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+        const userPressedNext = action === ACTIONS.NEXT;
+        const userPressedBack = action === ACTIONS.PREV;
+        const PREVIOUS_REQUIRES_ACTION = [1, 3, 5, 6, 7, 8, 9].includes(index - 1);
+        const NEXT_REQUIRES_ACTION = [1, 3, 5, 6, 7, 9].includes(index + 1);
+
+        if (userPressedNext) {
+          if (NEXT_REQUIRES_ACTION) {
+            setShowOnboard(false);
+
+            try {
+              // step 1 requires the application Security
+              if (index === 0) {
+                const pageIndex = findPageIndexContainingApp('Security', entireAppList);
+
+                emblaApi?.scrollTo(pageIndex);
+              }
+              // step 3 requires Dapp Store
+              if (index === 2) {
+                const pageIndex = findPageIndexContainingApp('Dapp Store', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 5 requires MaxContacts
+              if (index === 4) {
+                const pageIndex = findPageIndexContainingApp('MaxContacts', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 6 requires Wallet
+              if (index === 5) {
+                const pageIndex = findPageIndexContainingApp('Wallet', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 6 requires Wallet
+              if (index === 6) {
+                const pageIndex = findPageIndexContainingApp('Pending', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 8 requires Settings
+              if (index === 8) {
+                const pageIndex = findPageIndexContainingApp('Settings', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+            } catch (error) {
+              // setStepIndex(nextStepIndex + 1);              
+              handleJoyrideCallback({... data, index: nextStepIndex + 1})
+              return setShowOnboard(true);
+            }
+
+            setTimeout(() => {
+              setStepIndex(nextStepIndex);
+              setShowOnboard(true);
+            }, 700);
+          } else {
+            toggleFolder(null);
+            setStepIndex(nextStepIndex);
+          }
+        } else if (userPressedBack) {
+          if (PREVIOUS_REQUIRES_ACTION) {
+            setShowOnboard(false);
+
+            try {
+              // step 1 requires the application Security
+              if (index === 2) {
+                const pageIndex = findPageIndexContainingApp('Security', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+              // step 3 requires Dapp Store
+              if (index === 4) {
+                const pageIndex = findPageIndexContainingApp('Dapp Store', entireAppList);
+                console.log(pageIndex);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 5 requires MaxContacts
+              if (index === 6) {
+                const pageIndex = findPageIndexContainingApp('MaxContacts', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 6 requires Wallet
+              if (index === 7) {
+                const pageIndex = findPageIndexContainingApp('Wallet', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 6 requires Pending
+              if (index === 8) {
+                const pageIndex = findPageIndexContainingApp('Pending', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+
+              // step 8 requires Settings
+              if (index === 10) {
+                const pageIndex = findPageIndexContainingApp('Settings', entireAppList);
+                emblaApi?.scrollTo(pageIndex);
+              }
+            } catch (error) {              
+              // setStepIndex(nextStepIndex - 1);
+              handleJoyrideCallback({... data, index: nextStepIndex - 1})
+              return setShowOnboard(true);
+            }
+
+            setTimeout(() => {
+              setStepIndex(nextStepIndex);
+              setShowOnboard(true);
+            }, 700);
+          } else {
+            toggleFolder(null);
+            setStepIndex(nextStepIndex);
+          }
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Joyride
+        continuous
+        callback={handleJoyrideCallback}
         run={showOnboard}
-        callback={(evt: any) => {
-          const finishTutorial = evt.action === 'reset';
-
-          if (finishTutorial) {
-            setShowOnboard(false);
-            checkPeers();
-          }
-        }}
-        showProgress={true}
-        // @ts-ignore
+        showProgress
+        showSkipButton
+        stepIndex={stepIndex}
         steps={onboard}
         floaterProps={{
           styles: {
@@ -199,8 +456,6 @@ function Dashboard() {
             fontWeight: 800,
           },
         }}
-        continuous={true}
-        showSkipButton={true}
       />
       <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
         <Introduction />

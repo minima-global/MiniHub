@@ -56,6 +56,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show onboard tour
   const [showOnboard, setShowOnboard] = useState(false);
+  
+  // show onboard tour
+  const [tutorialMode, setTutorialMode] = useState(false);
 
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
@@ -407,15 +410,23 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return new Promise((resolve, reject) => {
       (window as any).MDS.cmd(`mds action:download uid:${uid}`, (resp) => {
         if (!resp.status) reject('Something went wrong downloading App...');
-        const saveLocation = resp.response.original;
-        const copy = resp.response.copy;
-        if ((window as any).navigator.userAgent.includes('Minima Browser')) {
+        try {
+          const saveLocation = resp.response.original;
+          const copy = resp.response.copy;
+          if ((window as any).navigator.userAgent.includes('Minima Browser')) {
+            resolve(copy);
+
+            return Android.shareFile(saveLocation, '*/*');
+          }
+
           resolve(copy);
+        } catch (error) {
+          if (error instanceof Error) {
+            reject(error.message);
+          }
 
-          return Android.shareFile(saveLocation, '*/*');
+          reject('Something went wrong');
         }
-
-        resolve(copy);
       });
     });
   };
@@ -504,6 +515,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showIntroduction,
     setShowIntroduction,
 
+    // This will be just to track whether in tutorial Mode
+    tutorialMode,
+    setTutorialMode,
+    // Toggling onboard tutorial on/off
     showOnboard,
     setShowOnboard,
     maximaName,
