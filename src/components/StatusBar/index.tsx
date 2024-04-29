@@ -10,7 +10,7 @@ const TitleBar = () => {
   const { openTitleBar } = useAndroidShowTitleBar();
   const { blockInfo, showWarning, statusInfo, appList, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
-  let { isNodeFiveMinutesAgoBehind } = useContext(appContext);
+  const { isNodeFiveMinutesAgoBehind } = useContext(appContext);
 
   const displayBlockInfo = async (evt) => {
     evt.stopPropagation();

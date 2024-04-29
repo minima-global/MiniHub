@@ -1,5 +1,11 @@
 # Changelog
 
+##### [0.15.7] - 29 April 24
+
+- Onboard controlled mode
+- Folder mode/default mode for the onboarding tutorial
+- Better error handle for sharing app
+
 ##### [0.14.3] - 08 November 23
 
 - Tweak where Maxima name is

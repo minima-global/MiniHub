@@ -409,7 +409,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const shareApp = async (uid: string) => {
     return new Promise((resolve, reject) => {
       (window as any).MDS.cmd(`mds action:download uid:${uid}`, (resp) => {
-        if (!resp.status) reject('Something went wrong downloading App...');
+        if (!resp.status) reject(resp.error ? resp.error : 'Download failed for this app.');
         try {
           const saveLocation = resp.response.original;
           const copy = resp.response.copy;

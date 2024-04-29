@@ -183,7 +183,7 @@ const AppList = ({ data }) => {
                   if (error instanceof Error) {
                     return promptTooltip('Download failed, ' + error.message);
                   }
-                  promptTooltip('Download failed!');
+                  promptTooltip(typeof error === 'string' ? error : 'Download failed.');
                 }
               }}
               className="cursor-pointer"

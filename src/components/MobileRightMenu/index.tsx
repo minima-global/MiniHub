@@ -105,7 +105,7 @@ const MobileRightMenu = () => {
                     if (error instanceof Error) {
                       return promptTooltip("Download failed, " + error.message);
                     }
-                    promptTooltip("Download failed!");                  
+                    promptTooltip(typeof error === 'string' ? error : 'Download failed.');                  
                   }
                 }}
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"

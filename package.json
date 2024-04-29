@@ -2,7 +2,7 @@
   "name": "minihub",
   "private": true,
   "description": "MinimaOS home screen",
-  "version": "0.15.6",
+  "version": "0.15.7",
   "type": "module",
   "scripts": {
     "dev": "vite",

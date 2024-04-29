@@ -19,7 +19,7 @@ import MDSFail from '../../components/MDSFail';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
-import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS, Step } from 'react-joyride';
+import Joyride, { ACTIONS, CallBackProps, EVENTS, Step } from 'react-joyride';
 import Introduction from '../../components/Introduction';
 import Tooltip from '../../components/Tooltip';
 
