@@ -114,7 +114,7 @@ function Dashboard() {
     },
     {
       //11
-      title: 'All set!',
+      title: 'Let\'s go!',
       target: '.dashboard',
       content: 'You can now start playing!',
       placement: 'center'

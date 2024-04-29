@@ -1,5 +1,10 @@
 # Changelog
 
+##### [0.15.8] - 29 April 24
+
+- Fix Wallet search
+- Copy update
+
 ##### [0.15.7] - 29 April 24
 
 - Onboard controlled mode
