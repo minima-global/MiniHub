@@ -86,8 +86,8 @@ const AppList = ({ data }) => {
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
           className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
-            data.conf.name.includes('Pending') ? 'onboard_pending' : ''
-          } ${data.conf.name.includes('Security') ? 'onboard_security' : ''} ${data.conf.name.includes('MaxContacts') ? 'folder_social' : ''} ${
+            data.conf.name === 'Pending' ? 'onboard_pending' : ''
+          } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${data.conf.name.includes('MaxContacts') ? 'folder_social' : ''} ${
             data.conf.name.includes('Settings') ? 'onboard_settings' : data.conf.name.includes('Wallet') ? 'onboard_wallet' : ''
           } item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''

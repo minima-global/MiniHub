@@ -35,14 +35,14 @@ function findPageIndexContainingApp(name, apps) {
     }
   }
 
-  throw new Error();
+  return -1;
 }
 
 function Dashboard() {
   // onboard tutorial content
   const [onboard, _] = useState<Step[]>([
     {
-      //1
+      // 1
       title: 'Dashboard',
       target: '.dashboard',
       content:
@@ -61,6 +61,7 @@ function Dashboard() {
       title: 'Install new dapps',
       target: '.onboard_install',
       content: 'Click on the + to install new minidapps that you have downloaded.',
+      placement: 'top',
     },
     {
       //4
@@ -74,6 +75,7 @@ function Dashboard() {
       target: '.block_info',
       content:
         'Once connected to the network, your latest block will show here. Tap on it to check the status and health of your node.',
+      placement: 'bottom',
     },
     {
       //6
@@ -115,7 +117,7 @@ function Dashboard() {
       title: 'All set!',
       target: '.dashboard',
       content: 'You can now start playing!',
-      placement: 'center',
+      placement: 'center'
     },
   ]);
 
@@ -125,7 +127,6 @@ function Dashboard() {
     setRightMenu,
     folderMenu,
     showOnboard,
-    checkPeers,
     setShowOnboard,
     setTutorialMode,
     folderStatus,
@@ -203,228 +204,70 @@ function Dashboard() {
     }
   }, []);
 
-  const handleJoyrideCallback = async (data: CallBackProps) => {
-    const { action, index, type, status } = data;
+  const handleJoyrideCallback = useCallback(
+    async (data: CallBackProps) => {
+      const { action, index, type } = data;
 
-    // When the tutorial started put the application in tutorial Mode (de-activate opening apps and clicking out of folders)
-    if (([ACTIONS.START] as string[]).includes(action)) {
-      setTutorialMode(true);
-    }
-
-    if (([STATUS.FINISHED] as string[]).includes(status)) {
-      setStepIndex(0);
-      setTutorialMode(false);
-      checkPeers();
-      return setShowOnboard(false);
-    }
-    // If we skip or close, switch off everything
-    if (([ACTIONS.SKIP, ACTIONS.CLOSE] as string[]).includes(action)) {
-      setStepIndex(0);
-      setTutorialMode(false);
-      checkPeers();
-      return setShowOnboard(false);
-    }
-
-    // Only do this logic if in folder mode...
-    if (folderStatus) {
-      if (([STATUS.FINISHED, STATUS.SKIPPED, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
-        setShowOnboard(false);
-        // Run check peers, incase they require to add peers at the end of the initial tutorial
-        checkPeers();
-      } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
-        const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
-
-        const userPressedNext = action === ACTIONS.NEXT;
-        const userPressedBack = action === ACTIONS.PREV;
-        const PREVIOUS_REQUIRES_ACTION = [1, 3, 5, 6, 7, 9].includes(index - 1);
-        const NEXT_REQUIRES_ACTION = [0, 2, 4, 5, 8].includes(index);
-
-        if (userPressedNext) {
-          if (NEXT_REQUIRES_ACTION) {
-            setShowOnboard(false);
-            let folderName: string | null = null;
-
-            if ([0, 2, 8].includes(index)) {
-              folderName = 'System';
-            }
-
-            if (index === 4) {
-              folderName = 'Social';
-            }
-
-            if (index === 5) {
-              folderName = 'Finance';
-            }
-
-            toggleFolder(folderName);
-
-            setTimeout(() => {
-              setStepIndex(nextStepIndex);
-              setShowOnboard(true);
-            }, 500);
-          } else {
-            toggleFolder(null);
-            setStepIndex(nextStepIndex);
-          }
-        } else if (userPressedBack) {
-          if (PREVIOUS_REQUIRES_ACTION) {
-
-            setShowOnboard(false);
-            let folderName: string | null = null;
-
-            if ([1, 3, 9].includes(index - 1)) {
-              folderName = 'System';
-            }
-
-            if (index - 1 === 5) {
-              folderName = 'Social';
-            }
-
-            if (index - 1 === 6) {
-              folderName = 'Finance';
-            }
-
-            toggleFolder(folderName);
-
-            setTimeout(() => {
-              setStepIndex(nextStepIndex);
-              setShowOnboard(true);
-            }, 500);
-          } else {
-            toggleFolder(null);
-            setStepIndex(nextStepIndex);
-          }
-        }
+      if (([ACTIONS.CLOSE] as string[]).includes(action)) {        
+        setTutorialMode(false);
       }
-    }
 
-    // only do this logic if not in folder mode...
-    if (!folderStatus) {
-      if (([STATUS.FINISHED, STATUS.SKIPPED, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      if (([EVENTS.TOUR_START, "tooltip"] as string[]).includes(type)) {        
+        setTutorialMode(true);
+      }
+      
+      if ((["beacon"] as string[]).includes(type)) {        
+        setTutorialMode(false);
+      }
+
+      if (([EVENTS.TOUR_END, EVENTS.ERROR] as string[]).includes(type)) {
         setTutorialMode(false);
         setShowOnboard(false);
-        // Run check peers, incase they require to add peers at the end of the initial tutorial
-        checkPeers();
-      } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
-        const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+        setStepIndex(0);
+      }
 
-        const userPressedNext = action === ACTIONS.NEXT;
-        const userPressedBack = action === ACTIONS.PREV;
-        const PREVIOUS_REQUIRES_ACTION = [1, 3, 5, 6, 7, 8, 9].includes(index - 1);
-        const NEXT_REQUIRES_ACTION = [1, 3, 5, 6, 7, 9].includes(index + 1);
 
-        if (userPressedNext) {
-          if (NEXT_REQUIRES_ACTION) {
-            setShowOnboard(false);
+      const USING_FOLDERS = folderStatus;
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
 
-            try {
-              // step 1 requires the application Security
-              if (index === 0) {
-                const pageIndex = findPageIndexContainingApp('Security', entireAppList);
+      if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+        const NEXT_STEP_INDEX = index + (action === ACTIONS.PREV ? -1 : 1);
 
-                emblaApi?.scrollTo(pageIndex);
-              }
-              // step 3 requires Dapp Store
-              if (index === 2) {
-                const pageIndex = findPageIndexContainingApp('Dapp Store', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
+        const REQUIRES_ACTION = [1, 3, 5, 6, 8, 9].includes(NEXT_STEP_INDEX);
 
-              // step 5 requires MaxContacts
-              if (index === 4) {
-                const pageIndex = findPageIndexContainingApp('MaxContacts', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
+        if (USING_FOLDERS) {
+          const folderMapping = {
+            0: 'System',
+            2: 'System',
+            8: 'System',
+            4: 'Social',
+            5: 'Finance',
+            10: 'System',
+          };
+          const folderName = folderMapping[index] || null;
+          toggleFolder(REQUIRES_ACTION ? folderName : null);
+        } else {
+          const indexToAppNameMapping = {
+            0: 'Security',
+            2: 'Dapp Store',
+            4: 'MaxContacts',
+            5: 'Wallet',
+            6: 'Pending',
+            8: 'Settings',
+          };
 
-              // step 6 requires Wallet
-              if (index === 5) {
-                const pageIndex = findPageIndexContainingApp('Wallet', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 6 requires Wallet
-              if (index === 6) {
-                const pageIndex = findPageIndexContainingApp('Pending', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 8 requires Settings
-              if (index === 8) {
-                const pageIndex = findPageIndexContainingApp('Settings', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-            } catch (error) {
-              // setStepIndex(nextStepIndex + 1);              
-              handleJoyrideCallback({... data, index: nextStepIndex + 1})
-              return setShowOnboard(true);
-            }
-
-            setTimeout(() => {
-              setStepIndex(nextStepIndex);
-              setShowOnboard(true);
-            }, 700);
-          } else {
-            toggleFolder(null);
-            setStepIndex(nextStepIndex);
-          }
-        } else if (userPressedBack) {
-          if (PREVIOUS_REQUIRES_ACTION) {
-            setShowOnboard(false);
-
-            try {
-              // step 1 requires the application Security
-              if (index === 2) {
-                const pageIndex = findPageIndexContainingApp('Security', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-              // step 3 requires Dapp Store
-              if (index === 4) {
-                const pageIndex = findPageIndexContainingApp('Dapp Store', entireAppList);
-                console.log(pageIndex);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 5 requires MaxContacts
-              if (index === 6) {
-                const pageIndex = findPageIndexContainingApp('MaxContacts', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 6 requires Wallet
-              if (index === 7) {
-                const pageIndex = findPageIndexContainingApp('Wallet', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 6 requires Pending
-              if (index === 8) {
-                const pageIndex = findPageIndexContainingApp('Pending', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-
-              // step 8 requires Settings
-              if (index === 10) {
-                const pageIndex = findPageIndexContainingApp('Settings', entireAppList);
-                emblaApi?.scrollTo(pageIndex);
-              }
-            } catch (error) {              
-              // setStepIndex(nextStepIndex - 1);
-              handleJoyrideCallback({... data, index: nextStepIndex - 1})
-              return setShowOnboard(true);
-            }
-
-            setTimeout(() => {
-              setStepIndex(nextStepIndex);
-              setShowOnboard(true);
-            }, 700);
-          } else {
-            toggleFolder(null);
-            setStepIndex(nextStepIndex);
+          if (typeof indexToAppNameMapping[index] === 'string') {
+            const pageIndex = findPageIndexContainingApp(indexToAppNameMapping[index], entireAppList);
+            emblaApi?.scrollTo(pageIndex);
           }
         }
+
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
+        setStepIndex(NEXT_STEP_INDEX);
       }
-    }
-  };
+    },
+    [setTutorialMode, setShowOnboard, setStepIndex, toggleFolder]
+  );
 
   return (
     <>

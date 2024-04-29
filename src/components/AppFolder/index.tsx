@@ -193,7 +193,7 @@ const AppFolder = ({ title, data, display }: any) => {
           document.body
         )}
 
-      <div onClick={() => !rightMenu ? toggleFolder(title) : setRightMenu(null)}>
+      <div onClick={() => CAN_CLOSE_FOLDER ? toggleFolder(title) : setRightMenu(null)}>
         <div className="app-grid__icon mb-6">
           <div className="item relative flex justify-center items-center flex-col">
             <ul
