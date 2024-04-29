@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } = useContext(appContext);
+  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } =
+    useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
   const handleEscapeKey = (event) => {
@@ -85,10 +86,12 @@ const AppList = ({ data }) => {
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
-          className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
+          className={`${data.conf.name === 'Dapp Store' ? 'dapp_store' : ''} ${
             data.conf.name === 'Pending' ? 'onboard_pending' : ''
-          } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${data.conf.name.includes('MaxContacts') ? 'folder_social' : ''} ${
-            data.conf.name.includes('Settings') ? 'onboard_settings' : data.conf.name.includes('Wallet') ? 'onboard_wallet' : ''
+          } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${
+            data.conf.name === 'MaxContacts' ? 'folder_social' : ''
+          } ${
+            data.conf.name === 'Settings' ? 'onboard_settings' : data.conf.name === 'Wallet' ? 'onboard_wallet' : ''
           } item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
