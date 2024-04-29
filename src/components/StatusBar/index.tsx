@@ -10,7 +10,7 @@ const TitleBar = () => {
   const { openTitleBar } = useAndroidShowTitleBar();
   const { blockInfo, showWarning, statusInfo, appList, showSearch } = useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
-  let { isNodeFiveMinutesAgoBehind } = useContext(appContext);
+  const { isNodeFiveMinutesAgoBehind } = useContext(appContext);
 
   const displayBlockInfo = async (evt) => {
     evt.stopPropagation();
@@ -47,10 +47,11 @@ const TitleBar = () => {
         <div className="svg col-span-9 flex justify-end">
           <div className="absolute top-0 right-3 flex p-4 pr-0 items-center justify-end gap-2 overflow-hidden">
             <Status />
+
             {blockInfo && blockInfo.blockHeight && (
               <div
                 onClick={displayBlockInfo}
-                className="flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
+                className="block_info flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
               >
                 {isNodeFiveMinutesAgoBehind && (
                   <svg
@@ -75,9 +76,9 @@ const TitleBar = () => {
                 {!showWarning && statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
                 {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
                   <>
-                    <div className="ml-0.5">Block</div>
-                    <div className="ml-1">
-                      {blockInfo.blockHeight} @ {format(parseInt(blockInfo.timemilli), 'HH:mm')}
+                    <div>
+                      <span>{blockInfo.blockHeight}</span>{' @ '} 
+                      <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>                     
                     </div>
                   </>
                 )}

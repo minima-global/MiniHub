@@ -11,10 +11,20 @@ import UpdateMiniHub from './UpdateMiniHub';
 import { useNavigate } from 'react-router-dom';
 import ShareConnections from './ShareConnections';
 import { peers } from '../../../lib';
+import Toggle from '../../../components/UI/Toggle';
 
 export function Settings() {
   const navigate = useNavigate();
-  const { loaded, setShowSettings, showSettings: display, showAddConnections, setShowAddConnections } = useContext(appContext);
+  const {
+    loaded,
+    setShowSettings,
+    showSettings: display,
+    showAddConnections,
+    setShowAddConnections,
+    setShowOnboard,
+    folderStatus,
+    toggleFolderStatus,
+  } = useContext(appContext);
   const [showShutdown, setShutdown] = useState(false);
   const [showWallpaper, setShowWallpaper] = useState(false);
   const [showDesktopConnect, setShowDesktopConnect] = useState(false);
@@ -145,6 +155,29 @@ export function Settings() {
                     fill="#F4F4F5"
                   />
                 </svg>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                setShowOnboard(true);
+                dismiss();
+              }}
+              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+            >
+              Onboard tutorial
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.04984 5.99995L1.37504 11.6501L0.500244 10.7501L5.24984 5.99995L0.500244 1.24975L1.40024 0.349747L7.04984 5.99995Z"
+                    fill="#F4F4F5"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer">
+              Folder layout
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <Toggle checkedStatus={folderStatus} onChange={toggleFolderStatus} />
               </div>
             </div>
             <div

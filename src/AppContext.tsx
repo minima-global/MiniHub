@@ -3,13 +3,17 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
 import useWallpaper from './hooks/useWallpaper';
 import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
+import * as utils from './utilities';
+import { AppData } from './types/app';
 
 export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
 
-  const [appList, setAppList] = useState<any[]>([]);
+  const [maximaName, setMaximaName] = useState('');
+
+  const [appList, setAppList] = useState<AppData[]>([]);
 
   const [mdsInfo, setMdsInfo] = useState<any>(null);
 
@@ -22,6 +26,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
+
+  // If sharing app state
+  const [_tooltip, setToolTip] = useState<null | string>(null);
+
+  // toggling folder mode on/off
+  const [folderStatus, setFolders] = useState(false);
+
+  // open a Folder
+  const [openFolder, setOpenFolder] = useState<string[]>([]);
 
   // shows fake utilities group folder
   const [showUtilities, setShowUtilities] = useState(false);
@@ -37,6 +50,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show install menu
   const [showInstall, setShowInstall] = useState(false);
+
+  // show introduction
+  const [showIntroduction, setShowIntroduction] = useState<null | boolean>(null);
+
+  // show onboard tour
+  const [showOnboard, setShowOnboard] = useState(false);
+  
+  // show onboard tour
+  const [tutorialMode, setTutorialMode] = useState(false);
 
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
@@ -75,6 +97,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState('');
   const [rightMenu, setRightMenu] = useState<any>(false);
+  const [folderMenu, setFolderMenu] = useState(false);
   const [badgeNotification, setBadgeNotification] = useState<string | null>(null);
   const [modal, setModal] = useState<{
     display: boolean;
@@ -125,7 +148,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         password: response.password,
       });
 
-      let apps = [
+      const apps = [
         ...response.minidapps.filter(
           (app) =>
             !(
@@ -158,17 +181,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       // let apps = response.minidapps;
 
-      if (sort === 'alphabetical') {
-        apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
-      } else if (sort === 'last_added') {
-        apps = apps.reverse();
-      }
+      // if (sort === 'alphabetical') {
+      //   apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
+      // } else if (sort === 'last_added') {
+      //   apps = apps.reverse();
+      // }
 
       setAppList([...apps]);
 
       return true;
     });
-  }, [sort]);
+  }, []);
 
   useEffect(() => {
     if (appIsInWriteMode) {
@@ -178,20 +201,32 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // init mds
   useEffect(() => {
+    const ls = localStorage.getItem(utils.getAppUID());
+    const firstTimeOpeningDapp = !ls;
     if (!loaded.current) {
       loaded.current = true;
+
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
+          // get folder status
+          getFolderStatus();
+
+          // if it is their first time
+          if (firstTimeOpeningDapp) {
+            setShowIntroduction(true);
+            localStorage.setItem(utils.getAppUID(), '1');
+          }
+
+          if (!firstTimeOpeningDapp) {
+            setShowIntroduction(false);
+            checkPeers();
+          }
+
+          getMaximaName();
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
             setAppIsInWriteMode(appIsInWriteMode);
-          });
-
-          peers().then((response) => {
-            if (!response.havepeers) {
-              setShowHasNoPeers(true);
-            }
           });
 
           block().then((blockInfo) => {
@@ -298,6 +333,22 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const checkPeers = () => {
+    peers().then((response) => {
+      if (!response.havepeers) {
+        setShowHasNoPeers(true);
+      }
+    });
+  };
+
+  const getMaximaName = () => {
+    (window as any).MDS.cmd('maxima', (resp: any) => {
+      if (resp.status) {
+        if (resp.response.name !== 'noname') setMaximaName(resp.response.name);
+      }
+    });
+  };
+
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
   };
@@ -313,6 +364,72 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return false;
   }, [blockInfo]);
+
+  const toggleFolder = (folderId: string) => {
+    setOpenFolder([folderId]);
+  };
+
+  /**
+   * This tracks the status of folders in settings (Folders can be activated and deactivated)
+   */
+  const getFolderStatus = () => {
+    (window as any).MDS.keypair.get('folders', (resp: any) => {
+      // if it doesn't exist, set it to default (true)
+      if (!resp.status) {
+        (window as any).MDS.keypair.set('folders', JSON.stringify({ status: true }));
+      }
+
+      if (resp.status) {
+        const data = JSON.parse(resp.value);
+        setFolders(data.status);
+      }
+    });
+  };
+
+  const toggleFolderStatus = () => {
+    return new Promise((resolve) => {
+      (window as any).MDS.keypair.set('folders', JSON.stringify({ status: !folderStatus }), (resp: any) => {
+        setFolders((prevState) => !prevState);
+
+        if (resp.status) {
+          resolve(true);
+        }
+      });
+    });
+  };
+
+  const promptTooltip = (message: string, duration = 2000) => {
+    setToolTip(message);
+
+    setTimeout(() => {
+      setToolTip(null);
+    }, duration);
+  };
+
+  const shareApp = async (uid: string) => {
+    return new Promise((resolve, reject) => {
+      (window as any).MDS.cmd(`mds action:download uid:${uid}`, (resp) => {
+        if (!resp.status) reject(resp.error ? resp.error : 'Download failed for this app.');
+        try {
+          const saveLocation = resp.response.original;
+          const copy = resp.response.copy;
+          if ((window as any).navigator.userAgent.includes('Minima Browser')) {
+            resolve(copy);
+
+            return Android.shareFile(saveLocation, '*/*');
+          }
+
+          resolve(copy);
+        } catch (error) {
+          if (error instanceof Error) {
+            reject(error.message);
+          }
+
+          reject('Something went wrong');
+        }
+      });
+    });
+  };
 
   const value = {
     mode,
@@ -334,6 +451,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     deleteApp,
     setAppToReadMode,
     setAppToWriteMode,
+
+    folderMenu,
+    setFolderMenu,
 
     showDeleteApp,
     setShowDeleteApp,
@@ -363,6 +483,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     getPeers,
     peersInfo,
+    checkPeers,
 
     showSearch,
     setShowSearch,
@@ -390,6 +511,30 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     isNodeFiveMinutesAgoBehind,
 
     loaded: loaded.current,
+
+    showIntroduction,
+    setShowIntroduction,
+
+    // This will be just to track whether in tutorial Mode
+    tutorialMode,
+    setTutorialMode,
+    // Toggling onboard tutorial on/off
+    showOnboard,
+    setShowOnboard,
+    maximaName,
+    setMaximaName,
+    getMaximaName,
+
+    toggleFolderStatus,
+    folderStatus,
+
+    openFolder,
+    toggleFolder,
+
+    shareApp,
+
+    _tooltip,
+    promptTooltip,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { appContext } from '../../../AppContext';
 import { displayDAppName } from '../../../utilities';
 import { IS_MINIMA_BROWSER } from '../../../env';
@@ -6,12 +6,39 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, setShowUpdateApp } = useContext(appContext);
+  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } = useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
+  const handleEscapeKey = (event) => {
+    if (event.keyCode === 27) {
+      // Call your set method here
+      setRightMenu(null);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      handleEscapeKey(event);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const openApp = async () => {
+    if (tutorialMode) {
+      return null;
+    }
+
     if (rightMenu) {
       return setRightMenu(null);
+    }
+
+    if (toggleFolder.length) {
+      toggleFolder([]);
     }
 
     // if there is an onclick method in app conf (utility app / settings) do that instead of calling
@@ -38,6 +65,9 @@ const AppList = ({ data }) => {
 
   const handleOnContextMenu = (evt: React.MouseEvent<HTMLDivElement>) => {
     evt.preventDefault();
+    if (tutorialMode) {
+      return null;
+    }
     setRightMenu(data);
   };
 
@@ -55,8 +85,12 @@ const AppList = ({ data }) => {
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
-          className={`item w-full z-30 ${
-            rightMenu && rightMenu.uid !== data.uid ? 'blur-md opacity-20 lg:blur-md lg:opacity-20' : ''
+          className={`${data.conf.name.includes('Dapp Store') ? 'dapp_store' : ''} ${
+            data.conf.name === 'Pending' ? 'onboard_pending' : ''
+          } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${data.conf.name.includes('MaxContacts') ? 'folder_social' : ''} ${
+            data.conf.name.includes('Settings') ? 'onboard_settings' : data.conf.name.includes('Wallet') ? 'onboard_wallet' : ''
+          } item w-full z-30 ${
+            rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
           } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
           <img
@@ -136,6 +170,27 @@ const AppList = ({ data }) => {
             >
               Update
             </div>
+            <div
+              onClick={async () => {
+                try {
+                  await shareApp(data.uid);
+                  if (window.navigator.userAgent.includes('Minima Browser')) {
+                    return promptTooltip('Sharing file...', 10000);
+                  }
+
+                  promptTooltip('Downloaded file!', 10000);
+                } catch (error) {
+                  if (error instanceof Error) {
+                    return promptTooltip('Download failed, ' + error.message);
+                  }
+                  promptTooltip(typeof error === 'string' ? error : 'Download failed.');
+                }
+              }}
+              className="cursor-pointer"
+            >
+              Share App
+            </div>
+
             <div
               onClick={() => {
                 navigate('/delete');

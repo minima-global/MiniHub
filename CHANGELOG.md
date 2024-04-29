@@ -1,5 +1,40 @@
 # Changelog
 
+##### [0.15.7] - 29 April 24
+
+- Onboard controlled mode
+- Folder mode/default mode for the onboarding tutorial
+- Better error handle for sharing app
+
+##### [0.14.3] - 08 November 23
+
+- Tweak where Maxima name is
+- Set folders first
+- Alphabetically order folders
+- Remove order by filters
+- design tweaks
+
+##### [0.14.2] - 06 November 23
+
+- toggle folders layout
+- pull in Maxima name on introduction screen, if already set
+- add desktop connect on product onboard, update settings copy
+- make MDS Fail screen take precedent over introduction page
+- removed simulated folders
+
+##### [0.14.1] - 05 November 23
+
+- check peers/add peers when onboarding is skipped or ended
+- toggle onboard tutorial in Settings
+- design tweak on onboard tool
+
+##### [0.14.0] - 02 November 23
+
+- Added v1 Folders
+- Added introductioon page
+- Added maximaName
+- Added onboarding
+
 ##### [0.13.1] - 12 September 23
 
 - Added time to block info in status bar
