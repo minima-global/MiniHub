@@ -31,7 +31,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [_tooltip, setToolTip] = useState<null | string>(null);
 
   // toggling folder mode on/off
-  const [folderStatus, setFolders] = useState(false);
+  const [folderStatus, setFolders] = useState(true);
 
   // open a Folder
   const [openFolder, setOpenFolder] = useState<string[]>([]);

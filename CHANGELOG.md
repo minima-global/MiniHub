@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.15.9] - 03 May 24
+
+- Default folder on start up
+
 ##### [0.15.8] - 29 April 24
 
 - Fix Wallet search
