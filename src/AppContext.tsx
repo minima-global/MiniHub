@@ -31,7 +31,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [_tooltip, setToolTip] = useState<null | string>(null);
 
   // toggling folder mode on/off
-  const [folderStatus, setFolders] = useState(true);
+  const [folderStatus, setFolders] = useState(false);
 
   // open a Folder
   const [openFolder, setOpenFolder] = useState<string[]>([]);
@@ -376,7 +376,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     (window as any).MDS.keypair.get('folders', (resp: any) => {
       // if it doesn't exist, set it to default (true)
       if (!resp.status) {
-        (window as any).MDS.keypair.set('folders', JSON.stringify({ status: true }));
+        (window as any).MDS.keypair.set('folders', JSON.stringify({ status: false }));
       }
 
       if (resp.status) {
