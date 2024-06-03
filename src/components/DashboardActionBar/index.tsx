@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { appContext } from '../../AppContext';
 import MobileSearchItem from './MobileSearchItem';
 import { useNavigate } from 'react-router-dom';
+import MaximaProfile from '../MaximaProfile';
 
 /**
  * The dashboard action bar
@@ -105,23 +106,8 @@ const DashboardActionBar = () => {
       )}
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
         <div className="grid grid-cols-12">
-          <div className="col-span-6">
-            <div
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent event bubbling
-                // Invoke the custom function to open the link
-                (window as any).MDS.dapplink('MaxContacts', function (msg: any) {
-                  // Open the link in a new tab
-                  window.open(
-                    `${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`,
-                    '_blank'
-                  );
-                });
-              }}
-              className="overflow-hidden flex items-center gap-1 cursor-pointer"
-            >
-              <h1 className="text-base text-white mix-blend-difference truncate">{maximaName}</h1>
-            </div>
+          <div className="col-span-6 truncate overflow-x-hidden">            
+              <MaximaProfile />
           </div>
           <div className="col-span-6 flex items-center justify-end gap-4">
             <svg

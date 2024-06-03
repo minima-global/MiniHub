@@ -13,6 +13,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [maximaName, setMaximaName] = useState('');
 
+  const [maximaIcon, setMaximaIcon] = useState<string | null>(null);
+
   const [appList, setAppList] = useState<AppData[]>([]);
 
   const [mdsInfo, setMdsInfo] = useState<any>(null);
@@ -187,7 +189,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       //   apps = apps.reverse();
       // }
 
-      setAppList([...apps]);
+
+      setAppList([...apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name))]);
 
       return true;
     });
@@ -222,7 +225,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             checkPeers();
           }
 
-          getMaximaName();
+          getMaximaDetails();
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
@@ -341,10 +344,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
-  const getMaximaName = () => {
+  const getMaximaDetails = () => {
     (window as any).MDS.cmd('maxima', (resp: any) => {
       if (resp.status) {
         if (resp.response.name !== 'noname') setMaximaName(resp.response.name);
+        if (resp.response.icon) setMaximaIcon(resp.response.icon);
       }
     });
   };
@@ -522,8 +526,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showOnboard,
     setShowOnboard,
     maximaName,
+    maximaIcon,
+    setMaximaIcon,
     setMaximaName,
-    getMaximaName,
+    getMaximaDetails,
 
     toggleFolderStatus,
     folderStatus,

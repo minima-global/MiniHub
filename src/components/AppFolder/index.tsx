@@ -94,7 +94,7 @@ const AppFolder = ({ title, data, display }: any) => {
   const springProps = useSpring({
     opacity: openFolder.includes(title) ? 1 : 0,
     transform: openFolder.includes(title) ? 'translateY(0%) scale(1)' : 'translateY(-50%) scale(0.8)',
-    config: config['wobbly'],
+    config: config.default,
   });
 
 

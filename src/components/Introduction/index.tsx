@@ -9,7 +9,7 @@ const Introduction = () => {
     setShowIntroduction,
     showIntroduction: display,
     setShowOnboard,
-    getMaximaName,
+    getMaximaDetails,
     checkPeers,
   } = useContext(appContext);
 
@@ -33,7 +33,7 @@ const Introduction = () => {
     await randomNameGenerator().then((_randomName) => {
       if (!name.length) setName(_randomName);
       (window as any).MDS.cmd(`maxima action:setname name:"${!name.length ? _randomName : name}"`, () => {
-        getMaximaName();
+        getMaximaDetails();
       });
     });
   };
