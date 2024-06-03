@@ -1,5 +1,14 @@
 # Changelog
 
+##### [0.17.0] - 03 Jun 24
+
+- Maxima Icon
+- Sort apps alphabetically
+- Folder settings
+- Change your folder's background
+- Toggle on/off animation
+- Animation is now smooth and not wobbly
+
 ##### [0.15.9] - 03 May 24
 
 - Default folder on start up

@@ -12,7 +12,7 @@ import MaximaProfile from '../MaximaProfile';
  */
 const DashboardActionBar = () => {
   const navigate = useNavigate();
-  const { showSearch, setShowSearch, maximaName } = useContext(appContext);
+  const { showSearch, setShowSearch } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
   const limitedAppList = query === '' ? [] : filteredAppList.slice(0, 5);

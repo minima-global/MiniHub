@@ -5,6 +5,7 @@ import useWallpaper from './hooks/useWallpaper';
 import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
 import * as utils from './utilities';
 import { AppData } from './types/app';
+import useFoldersTheme from './hooks/useFolderTheme';
 
 export const appContext = createContext({} as any);
 
@@ -23,6 +24,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const wallpaperProps = useWallpaper(loaded.current, miniHUB);
 
+  const foldersThemeProps = useFoldersTheme(loaded.current);
+
+  const [showFoldersTheme, setShowFoldersTheme] = useState(false);
+
   // desktop / or / mobile
   const [mode, setMode] = useState('desktop');
 
@@ -31,9 +36,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // If sharing app state
   const [_tooltip, setToolTip] = useState<null | string>(null);
-
-  // toggling folder mode on/off
-  const [folderStatus, setFolders] = useState(false);
 
   // open a Folder
   const [openFolder, setOpenFolder] = useState<string[]>([]);
@@ -58,7 +60,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show onboard tour
   const [showOnboard, setShowOnboard] = useState(false);
-  
+
   // show onboard tour
   const [tutorialMode, setTutorialMode] = useState(false);
 
@@ -189,7 +191,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       //   apps = apps.reverse();
       // }
 
-
       setAppList([...apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name))]);
 
       return true;
@@ -211,8 +212,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
-          // get folder status
-          getFolderStatus();
 
           // if it is their first time
           if (firstTimeOpeningDapp) {
@@ -347,8 +346,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const getMaximaDetails = () => {
     (window as any).MDS.cmd('maxima', (resp: any) => {
       if (resp.status) {
-        if (resp.response.name !== 'noname') setMaximaName(resp.response.name);
-        if (resp.response.icon) setMaximaIcon(resp.response.icon);
+        if (resp.response.name) {
+          setMaximaName(resp.response.name);
+        }
+
+        if (resp.response.icon) {
+          setMaximaIcon(resp.response.icon);
+        }
       }
     });
   };
@@ -371,35 +375,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const toggleFolder = (folderId: string) => {
     setOpenFolder([folderId]);
-  };
-
-  /**
-   * This tracks the status of folders in settings (Folders can be activated and deactivated)
-   */
-  const getFolderStatus = () => {
-    (window as any).MDS.keypair.get('folders', (resp: any) => {
-      // if it doesn't exist, set it to default (true)
-      if (!resp.status) {
-        (window as any).MDS.keypair.set('folders', JSON.stringify({ status: false }));
-      }
-
-      if (resp.status) {
-        const data = JSON.parse(resp.value);
-        setFolders(data.status);
-      }
-    });
-  };
-
-  const toggleFolderStatus = () => {
-    return new Promise((resolve) => {
-      (window as any).MDS.keypair.set('folders', JSON.stringify({ status: !folderStatus }), (resp: any) => {
-        setFolders((prevState) => !prevState);
-
-        if (resp.status) {
-          resolve(true);
-        }
-      });
-    });
   };
 
   const promptTooltip = (message: string, duration = 2000) => {
@@ -459,6 +434,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     folderMenu,
     setFolderMenu,
 
+    showFoldersTheme,
+    setShowFoldersTheme,
+
     showDeleteApp,
     setShowDeleteApp,
 
@@ -484,6 +462,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowDesktopConnect,
 
     ...wallpaperProps,
+    ...foldersThemeProps,
 
     getPeers,
     peersInfo,
@@ -530,9 +509,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setMaximaIcon,
     setMaximaName,
     getMaximaDetails,
-
-    toggleFolderStatus,
-    folderStatus,
 
     openFolder,
     toggleFolder,

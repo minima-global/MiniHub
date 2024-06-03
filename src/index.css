@@ -446,6 +446,8 @@ body.theme-light .search-container input {
   background: linear-gradient(180deg, #8d1e08 0%, #08090b 100%);
 }
 
+
+
 /** Custom scrollbar **/
 .custom-scrollbar::-webkit-scrollbar {
   width: 0.3em;
@@ -552,4 +554,9 @@ body.theme-light .search-container input {
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('./check_small.svg');
+}
+
+.drag-off {
+  -webkit-user-drag: none;
+  cursor: default;
 }

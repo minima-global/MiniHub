@@ -30,6 +30,7 @@ const MaximaProfile = () => {
     return maximaName.charAt(0);
   };
 
+
   return (
     <div
       onClick={(e) => {
@@ -42,10 +43,10 @@ const MaximaProfile = () => {
       }}
       className="grid grid-cols-[36px_1fr] w-max"
     >
-      <div className=" bg-white h-[36px] rounded-full text-xs flex items-center justify-center mix-blend-difference">
+      <div className=" bg-white h-[36px] rounded-full !text-black text-xs flex items-center justify-center mix-blend-difference uppercase">
         {renderIcon()}
       </div>
-     <input readOnly className="font-bold mix-blend-difference focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
+     <input readOnly className="drag-off font-bold mix-blend-difference focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
     </div>
   );
 };
