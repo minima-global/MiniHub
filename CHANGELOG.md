@@ -1,5 +1,11 @@
 # Changelog
 
+##### [0.17.1] - 03 Jun 24
+
+- Cursor pointer over Maxima Profile
+- Hide Purple beacon while tutorialing
+- Remove X close button on tutorial
+
 ##### [0.17.0] - 03 Jun 24
 
 - Maxima Icon

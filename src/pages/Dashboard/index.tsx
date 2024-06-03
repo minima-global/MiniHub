@@ -128,6 +128,7 @@ function Dashboard() {
     folderMenu,
     showOnboard,
     setShowOnboard,
+    tutorialMode,
     setTutorialMode,
     folderStatus,
     toggleFolder,
@@ -285,7 +286,8 @@ function Dashboard() {
               zIndex: 50,
             },
           },
-        }}
+        }}       
+        hideCloseButton       
         styles={{
           options: {
             arrowColor: '#FAFAFF',
@@ -294,9 +296,12 @@ function Dashboard() {
             textColor: '#08090B',
             zIndex: 5,
           },
+          beacon: {
+            display: tutorialMode ? 'none' : 'block'
+          },
           tooltipTitle: {
             fontSize: 16,
-            fontWeight: 800,
+            fontWeight: 800
           },
         }}
       />

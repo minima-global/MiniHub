@@ -41,12 +41,12 @@ const MaximaProfile = () => {
           window.open(`${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`, '_blank');
         });
       }}
-      className="grid grid-cols-[36px_1fr] w-max"
+      className="grid grid-cols-[36px_1fr] w-max cursor-pointer"
     >
       <div className=" bg-white h-[36px] rounded-full !text-black text-xs flex items-center justify-center mix-blend-difference uppercase">
         {renderIcon()}
       </div>
-     <input readOnly className="drag-off font-bold mix-blend-difference focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
+     <input readOnly className="cursor-pointer font-bold mix-blend-difference focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
     </div>
   );
 };
