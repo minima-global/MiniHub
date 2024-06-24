@@ -1,5 +1,30 @@
 # Changelog
 
+##### [0.18.1] - 24 Jun 24
+
+- Download MiniDapps to Downloads folder
+- Update avatar, make rounded, remove mixed-blend mode
+
+
+##### [0.17.1] - 03 Jun 24
+
+- Cursor pointer over Maxima Profile
+- Hide Purple beacon while tutorialing
+- Remove X close button on tutorial
+
+##### [0.17.0] - 03 Jun 24
+
+- Maxima Icon
+- Sort apps alphabetically
+- Folder settings
+- Change your folder's background
+- Toggle on/off animation
+- Animation is now smooth and not wobbly
+
+##### [0.15.9] - 03 May 24
+
+- Default folder on start up
+
 ##### [0.15.8] - 29 April 24
 
 - Fix Wallet search

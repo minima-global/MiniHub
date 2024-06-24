@@ -21,7 +21,10 @@ import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, Step } from 'react-joyride';
 import Introduction from '../../components/Introduction';
-import Tooltip from '../../components/Tooltip';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function findPageIndexContainingApp(name, apps) {
   // Loop through each inner array
@@ -128,6 +131,7 @@ function Dashboard() {
     folderMenu,
     showOnboard,
     setShowOnboard,
+    tutorialMode,
     setTutorialMode,
     folderStatus,
     toggleFolder,
@@ -285,7 +289,8 @@ function Dashboard() {
               zIndex: 50,
             },
           },
-        }}
+        }}       
+        hideCloseButton       
         styles={{
           options: {
             arrowColor: '#FAFAFF',
@@ -294,9 +299,12 @@ function Dashboard() {
             textColor: '#08090B',
             zIndex: 5,
           },
+          beacon: {
+            display: tutorialMode ? 'none' : 'block'
+          },
           tooltipTitle: {
             fontSize: 16,
-            fontWeight: 800,
+            fontWeight: 800
           },
         }}
       />
@@ -313,7 +321,7 @@ function Dashboard() {
         <UpdateMiniDapp />
         <HasNoPeersModal />
         <AddConnectionsLaterModal />
-        <Tooltip />
+        <ToastContainer />
 
         <div
           className="dashboard flex flex-col h-screen"

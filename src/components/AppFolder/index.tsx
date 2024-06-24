@@ -15,7 +15,7 @@ const Page = ({ data }: any) => {
 
 const AppFolder = ({ title, data, display }: any) => {
   const { maxDisplay, maxFolderCount } = useAppList();
-  const { rightMenu, openFolder, toggleFolder, setRightMenu, tutorialMode } = useContext(appContext);
+  const { rightMenu, openFolder, toggleFolder, setRightMenu, tutorialMode, activeFolderTheme, folderOpacity, folderAnimation } = useContext(appContext);
 
   const numberOfPages = data && data[0].length;
   const empty = maxFolderCount - numberOfPages;
@@ -94,12 +94,11 @@ const AppFolder = ({ title, data, display }: any) => {
   const springProps = useSpring({
     opacity: openFolder.includes(title) ? 1 : 0,
     transform: openFolder.includes(title) ? 'translateY(0%) scale(1)' : 'translateY(-50%) scale(0.8)',
-    config: config['wobbly'],
+    config: config.default,
   });
 
 
   const CAN_CLOSE_FOLDER = !rightMenu && !tutorialMode;
-
   return (
     <>
       {openFolder.includes(title) &&
@@ -110,14 +109,14 @@ const AppFolder = ({ title, data, display }: any) => {
               className="backdrop-blur-sm fixed left-0 right-0 top-0 bottom-0 z-[30]"
             />
             <div />
-            <animated.div className="z-[31]" style={springProps}>
+            <animated.div className="z-[31]" style={folderAnimation ? springProps : {}}>
               <div onClick={() => CAN_CLOSE_FOLDER ? toggleFolder([]) : setRightMenu(null)}  className="grid grid-rows-[112px_auto]">
                 <div />
                 <div
                   onClick={(e) => CAN_CLOSE_FOLDER ? e.stopPropagation() : null}
-                  className={`mx-2 my-4 bg-white bg-opacity-10 p-4 rounded-lg  z-[30] grid grid-cols-1 h-max`}
+                  className={`mx-2 my-4 ${activeFolderTheme ? `bg-${activeFolderTheme} bg-${folderOpacity}` : `bg-white bg-opacity-10`} p-4 rounded-lg z-[30] grid grid-cols-1 h-max`}
                 >
-                  <h1 className={`font-semibold text-2xl text-center text-white mb-4 ${
+                  <h1 className={`font-bold text-2xl text-center text-white mb-4 [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] ${
                     title === 'Social' ? 'folder_social' : ''
                   }`}>{title}</h1>
                   <div
