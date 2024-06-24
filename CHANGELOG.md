@@ -1,5 +1,11 @@
 # Changelog
 
+##### [0.18.1] - 24 Jun 24
+
+- Download MiniDapps to Downloads folder
+- Update avatar, make rounded, remove mixed-blend mode
+
+
 ##### [0.17.1] - 03 Jun 24
 
 - Cursor pointer over Maxima Profile

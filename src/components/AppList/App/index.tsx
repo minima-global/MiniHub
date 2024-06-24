@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, promptTooltip, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } =
+  const { setShowDeleteApp, notify, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } =
     useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
@@ -178,15 +178,15 @@ const AppList = ({ data }) => {
                 try {
                   await shareApp(data.uid);
                   if (window.navigator.userAgent.includes('Minima Browser')) {
-                    return promptTooltip('Sharing file...', 10000);
+                    return notify('Sharing file...');
                   }
 
-                  promptTooltip('Downloaded file!', 10000);
+                  notify(`Downloaded file in your Downloads directory`);
                 } catch (error) {
                   if (error instanceof Error) {
-                    return promptTooltip('Download failed, ' + error.message);
+                    return notify('Download failed, ' + error.message);
                   }
-                  promptTooltip(typeof error === 'string' ? error : 'Download failed.');
+                  notify(typeof error === 'string' ? error : 'Download failed.');
                 }
               }}
               className="cursor-pointer"

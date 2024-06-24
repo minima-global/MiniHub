@@ -2,7 +2,7 @@
   "name": "minihub",
   "private": true,
   "description": "MinimaOS home screen",
-  "version": "0.17.1",
+  "version": "0.18.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -31,6 +31,7 @@
     "react-router": "^6.14.2",
     "react-router-dom": "^6.11.1",
     "react-spring": "^9.7.1",
+    "react-toastify": "^10.0.5",
     "vite-plugin-html": "^3.2.0"
   },
   "devDependencies": {

@@ -21,7 +21,10 @@ import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, Step } from 'react-joyride';
 import Introduction from '../../components/Introduction';
-import Tooltip from '../../components/Tooltip';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function findPageIndexContainingApp(name, apps) {
   // Loop through each inner array
@@ -318,7 +321,7 @@ function Dashboard() {
         <UpdateMiniDapp />
         <HasNoPeersModal />
         <AddConnectionsLaterModal />
-        <Tooltip />
+        <ToastContainer />
 
         <div
           className="dashboard flex flex-col h-screen"

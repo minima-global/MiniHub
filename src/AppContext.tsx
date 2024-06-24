@@ -6,6 +6,7 @@ import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
 import * as utils from './utilities';
 import { AppData } from './types/app';
 import useFoldersTheme from './hooks/useFolderTheme';
+import { toast } from 'react-toastify';
 
 export const appContext = createContext({} as any);
 
@@ -33,9 +34,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
-
-  // If sharing app state
-  const [_tooltip, setToolTip] = useState<null | string>(null);
 
   // open a Folder
   const [openFolder, setOpenFolder] = useState<string[]>([]);
@@ -270,9 +268,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           setShowWarning(1);
         }
 
-        if (evt.event === 'MDSFAIL') {
+        if (evt.event === 'MDSFAIL' || evt.event === 'MDS_SHUTDOWN') {
           setMDSFail(true);
-        }
+        }        
       });
     }
   }, [loaded, refreshAppList]);
@@ -377,17 +375,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setOpenFolder([folderId]);
   };
 
-  const promptTooltip = (message: string, duration = 2000) => {
-    setToolTip(message);
-
-    setTimeout(() => {
-      setToolTip(null);
-    }, duration);
-  };
-
   const shareApp = async (uid: string) => {
     return new Promise((resolve, reject) => {
-      (window as any).MDS.cmd(`mds action:download uid:${uid}`, (resp) => {
+      (window as any).MDS.cmd(`mds action:download folder:"Downloads" uid:${uid}`, (resp) => {
+
         if (!resp.status) reject(resp.error ? resp.error : 'Download failed for this app.');
         try {
           const saveLocation = resp.response.original;
@@ -410,7 +401,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const notify = (message: string) =>
+    toast(message, { position: "bottom-right", theme: "dark" });
+
+  const globalNotify = (message: string) =>
+    toast(message, { position: "top-center", theme: "dark" });
+
   const value = {
+    notify,
+    globalNotify,
     mode,
     isMobile: mode === 'mobile',
     appList,
@@ -514,9 +513,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     toggleFolder,
 
     shareApp,
-
-    _tooltip,
-    promptTooltip,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
