@@ -85,6 +85,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // warning blocks
   const [showWarning, setShowWarning] = useState<number | false>(false);
 
+  // warning blocks
+  const [showTermsAndConditions, setShowTermsAndConditions] = useState(false);
+
   // show user does not have any peers modal
   const [showHasNoPeers, setShowHasNoPeers] = useState<boolean>(false);
 
@@ -480,6 +483,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     hasUpdated,
     setHasUpdated,
+
+    showTermsAndConditions,
+    setShowTermsAndConditions,
 
     showHasNoPeers,
     setShowHasNoPeers,

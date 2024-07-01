@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp, notify, setShowUpdateApp, toggleFolder, shareApp, tutorialMode } =
+  const { setShowDeleteApp,  setShowUpdateApp, toggleFolder,  tutorialMode } =
     useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
@@ -173,7 +173,7 @@ const AppList = ({ data }) => {
             >
               Update
             </div>
-            <div
+            {/* <div
               onClick={async () => {
                 try {
                   await shareApp(data.uid);
@@ -192,7 +192,7 @@ const AppList = ({ data }) => {
               className="cursor-pointer"
             >
               Share App
-            </div>
+            </div> */}
 
             <div
               onClick={() => {

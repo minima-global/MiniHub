@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const MobileRightMenu = () => {
   const navigate = useNavigate();
-  const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp, shareApp, notify } =
+  const { rightMenu, setRightMenu, appList, setAppToWriteMode, setAppToReadMode, setShowDeleteApp, setShowUpdateApp } =
     useContext(appContext);
   const data = appList && rightMenu && appList.find((i) => i.uid === rightMenu?.uid);
   const isRead = data && data.conf.permission === 'read';
@@ -91,7 +91,7 @@ const MobileRightMenu = () => {
               >
                 Update
               </div>
-              <div
+              {/* <div
                 onClick={async () => {
                   try {
                     await shareApp(data.uid);
@@ -112,7 +112,7 @@ const MobileRightMenu = () => {
                 className="core-black-contrast py-3.5 px-3.5 rounded cursor-pointer"
               >
                 Share App
-              </div>
+              </div> */}
               <div
                 onClick={() => {
                   navigate('/delete/' + data.uid);
