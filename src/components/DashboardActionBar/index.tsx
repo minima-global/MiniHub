@@ -106,7 +106,7 @@ const DashboardActionBar = () => {
       )}
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
         <div className="grid grid-cols-12">
-          <div className="col-span-6 truncate overflow-x-hidden">            
+          <div className="col-span-6">            
               <MaximaProfile />
           </div>
           <div className="col-span-6 flex items-center justify-end gap-4">

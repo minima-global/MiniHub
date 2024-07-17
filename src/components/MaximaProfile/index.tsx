@@ -16,7 +16,7 @@ const MaximaProfile = () => {
     if (isBase64) {
       return (
         <div className="relative">
-          <img className={`avatar rounded-full`} src={decodeURIComponent(maximaIcon)} alt="user-avatar" />
+          <img className="avatar" src={decodeURIComponent(maximaIcon)} alt="user-avatar" />
         </div>
       );
     }
@@ -41,9 +41,9 @@ const MaximaProfile = () => {
           window.open(`${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`, '_blank');
         });
       }}
-      className="grid grid-cols-[36px_1fr] w-max cursor-pointer"
+      className="grid grid-cols-[auto_1fr] w-max cursor-pointer"
     >
-      <div className=" bg-white h-[36px] rounded-full !text-black text-xs flex items-center justify-center uppercase">
+      <div>
         {renderIcon()}
       </div>
      <input readOnly className="cursor-pointer font-bold text-white focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
