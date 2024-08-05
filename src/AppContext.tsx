@@ -358,6 +358,31 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  // Randomly select some peers by pinging megammr.minima.global:9001
+  const autoConnectPeers = () => {
+    return new Promise((resolve, reject) => {
+      (window as any).MDS.cmd('ping host:megammr.minima.global:9001', (resp: any) => {
+        if (!resp.status) reject("Failed to ping host");
+
+        if (resp.status && !resp.response.valid) reject("Host is invalid");
+
+        const allPeers = resp.response.extradata['peers-list'];
+
+        if (!allPeers.length) reject("No peers found");
+
+        const randomPeers = utils.getRandomPeers(allPeers, 3);
+
+        (window as any).MDS.cmd(`peers action:addpeers peerslist:"${randomPeers.join(",")}"`, (respo) => {
+            if (!respo.status) reject("Failed to add peers");
+
+            resolve(true);
+        });    
+      });
+
+    });
+    
+  }
+
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
   };
@@ -518,6 +543,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     openFolder,
     toggleFolder,
 
+    autoConnectPeers,
     shareApp,
   };
 
