@@ -380,25 +380,33 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const shareApp = async (uid: string) => {
     return new Promise((resolve, reject) => {
-      (window as any).MDS.cmd(`mds action:download folder:"Downloads" uid:${uid}`, (resp) => {
+      (window as any).MDS.cmd(`mds action:download uid:${uid} locationonly:true`, (resp) => {
+        
+        
+        console.log(resp);
+        if (!resp.status) reject(resp.error ? resp.error : 'Unable to locate the MiniDapp');
 
-        if (!resp.status) reject(resp.error ? resp.error : 'Download failed for this app.');
         try {
+          // We have the full path for the file
           const saveLocation = resp.response.original;
-          const copy = resp.response.copy;
+
+          utils.createDownloadLink(resp.response.original);
+
+          return;
+
           if ((window as any).navigator.userAgent.includes('Minima Browser')) {
-            resolve(copy);
+            resolve(true);
 
             return Android.shareFile(saveLocation, '*/*');
           }
 
-          resolve(copy);
+          resolve(true);
         } catch (error) {
           if (error instanceof Error) {
             reject(error.message);
           }
 
-          reject('Something went wrong');
+          reject('Failed to share MiniDapp');
         }
       });
     });
