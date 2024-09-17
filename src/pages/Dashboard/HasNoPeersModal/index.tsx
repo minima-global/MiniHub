@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
@@ -6,8 +6,11 @@ import { appContext } from '../../../AppContext';
 
 export function HasNoPeers() {
   const navigate = useNavigate();
-  const { showHasNoPeers: display, setShowHasNoPeers, setShowAddConnectionsLater } = useContext(appContext);
+  const { showHasNoPeers: display, setShowHasNoPeers, setShowAddConnectionsLater, autoConnectPeers, notify } = useContext(appContext);
   const transition: any = useTransition(display, modalAnimation as any);
+
+
+  const [loading, setLoading] = useState(false);
 
   const goToPeers = () => {
     setShowHasNoPeers(false);
@@ -18,6 +21,26 @@ export function HasNoPeers() {
     setShowHasNoPeers(false);
     setShowAddConnectionsLater(true);
   };
+
+  const handleAutoConnect = async () => {
+    setLoading(true);
+    try {
+      await autoConnectPeers();
+
+      notify("Connected to peers");
+      
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        return notify("Failed to connect to peers, try a manual connection.");
+      } 
+
+      return notify("Failed to connect to peers, try a manual connection.");
+    } finally {
+      setLoading(false);
+    }
+
+  }
 
   return (
     <div>
@@ -50,12 +73,25 @@ export function HasNoPeers() {
                           To join, ask a Minima user to share connections with you.
                         </p>
                         <button
+                          disabled={loading}
                           onClick={goToPeers}
                           className="w-full px-4 py-3.5 rounded font-bold text-black core-grey-5 mb-4 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           Add connections
                         </button>
+                        
                         <button
+                          disabled={loading}
+                          onClick={handleAutoConnect}
+                          
+                          className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100  mb-4 disabled:opacity-40 disabled:cursor-not-allowed ${loading && "animate-pulse"}`}
+                        >
+                          {!loading && "Use auto-connect"}
+                          {loading && "Finding peers..."}
+                        </button>
+                        <p className='text-sm mb-3 opacity-80'>This method will randomly select peers for you from a megammr node</p>                      
+                        <button
+                          disabled={loading}
                           type="button"
                           onClick={dismiss}
                           className="w-full px-4 py-3.5 rounded font-bold text-white core-black-contrast-3 mb-1"

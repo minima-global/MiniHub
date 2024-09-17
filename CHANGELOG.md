@@ -1,5 +1,14 @@
 # Changelog
 
+
+
+##### [0.19.0] - 15 Sept 24
+
+- Profile avatar design fix
+- Added a go to add peers button for quicker access in header when dismiss add peers
+- Added a Mx address to Profile for quick copy address
+- Auto-connect peers using ping peers
+
 ##### [0.18.1] - 24 Jun 24
 
 - Download MiniDapps to Downloads folder

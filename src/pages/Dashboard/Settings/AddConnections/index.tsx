@@ -13,10 +13,11 @@ type AddConnectionsProps = {
 
 export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const navigate = useNavigate();
-  const { setBadgeNotification } = useContext(appContext);
+  const { setBadgeNotification, autoConnectPeers, notify, setHeaderNoPeers } = useContext(appContext);
   const [inputPeerList, setInputPeerList] = useState('');
   const [importing, setImporting] = useState(false);
   const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputPeerList(evt.target.value);
@@ -28,6 +29,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
       await addPeers(inputPeerList);
       setInputPeerList('');
       setDisplayImportSuccess(true);
+      setHeaderNoPeers(false);
     } catch {
       setBadgeNotification('Unable to import peers list');
     } finally {
@@ -38,7 +40,26 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const dismissImportSuccess = () => {
     setDisplayImportSuccess(false);
     navigate('/');
-  }
+  };
+
+  const handleAutoConnect = async () => {
+    setLoading(true);
+    try {
+      await autoConnectPeers();
+
+      setHeaderNoPeers(false);
+      notify('Connected to peers');
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        return notify('Failed to connect to peers, try a manual connection.');
+      }
+
+      return notify('Failed to connect to peers, try a manual connection.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SlideScreen display={display}>
@@ -71,9 +92,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               </svg>
               Settings
             </div>
-            <div className="text-2xl mt-6 mb-6">
-              Add connections
-            </div>
+            <div className="text-2xl mt-6 mb-6">Add connections</div>
             <div className="flex flex-col gap-5">
               <p>Ask someone on the network to:</p>
               <ol className="list-decimal ml-4 text-gray-400">
@@ -81,7 +100,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
                 <li>Copy their connections or press the 'Share connections' button</li>
               </ol>
               <p className="mb-2">Once they have shared them, paste the connections below.</p>
-              <div className="block mb-8">
+              <div className="block mb-2">
                 <div className="core-black-contrast-2 p-4 rounded">
                   <input
                     value={inputPeerList}
@@ -93,6 +112,25 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
                   <Button onClick={importPeers} disabled={inputPeerList.length === 0 || importing}>
                     Add connections
                   </Button>
+                </div>
+              </div>
+              <div className="block mb-8">
+                <p className="mb-6">Otherwise you can try this auto-connect feature:</p>
+                <ol className="text-gray-400 mb-4">
+                  <li>This method will randomly select peers for you from a megammr node by running</li>
+                  <li className="text-sm text-center">
+                    <code>ping host:megammr.minima.global:9001</code>
+                  </li>
+                </ol>
+                <div className="core-black-contrast-2 p-4 rounded">
+                  <button
+                    disabled={loading}
+                    onClick={handleAutoConnect}
+                    className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
+                  >
+                    {!loading && 'Use auto-connect'}
+                    {loading && 'Finding peers...'}
+                  </button>
                 </div>
               </div>
             </div>
