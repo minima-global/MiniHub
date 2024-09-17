@@ -90,6 +90,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show user does not have any peers modal
   const [showHasNoPeers, setShowHasNoPeers] = useState<boolean>(false);
+  // show a go-to button for the peers in header if user dismisses the modal
+  const [hasNoPeers, setHeaderNoPeers] = useState<boolean>(false);
 
   // show user does not want to add peers at this moment in time modal
   const [showAddConnectionsLater, setShowAddConnectionsLater] = useState<boolean>(false);
@@ -213,7 +215,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
-
           // if it is their first time
           if (firstTimeOpeningDapp) {
             setShowIntroduction(true);
@@ -273,7 +274,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
         if (evt.event === 'MDSFAIL' || evt.event === 'MDS_SHUTDOWN') {
           setMDSFail(true);
-        }        
+        }
       });
     }
   }, [loaded, refreshAppList]);
@@ -340,6 +341,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     peers().then((response) => {
       if (!response.havepeers) {
         setShowHasNoPeers(true);
+        setHeaderNoPeers(true);
       }
     });
   };
@@ -357,31 +359,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
     });
   };
-
-  // Randomly select some peers by pinging megammr.minima.global:9001
-  const autoConnectPeers = () => {
-    return new Promise((resolve, reject) => {
-      (window as any).MDS.cmd('ping host:megammr.minima.global:9001', (resp: any) => {
-        if (!resp.status) reject("Failed to ping host");
-
-        if (resp.status && !resp.response.valid) reject("Host is invalid");
-
-        const allPeers = resp.response.extradata['peers-list'];
-
-        if (!allPeers.length) reject("No peers found");
-
-        const randomPeers = utils.getRandomPeers(allPeers, 3);
-
-        (window as any).MDS.cmd(`peers action:addpeers peerslist:"${randomPeers.join(",")}"`, (respo) => {
-            if (!respo.status) reject("Failed to add peers");
-
-            resolve(true);
-        });    
-      });
-
-    });
-    
-  }
 
   const getPeers = () => {
     return peers().then((response) => setPeersInfo(response));
@@ -405,35 +382,39 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const shareApp = async (uid: string) => {
     return new Promise((resolve, reject) => {
-      (window as any).MDS.cmd(`mds action:download folder:"Downloads" uid:${uid}`, (resp) => {
+      (window as any).MDS.cmd(`mds action:download uid:${uid} locationonly:true`, (resp) => {
+        console.log(resp);
+        if (!resp.status) reject(resp.error ? resp.error : 'Unable to locate the MiniDapp');
 
-        if (!resp.status) reject(resp.error ? resp.error : 'Download failed for this app.');
         try {
+          // We have the full path for the file
           const saveLocation = resp.response.original;
-          const copy = resp.response.copy;
+
+          utils.createDownloadLink(resp.response.original);
+
+          return;
+
           if ((window as any).navigator.userAgent.includes('Minima Browser')) {
-            resolve(copy);
+            resolve(true);
 
             return Android.shareFile(saveLocation, '*/*');
           }
 
-          resolve(copy);
+          resolve(true);
         } catch (error) {
           if (error instanceof Error) {
             reject(error.message);
           }
 
-          reject('Something went wrong');
+          reject('Failed to share MiniDapp');
         }
       });
     });
   };
 
-  const notify = (message: string) =>
-    toast(message, { position: "bottom-right", theme: "dark" });
+  const notify = (message: string) => toast(message, { position: 'bottom-right', theme: 'dark' });
 
-  const globalNotify = (message: string) =>
-    toast(message, { position: "top-center", theme: "dark" });
+  const globalNotify = (message: string) => toast(message, { position: 'top-center', theme: 'dark' });
 
   const value = {
     notify,
@@ -514,6 +495,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showHasNoPeers,
     setShowHasNoPeers,
+    hasNoPeers,
 
     showAddConnections,
     setShowAddConnections,
@@ -543,7 +525,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     openFolder,
     toggleFolder,
 
-    autoConnectPeers,
     shareApp,
   };
 

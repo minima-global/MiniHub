@@ -1,9 +1,28 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { appContext } from '../../AppContext';
+import CopyIcon from '../UI/Icons/CopyIcon';
+import copyToClipboard from '../../utilities/copyToClipboard';
+import CopySuccessIcon from '../UI/Icons/CopySuccessIcon';
 
 const MaximaProfile = () => {
-  const { maximaIcon, maximaName } = useContext(appContext);
+  const [copied, setCopied] = useState(false);
+  const [address, setAddress] = useState<null | string>(null);
+  const { maximaIcon, maximaName, loaded } = useContext(appContext);
 
+  const copyAddress = () => {
+    setCopied(true);
+    copyToClipboard(address);
+
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  useEffect(() => {
+    if (loaded) {
+      MDS.cmd('getaddress', (resp) => {
+        setAddress(resp.response.miniaddress);
+      });
+    }
+  }, [loaded]);
   /**
    * Method to extract emoji from name and display it as the name/nickname first letter
    * since emojis are composed of more than one character
@@ -15,8 +34,8 @@ const MaximaProfile = () => {
 
     if (isBase64) {
       return (
-        <div className="relative">
-          <img className="avatar" src={decodeURIComponent(maximaIcon)} alt="user-avatar" />
+        <div className="aspect-square w-8 h-8 rounded-full overflow-hidden">
+          <img className="object-cover w-full h-full" src={decodeURIComponent(maximaIcon)} alt="user-avatar" />
         </div>
       );
     }
@@ -27,9 +46,12 @@ const MaximaProfile = () => {
     if (nameEmojiMatches && nameEmojiMatches.length > 0) {
       return nameEmojiMatches[0];
     }
-    return maximaName.charAt(0);
+    return (
+      <div className="aspect-square relative w-8 h-8 bg-neutral-200 rounded-full text-black flex justify-center items-center font-bold uppercase">
+        {maximaName.charAt(0)}
+      </div>
+    );
   };
-
 
   return (
     <div
@@ -43,10 +65,28 @@ const MaximaProfile = () => {
       }}
       className="grid grid-cols-[auto_1fr] w-max cursor-pointer"
     >
-      <div>
-        {renderIcon()}
+      <div className="my-auto">{renderIcon()}</div>
+      <div className="flex flex-col">
+        <p className="pl-2 text-sm truncate max-w-max">{maximaName}</p>
+        {!address && 'Mx'}
+        {address && (
+          <div onClick={(e) => e.stopPropagation()} className="flex gap-1">
+            {!copied && (
+              <input
+                readOnly
+                value={address}
+                className={`text-xs text-neutral-300 cursor-pointer font-bold focus:outline-none bg-transparent truncate ml-2`}
+              />
+            )}
+            {copied && <p className={`text-xs text-teal-300 cursor-pointer font-bold truncate ml-2`}>Copied!</p>}
+
+            <span className={`${copied && 'text-teal-300'}`} onClick={copyAddress}>
+              {!copied && <CopyIcon fill="currentColor" size={14} />}
+              {copied && <CopySuccessIcon fill="currentColor" size={14} />}
+            </span>
+          </div>
+        )}
       </div>
-     <input readOnly className="cursor-pointer font-bold text-white focus:outline-none bg-transparent truncate ml-2" value={maximaName} />
     </div>
   );
 };

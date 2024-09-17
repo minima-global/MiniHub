@@ -5,10 +5,12 @@ import BlockInfo from './Block';
 import useAndroidShowTitleBar from '../../hooks/useAndroidShowTitleBar';
 import { dAppLink } from '../../lib';
 import { format } from 'date-fns';
+import BroadcastIcon from '../UI/Icons/BroadcastIcon';
 
 const TitleBar = () => {
   const { openTitleBar } = useAndroidShowTitleBar();
-  const { blockInfo, showWarning, statusInfo, appList, showSearch } = useContext(appContext);
+  const { blockInfo, showWarning, statusInfo, appList, showSearch, hasNoPeers, setShowHasNoPeers } =
+    useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
   const { isNodeFiveMinutesAgoBehind } = useContext(appContext);
 
@@ -46,6 +48,16 @@ const TitleBar = () => {
         </div>
         <div className="svg col-span-9 flex justify-end">
           <div className="absolute top-0 right-3 flex p-4 pr-0 items-center justify-end gap-2 overflow-hidden">
+            {hasNoPeers && (
+              <button
+                onClick={() => setShowHasNoPeers(true)}
+                className="bg-[#1B1B1B] hover:outline hover:outline-yellow-500 font-bold flex gap-1 items-center text-neutral-500 text-xs p-1 px-2 rounded-lg"
+              >
+                <BroadcastIcon fill="currentColor" size={18} />
+                Add Peers
+              </button>
+            )}
+
             <Status />
 
             {blockInfo && blockInfo.blockHeight && (
@@ -77,8 +89,9 @@ const TitleBar = () => {
                 {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
                   <>
                     <div>
-                      <span>{blockInfo.blockHeight}</span>{' @ '} 
-                      <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>                     
+                      <span>{blockInfo.blockHeight}</span>
+                      {' @ '}
+                      <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>
                     </div>
                   </>
                 )}
@@ -97,6 +110,7 @@ const TitleBar = () => {
                 </svg>
               </div>
             )}
+
             <div className="hidden lg:block">
               <form action="/logoff.html" method="GET">
                 <button

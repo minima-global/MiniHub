@@ -13,7 +13,7 @@ type AddConnectionsProps = {
 
 export function AddConnections({ display, dismiss }: AddConnectionsProps) {
   const navigate = useNavigate();
-  const { setBadgeNotification, autoConnectPeers, notify } = useContext(appContext);
+  const { setBadgeNotification, autoConnectPeers, notify, setHeaderNoPeers } = useContext(appContext);
   const [inputPeerList, setInputPeerList] = useState('');
   const [importing, setImporting] = useState(false);
   const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
@@ -29,6 +29,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
       await addPeers(inputPeerList);
       setInputPeerList('');
       setDisplayImportSuccess(true);
+      setHeaderNoPeers(false);
     } catch {
       setBadgeNotification('Unable to import peers list');
     } finally {
@@ -46,6 +47,7 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
     try {
       await autoConnectPeers();
 
+      setHeaderNoPeers(false);
       notify('Connected to peers');
     } catch (error) {
       console.error(error);
@@ -113,20 +115,22 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
                 </div>
               </div>
               <div className="block mb-8">
-              <p className='mb-6'>Otherwise you can try this auto-connect feature:</p>    
-              <ol className="text-gray-400 mb-4">
-                <li>This method will randomly select peers for you from a megammr node by running</li>                
-                <li className='text-sm text-center'><code>ping host:megammr.minima.global:9001</code></li>
-              </ol>          
-                <div className="core-black-contrast-2 p-4 rounded">                                    
+                <p className="mb-6">Otherwise you can try this auto-connect feature:</p>
+                <ol className="text-gray-400 mb-4">
+                  <li>This method will randomly select peers for you from a megammr node by running</li>
+                  <li className="text-sm text-center">
+                    <code>ping host:megammr.minima.global:9001</code>
+                  </li>
+                </ol>
+                <div className="core-black-contrast-2 p-4 rounded">
                   <button
                     disabled={loading}
                     onClick={handleAutoConnect}
-                    className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed ${loading && "animate-pulse"}`}
+                    className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
                   >
                     {!loading && 'Use auto-connect'}
                     {loading && 'Finding peers...'}
-                  </button>                  
+                  </button>
                 </div>
               </div>
             </div>

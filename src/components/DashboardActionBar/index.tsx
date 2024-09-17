@@ -12,6 +12,7 @@ import MaximaProfile from '../MaximaProfile';
  */
 const DashboardActionBar = () => {
   const navigate = useNavigate();
+
   const { showSearch, setShowSearch } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
@@ -105,10 +106,11 @@ const DashboardActionBar = () => {
         </div>
       )}
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
-        <div className="grid grid-cols-12">
-          <div className="col-span-6">            
-              <MaximaProfile />
+        <div className="flex">
+          <div className="flex-grow">
+            <MaximaProfile />
           </div>
+
           <div className="col-span-6 flex items-center justify-end gap-4">
             <svg
               onClick={openSearch}

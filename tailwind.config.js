@@ -29,6 +29,7 @@ export default {
       blue: colors.blue,
       violet: colors.violet,
       teal: colors.teal,
+      neutral: colors.neutral,
       b: '#3f3cbb',
     },
     screens: {
