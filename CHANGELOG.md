@@ -1,5 +1,7 @@
 # Changelog
 
+
+
 ##### [0.19.0] - 15 Sept 24
 
 - Profile avatar design fix
