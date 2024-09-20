@@ -68,7 +68,7 @@ const MaximaProfile = () => {
       <div className="my-auto">{renderIcon()}</div>
       <div className="flex flex-col">
         <p className="pl-2 text-sm truncate max-w-max">{maximaName}</p>
-        {!address && 'Mx'}
+        {!address && <span className="pl-2 text-xs text-neutral-300">Mx</span>}
         {address && (
           <div onClick={(e) => e.stopPropagation()} className="flex gap-1">
             {!copied && (

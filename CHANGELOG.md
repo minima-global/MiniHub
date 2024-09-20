@@ -2,6 +2,10 @@
 
 
 
+##### [0.19.1] - 20 Sept 24
+
+- Tweak auto connect
+
 ##### [0.19.0] - 15 Sept 24
 
 - Profile avatar design fix
