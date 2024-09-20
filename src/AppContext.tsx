@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { block, isWriteMode, mds, mdsActionPermission, peers, status, uninstallApp } from './lib';
+import {
+  addPeers,
+  block,
+  getRandomElements,
+  isWriteMode,
+  mds,
+  mdsActionPermission,
+  peers,
+  status,
+  uninstallApp,
+} from './lib';
 import useWallpaper from './hooks/useWallpaper';
 import { subMinutes, fromUnixTime, isBefore } from 'date-fns';
 import * as utils from './utilities';
@@ -346,6 +356,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const autoConnectPeers = () => {
+    return new Promise((resolve, reject) => {
+      MDS.cmd('ping host:megammr.minima.global:9001', (resp) => {
+        if (!resp.status) reject('Failed to get peers list');
+
+        if (resp.response.extradata['peers-list'].length === 0) {
+          reject('No peers found');
+        }
+
+        (async () => {
+          await addPeers(getRandomElements(resp.response.extradata['peers-list'], 5)).catch((err) =>
+            reject(err.message)
+          );
+          resolve(true);
+        })();
+      });
+    });
+  };
+
   const getMaximaDetails = () => {
     (window as any).MDS.cmd('maxima', (resp: any) => {
       if (resp.status) {
@@ -383,7 +412,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const shareApp = async (uid: string) => {
     return new Promise((resolve, reject) => {
       (window as any).MDS.cmd(`mds action:download uid:${uid} locationonly:true`, (resp) => {
-        console.log(resp);
         if (!resp.status) reject(resp.error ? resp.error : 'Unable to locate the MiniDapp');
 
         try {
@@ -419,6 +447,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const value = {
     notify,
     globalNotify,
+    autoConnectPeers,
+    hasNoPeers,
+    setHeaderNoPeers,
     mode,
     isMobile: mode === 'mobile',
     appList,
@@ -495,7 +526,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     showHasNoPeers,
     setShowHasNoPeers,
-    hasNoPeers,
 
     showAddConnections,
     setShowAddConnections,

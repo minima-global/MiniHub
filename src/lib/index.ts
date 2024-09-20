@@ -228,7 +228,7 @@ export function get(key: string) {
 
 export function moveFile(originalFilePath: string, newFilePath: string) {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.file.move(originalFilePath, newFilePath, function(response: any) {
+    (window as any).MDS.file.move(originalFilePath, newFilePath, function (response: any) {
       if (response.status) {
         return resolve(true);
       }
@@ -240,7 +240,7 @@ export function moveFile(originalFilePath: string, newFilePath: string) {
 
 export function upload(file: unknown) {
   return new Promise((resolve) => {
-    (window as any).MDS.file.upload(file, function(response: any) {
+    (window as any).MDS.file.upload(file, function (response: any) {
       if (response.allchunks === response.chunk) {
         return resolve(true);
       }
@@ -250,7 +250,7 @@ export function upload(file: unknown) {
 
 export function copyToWeb(filePath: string, newFilePath: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.file.copytoweb(filePath, newFilePath, function(response: any) {
+    (window as any).MDS.file.copytoweb(filePath, newFilePath, function (response: any) {
       if (response.status) {
         return resolve(response);
       }
@@ -262,7 +262,7 @@ export function copyToWeb(filePath: string, newFilePath: string): Promise<any> {
 
 export function loadBinary(filePath: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    (window as any).MDS.file.loadbinary(filePath, function(response: any) {
+    (window as any).MDS.file.loadbinary(filePath, function (response: any) {
       if (response.status) {
         return resolve(response.response.load);
       }
@@ -270,4 +270,18 @@ export function loadBinary(filePath: string): Promise<any> {
       return reject();
     });
   });
+}
+
+export function getRandomElements(arr, count) {
+  // Create a shallow copy of the array to avoid modifying the original array
+  const shuffled = arr.slice();
+
+  // Shuffle the array using Fisher-Yates (Knuth) shuffle algorithm
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // Return the first 'count' elements from the shuffled array
+  return shuffled.slice(0, count);
 }
