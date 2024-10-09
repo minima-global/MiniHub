@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
 import { appContext } from '../../../AppContext';
+import FixedModal from '../../../components/UI/FixedModal';
+import Button from '../../../components/UI/Button';
 
 export function HasNoPeers() {
   const navigate = useNavigate();
@@ -11,10 +13,12 @@ export function HasNoPeers() {
     setShowHasNoPeers,
     setShowAddConnectionsLater,
     autoConnectPeers,
-    notify,
+    setHeaderNoPeers,
+    notify
   } = useContext(appContext);
   const transition: any = useTransition(display, modalAnimation as any);
 
+  const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const goToPeers = () => {
@@ -31,8 +35,9 @@ export function HasNoPeers() {
     setLoading(true);
     try {
       await autoConnectPeers();
-
-      notify('Connected to peers');
+      setShowHasNoPeers(false);
+      setDisplayImportSuccess(true);
+      setHeaderNoPeers(false);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -45,8 +50,23 @@ export function HasNoPeers() {
     }
   };
 
+  const dismissImportSuccess = () => {
+    setDisplayImportSuccess(false);
+    navigate('/');
+  };
+
   return (
     <div>
+      <FixedModal display={displayImportSuccess} frosted={true} className="max-w-md">
+        <div className="text-center">
+          <div>
+            <h5 className="text-2xl -mt-0.5 mx-auto mb-5">Connections added</h5>
+            <p className="mb-4">You are connecting to the network!</p>
+            <p className="mb-9">Please wait a few minutes before sending transactions.</p>
+          </div>
+          <Button onClick={dismissImportSuccess}>Continue</Button>
+        </div>
+      </FixedModal>
       {transition((style, display) => (
         <div>
           {display && (

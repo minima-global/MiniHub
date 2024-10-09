@@ -51,7 +51,7 @@ const TitleBar = () => {
             {hasNoPeers && (
               <button
                 onClick={() => setShowHasNoPeers(true)}
-                className="bg-[#1B1B1B] hover:outline hover:outline-yellow-500 font-bold flex gap-1 items-center text-neutral-500 text-xs p-1 px-2 rounded-lg"
+                className="bg-[#1B1B1B] hover:text-neutral-100 hover:bg-neutral-800 font-bold flex gap-1 items-center text-neutral-300 text-xs p-1 px-2 rounded-lg animate-pulse"
               >
                 <BroadcastIcon fill="currentColor" size={18} />
                 Add Peers

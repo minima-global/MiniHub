@@ -1,6 +1,12 @@
 # Changelog
 
 
+ 
+ ##### [0.20.0] - 09 Oct 24
+
+- Auto connect now display the same dialog as with manual on success
+- Remove Add Peers after successfully adding peers
+- Tweak Add Peers design button in header
 
 ##### [0.19.1] - 20 Sept 24
 
