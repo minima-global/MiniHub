@@ -6,8 +6,6 @@ type TermsAndConditionsProps = {
 };
 
 export function TermsAndConditions({ display, dismiss }: TermsAndConditionsProps) {
-
-
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full w-full bg-black">
@@ -29,16 +27,28 @@ export function TermsAndConditions({ display, dismiss }: TermsAndConditionsProps
               </svg>
               Settings
             </div>
-            <div className="text-2xl mt-6 mb-6">
-              Terms And Conditions
-            </div>
-            <div className="flex flex-col gap-5">
-                <div className='flex justify-center items-center gap-2'>
-                    <label htmlFor="terms">
-                        If you are using Minima you agree to these terms and conditions.
-                    </label>
-                </div>
-                <a href="./assets/terms.docx.html" target="_blank">View terms and conditions</a>
+            <div className="text-2xl mt-6 mb-6">Terms And Conditions</div>
+            <div className="flex flex-col space-y-4">
+              <p>
+                IT IS IMPORTANT YOU READ THESE TERMS CAREFULLY BEFORE USING ANY MINIDAPP OR OTHERWISE DEALING IN MINIMA.
+                BY USING A MINIDAPP (OR OTHERWISE DEALING IN MINIMA), YOU INDICATE THAT YOU ACCEPT THESE TERMS AND AGREE
+                TO COMPLY WITH THEM. IF YOU USE A MINIDAPP OR OTHERWISE DEAL IN MINIMA IN THE COURSE OF YOUR BUSINESS OR
+                WORK, YOU ARE ALSO AGREEING TO THESE TERMS ON BEHALF OF THAT BUSINESS. IF YOU DO NOT AGREE TO THESE
+                TERMS, YOU MUST NOT USE ANY MINIDAPP OR OTHERWISE DEAL IN MINIMA.
+              </p>
+              <p>
+                YOU SHOULD CAREFULLY CONSIDER WHETHER USING MINIDAPPS AND DEALING IN MINIMA IS SUITABLE FOR YOU IN LIGHT
+                OF YOUR OWN SITUATION AND ATTITUDE TO RISK, AS EVALUATED BY YOU CAREFULLY. WE DO NOT MAKE ANY
+                REPRESENTATIONS OR RECOMMENDATIONS REGARDING THE ADVISABILITY OR OTHERWISE OF USING MINIDAPPS OR DEALING
+                IN CRYPTOASSETS (INCLUDING MINIMA). IF YOU ARE UNSURE AS TO WHETHER USING MINIDAPPS OR OTHERWISE DEALING
+                IN CRYPTOASSETS (INCLUDING MINIMA) IS APPROPRIATE FOR YOU, YOU SHOULD SEEK INDEPENDENT ADVICE PRIOR TO
+                DOING SO.
+              </p>
+              <p>
+                DEALING IN CRYPTOASSETS (INCLUDING MINIMA) MAY NOT BE SUBJECT TO ANY INVESTOR PROTECTION, AND MAY
+                INVOLVE A HIGH DEGREE OF RISK TO YOUR CAPITAL, AND YOU MAY LOSE THE FULL VALUE YOU HOLD IN ANY
+                CRYPTOASSETS (INCLUDING MINIMA) YOU DEAL IN.
+              </p>
             </div>
           </div>
         </div>
