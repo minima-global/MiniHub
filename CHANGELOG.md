@@ -1,7 +1,9 @@
 # Changelog
 
+##### [0.20.1] - 31 Oct 24
 
- 
+- Updated terms and conditions
+
  ##### [0.20.0] - 09 Oct 24
 
 - Auto connect now display the same dialog as with manual on success
