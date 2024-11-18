@@ -24,6 +24,7 @@ import Introduction from '../../components/Introduction';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Onboarding from '../../components/Onboarding';
 
 
 function findPageIndexContainingApp(name, apps) {
@@ -138,7 +139,7 @@ function Dashboard() {
   } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
-  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage, dragDecelerationFriction: 0.8, speed: 20 }, [WheelGesturesPlugin()]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);
@@ -275,6 +276,7 @@ function Dashboard() {
 
   return (
     <>
+      <Onboarding />
       <Joyride
         continuous
         callback={handleJoyrideCallback}

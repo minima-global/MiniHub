@@ -22,6 +22,7 @@ export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
+  const [appReady, setAppReady] = useState(false);
 
   const [maximaName, setMaximaName] = useState('');
 
@@ -225,6 +226,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
+          setAppReady(true);
+    
           // if it is their first time
           if (firstTimeOpeningDapp) {
             setShowIntroduction(true);
@@ -556,6 +559,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     toggleFolder,
 
     shareApp,
+
+    appReady,
+    setAppReady,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
