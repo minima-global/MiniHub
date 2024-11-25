@@ -93,13 +93,16 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               Settings
             </div>
             <div className="text-2xl mt-6 mb-6">Add connections</div>
+            <p className="mb-4">To start transacting, you must connect to other users on the network.</p>
+            <p className="mb-4">You may use auto-connect to connect via a centralised Minima server. </p>
+            <h5 className="font-bold text-lg mb-4">Connect to the network</h5>
             <div className="flex flex-col gap-5">
               <p>Ask someone on the network to:</p>
               <ol className="list-decimal ml-4 text-gray-400">
-                <li>Open Settings & select 'Share connections'</li>
-                <li>Copy their connections or press the 'Share connections' button</li>
+                <li>Open their Settings and select ‘Share connections’</li>
+                <li>Copy or Share their connections </li>
               </ol>
-              <p className="mb-2">Once they have shared them, paste the connections below.</p>
+              <p className="mb-2">Paste the list in the box below.</p>
               <div className="block mb-2">
                 <div className="core-black-contrast-2 p-4 rounded">
                   <input
@@ -113,15 +116,15 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
                     Add connections
                   </Button>
                 </div>
+                <div className="flex gap-5 text-sm text-gray-300 mt-4 border-l-[3px] bg-gray-500/20 pl-4 py-3 border-gray-600 text-[14px] flex items-center gap-2">
+                    <svg className="min-w-[18px] min-h-[18px] text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <div>
+                    Enter a list of IP addresses or a URL to a .txt file containing a list of IPs e.g. <span className="underline">https://minima.global/minimapeers.txt</span>
+                    </div>
+                  </div>
               </div>
               <div className="block mb-8">
                 <p className="mb-6">Otherwise you can try this auto-connect feature:</p>
-                <ol className="text-gray-400 mb-4">
-                  <li>This method will randomly select peers for you from a megammr node by running</li>
-                  <li className="text-sm text-center">
-                    <code>ping host:megammr.minima.global:9001</code>
-                  </li>
-                </ol>
                 <div className="core-black-contrast-2 p-4 rounded">
                   <button
                     disabled={loading}

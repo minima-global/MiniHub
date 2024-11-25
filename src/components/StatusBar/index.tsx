@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { appContext } from '../../AppContext';
 import Status from './Status';
 import BlockInfo from './Block';
@@ -13,6 +13,31 @@ const TitleBar = () => {
     useContext(appContext);
   const [showBlockInfo, setShowBlockInfo] = useState(false);
   const { isNodeFiveMinutesAgoBehind } = useContext(appContext);
+  const [blockHeight, setBlockHeight] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const ref = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (blockInfo.blockHeight) {
+      if (ref.current && (new Date().getTime() - ref.current) < 750) {
+        setIsLoading(true);
+      }
+  
+      if (!blockHeight) {
+        ref.current = new Date().getTime();
+        setBlockHeight(blockInfo.blockHeight);
+        setIsLoading(false);
+      }
+
+      const timeout = setTimeout(() => {
+        setBlockHeight(blockInfo.blockHeight);
+        ref.current = new Date().getTime();
+        setIsLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [blockInfo.blockHeight]);
 
   const displayBlockInfo = async (evt) => {
     evt.stopPropagation();
@@ -32,9 +57,8 @@ const TitleBar = () => {
   return (
     <div
       onClick={openTitleBar}
-      className={`p-4 z-40 ${
-        showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl xl:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
-      }`}
+      className={`p-4 z-40 ${showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl xl:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
+        }`}
     >
       <BlockInfo display={showBlockInfo} close={() => setShowBlockInfo(false)} />
       <div className="grid grid-cols-12 h-full">
@@ -46,7 +70,7 @@ const TitleBar = () => {
             />
           </svg>
         </div>
-        <div className="svg col-span-9 flex justify-end">
+        <div className="svg col-span-9 flex items-center justify-end">
           <div className="absolute top-0 right-3 flex p-4 pr-0 items-center justify-end gap-2 overflow-hidden">
             {hasNoPeers && (
               <button
@@ -63,40 +87,47 @@ const TitleBar = () => {
             {blockInfo && blockInfo.blockHeight && (
               <div
                 onClick={displayBlockInfo}
-                className="block_info flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
+                className="!bg-black gradient-border block_info min-h-[28px] flex cursor-pointer block-info rounded-full px-3 pb-1 pt-1.5 -mt-0.5 text-sm font-bold"
               >
-                {isNodeFiveMinutesAgoBehind && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-white ml-0.5 mr-2"
-                    style={{ marginTop: '2px' }}
-                  >
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                    <line x1="12" y1="9" x2="12" y2="13" />
-                    <line x1="12" y1="17" x2="12.01" y2="17" />
-                  </svg>
-                )}
-                {showWarning && <div>Chain Error</div>}
-                {!showWarning && statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
-                {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
+                {isLoading && <div className='mt-[1px] w-[12px]'>
+                  <div className="absolute mt-[2.5px] spinner-loader" />
+                </div>}
+                {!isLoading && (
                   <>
-                    <div>
-                      <span>{blockInfo.blockHeight}</span>
-                      {' @ '}
-                      <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>
-                    </div>
+                    {isNodeFiveMinutesAgoBehind && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-white ml-0.5 mr-2"
+                        style={{ marginTop: '2px' }}
+                      >
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
+                    )}
+                    {showWarning && <div>Chain Error</div>}
+                    {!showWarning && statusInfo && statusInfo.noBlocksYet && <>No Blocks Yet</>}
+                    {!showWarning && statusInfo && !statusInfo.noBlocksYet && (
+                      <>
+                        <div>
+                          <span>{blockHeight}</span>
+                          {' @ '}
+                          <span>{format(parseInt(blockInfo.timemilli), 'HH:mm')}</span>
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
                 <svg
-                  className="ml-2 mt-0.5"
+                  className="ml-2 mt-[2.5px]"
                   width="12"
                   height="14"
                   viewBox="0 0 12 14"

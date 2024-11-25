@@ -1,7 +1,11 @@
 # Changelog
 
+##### [0.21.0] - 18 Nov 24
 
- 
+- Fix block height loading state
+- Text content changes in Join the network and Add connections sections
+- You can now update MiniHUB in the update MiniDapp section
+
  ##### [0.20.0] - 09 Oct 24
 
 - Auto connect now display the same dialog as with manual on success

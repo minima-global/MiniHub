@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../../../../components/UI/Button';
 import SlideScreen from '../../../../components/UI/SlideScreen';
 import { getPath, mds, saveFile, update } from '../../../../lib';
@@ -7,6 +7,7 @@ import { blobToArrayBuffer, bufferToHex } from '../../../../utilities';
 import getAppUID from '../../../../utilities/getAppUid';
 import Modal from '../../../../components/UI/Modal';
 import { appContext } from '../../../../AppContext';
+import axios from 'axios';
 
 type UpdateMiniHubProps = {
   display: boolean;
@@ -21,6 +22,13 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
   const [success, setSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [shutdown, setShutdown] = useState(false);
+  const [version, setVersion] = useState<string | null>(null);
+
+  useEffect(() => {
+    axios.get('./info.json').then((res) => {
+      setVersion(res.data.version);
+    });
+  }, []);
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
@@ -133,7 +141,8 @@ export function UpdateMiniHub({ display, dismiss }: UpdateMiniHubProps) {
             </svg>
             Settings
           </div>
-          <h1 className="text-2xl mb-8">Update MiniHub</h1>
+          <h1 className="text-2xl mb-4">Update MiniHub</h1>
+          <div className="text-sm mb-8">Current version: <strong>{version}</strong></div>
           <form onSubmit={handleOnSubmit} className="text-left">
             <p className="mb-10 line-height">Please select your latest MiniHub zip file.</p>
             <div className="relative mt-3 mb-10">
