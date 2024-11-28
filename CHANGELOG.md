@@ -1,5 +1,10 @@
 # Changelog
 
+
+##### [0.21.1] - 25 Nov 24
+
+- Fix block height loading state
+
 ##### [0.21.0] - 18 Nov 24
 
 - Fix block height loading state

@@ -19,19 +19,20 @@ const TitleBar = () => {
 
   useEffect(() => {
     if (blockInfo.blockHeight) {
-      if (ref.current && (new Date().getTime() - ref.current) < 750) {
+      if (ref.current && ((new Date().getTime() - ref.current) < 50)) {
         setIsLoading(true);
       }
   
-      if (!blockHeight) {
+      if (!blockHeight && !ref.current) {
         ref.current = new Date().getTime();
         setBlockHeight(blockInfo.blockHeight);
         setIsLoading(false);
       }
 
+      ref.current = new Date().getTime();
+
       const timeout = setTimeout(() => {
         setBlockHeight(blockInfo.blockHeight);
-        ref.current = new Date().getTime();
         setIsLoading(false);
       }, 1000);
 
