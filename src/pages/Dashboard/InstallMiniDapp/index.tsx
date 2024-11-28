@@ -2,13 +2,16 @@ import * as React from 'react';
 import { useTransition, animated } from '@react-spring/web';
 import { modalAnimation } from '../../../animations';
 import { useContext, useEffect, useState } from 'react';
-import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
-import { deleteFile, getPath, install, saveFile } from '../../../lib';
+import { blobToArrayBuffer, bufferToHex, getAppUID } from '../../../utilities';
+import { deleteFile, getPath, install, mds, saveFile, update } from '../../../lib';
 import { appContext } from '../../../AppContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Modal from '../../../components/UI/Modal';
+import Button from '../../../components/UI/Button';
 
 export function Install() {
   // seems to be an issue somewhere with types
+  const { setHasUpdated } = useContext(appContext);
   const navigate = useNavigate();
   const location = useLocation();
   const { refreshAppList, showInstall: display, setShowInstall } = useContext(appContext);
@@ -18,6 +21,8 @@ export function Install() {
   const [error, setError] = useState<boolean>(false);
   const [installed, setInstalled] = useState<any | null>(null);
   const transition: any = useTransition(display, modalAnimation as any);
+  const [shutdown, setShutdown] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -41,6 +46,10 @@ export function Install() {
     evt.preventDefault();
 
     if (file) {
+      if (file.name.toLowerCase().includes('minihub')) {
+        return installMiniHub(evt);
+      }
+
       try {
         setError(false);
         setIsLoading(true);
@@ -74,6 +83,66 @@ export function Install() {
     }
   };
 
+  const installMiniHub = async (evt: React.FormEvent) => {
+    evt.preventDefault();
+
+    if (file) {
+      try {
+        setError(false);
+        setIsLoading(true);
+
+        // save the file to folder
+        const fileName = file.name;
+        const arrayBuffer = await blobToArrayBuffer(file);
+        const hex = bufferToHex(arrayBuffer);
+        const savedFile = await saveFile('/' + fileName, hex);
+
+        // get the file path for install
+        const filePath = await getPath(savedFile.canonical);
+
+        // get app uid from url
+        let appUid = getAppUID();
+
+        // if local server, we need to retrieve the uid from mds command
+        if (appUid === 'unknown-app-uid') {
+          const response = await mds();
+          const hub = response.minidapps.find(i => i.conf.name === "MiniHUB");
+
+          // only set it if hub minidapp was found
+          if (hub) {
+            appUid = hub.uid;
+          }
+        }
+
+        // install with full file path
+        await update(appUid, filePath);
+
+        // ensure MDS fail message does not appear
+        setHasUpdated(true);
+
+        /**
+         * If user updates MiniHUB in internal browser, we want to close
+         * the window.
+         */
+        if (window.navigator.userAgent.includes('Minima Browser')) {
+          setShowInstall(false);
+          setShutdown(true);
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          return Android.closeWindow();
+        }
+
+        setShowInstall(false);
+        setSuccess(true);
+      } catch {
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }
+
   const onClose = () => {
     setShowInstall(false);
     navigate(-1);
@@ -86,10 +155,34 @@ export function Install() {
     }, 250);
   };
 
+
+  const goToLoginPage = () => {
+    // go to login page
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.location.assign(MDS.filehost);
+  }
+
   return (
     <div>
       {transition((style, display) => (
         <div>
+        <Modal display={shutdown} frosted>
+          <div>
+            <div className="text-center">
+              <h1 className="text-xl mb-6">Your MiniHUB has<br /> been successfully updated</h1>
+              <p className="mb-2">Please restart the Minima app.</p>
+            </div>
+          </div>
+        </Modal>
+        <Modal display={success} frosted>
+          <div>
+            <div className="text-center">
+              <h1 className="text-xl mb-8">Your MiniHUB has<br /> been successfully updated</h1>
+              <Button onClick={goToLoginPage}>Go to login page</Button>
+            </div>
+          </div>
+        </Modal>
           {display && (
             <div className="mx-auto absolute w-full h-full z-40 flex items-center justify-center text-black">
               {display && (
@@ -111,7 +204,7 @@ export function Install() {
                           <form onSubmit={handleOnSubmit} className="text-center">
                             <h1 className="mt-1 text-2xl text-center mb-6">Add a MiniDapp</h1>
                             <p className="text-center mb-10 line-height">
-                              Only install MiniDapps from trusted sources. MiniDapps will be installed with Read access by default, this can be changed from the Home screen. To update the MiniHub, please go to Settings instead.
+                              Only install MiniDapps from trusted sources. MiniDapps will be installed with Read access by default, this can be changed from the Home screen.
                             </p>
                             <div className="relative mt-3 mb-10">
                               <label className="file rounded core-grey-20 w-full">

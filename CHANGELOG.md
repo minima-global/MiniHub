@@ -1,5 +1,15 @@
 # Changelog
 
+##### [0.21.1] - 25 Nov 24
+
+- Fix block height loading state
+
+##### [0.21.0] - 18 Nov 24
+
+- Fix block height loading state
+- Text content changes in Join the network and Add connections sections
+- You can now update MiniHUB in the update MiniDapp section
+
 ##### [0.20.1] - 31 Oct 24
 
 - Updated terms and conditions

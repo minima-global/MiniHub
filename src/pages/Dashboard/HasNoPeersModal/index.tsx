@@ -8,7 +8,7 @@ import Button from '../../../components/UI/Button';
 
 export function HasNoPeers() {
   const navigate = useNavigate();
-  const {
+  let {
     showHasNoPeers: display,
     setShowHasNoPeers,
     setShowAddConnectionsLater,
@@ -17,6 +17,7 @@ export function HasNoPeers() {
     notify
   } = useContext(appContext);
   const transition: any = useTransition(display, modalAnimation as any);
+
 
   const [displayImportSuccess, setDisplayImportSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -99,29 +100,30 @@ export function HasNoPeers() {
                           </svg>
                         </div>
                         <h1 className="mt-1 text-2xl text-center mb-6">Join the network</h1>
-                        <p className="text-center mb-4 line-height">Minima is a completely decentralised network.</p>
+                        <p className="text-center mb-4 line-height">To start transacting, you must connect to other users on the network. </p>
                         <p className="text-center mb-10 line-height">
-                          To join, ask a Minima user to share connections with you.
+                          You may use auto-connect to connect via a centralised Minima server.
+                        </p>
+                        <div className="mb-2">
+                          <button
+                            disabled={loading}
+                            onClick={handleAutoConnect}
+                            className={`w-full px-4 py-3.5 rounded font-bold bg-white text-black border border-neutral-100  mb-4 disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
+                          >
+                            {!loading && 'Connect to the network'}
+                            {loading && 'Finding peers...'}
+                          </button>
+                        </div>
+                        <p className="text-center mb-6 line-height">
+                          Alternatively, you can supply your own connections by asking another user to share their connections with you. 
                         </p>
                         <button
                           disabled={loading}
                           onClick={goToPeers}
                           className="w-full px-4 py-3.5 rounded font-bold text-black core-grey-5 mb-4 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                          Add connections
+                          Use my own connections
                         </button>
-
-                        <button
-                          disabled={loading}
-                          onClick={handleAutoConnect}
-                          className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100  mb-4 disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
-                        >
-                          {!loading && 'Use auto-connect'}
-                          {loading && 'Finding peers...'}
-                        </button>
-                        <p className="text-sm mb-3 opacity-80">
-                          This method will randomly select peers for you from a megammr node
-                        </p>
                         <button
                           disabled={loading}
                           type="button"
