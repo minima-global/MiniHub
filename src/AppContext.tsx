@@ -67,12 +67,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   // show introduction
   const [showIntroduction, setShowIntroduction] = useState<null | boolean>(null);
 
-  // show onboard tour
-  const [showOnboard, setShowOnboard] = useState(false);
-
-  // show onboard tour
-  const [tutorialMode, setTutorialMode] = useState(false);
-
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
 
@@ -219,27 +213,19 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // init mds
   useEffect(() => {
-    const ls = localStorage.getItem(utils.getAppUID());
-    const firstTimeOpeningDapp = !ls;
     if (!loaded.current) {
       loaded.current = true;
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
           setAppReady(true);
-    
-          // if it is their first time
-          if (firstTimeOpeningDapp) {
-            setShowIntroduction(true);
-            localStorage.setItem(utils.getAppUID(), '1');
-          }
 
-          if (!firstTimeOpeningDapp) {
-            setShowIntroduction(false);
-            checkPeers();
-          }
+          // MDS.keypair.get('onboarding', (resp) => {
+          //   console.log(resp);
+          // });
 
           getMaximaDetails();
+
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
@@ -543,12 +529,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showIntroduction,
     setShowIntroduction,
 
-    // This will be just to track whether in tutorial Mode
-    tutorialMode,
-    setTutorialMode,
-    // Toggling onboard tutorial on/off
-    showOnboard,
-    setShowOnboard,
     maximaName,
     maximaIcon,
     setMaximaIcon,

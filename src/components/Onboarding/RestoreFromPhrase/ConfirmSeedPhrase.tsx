@@ -1,11 +1,10 @@
 import { useState } from "react";
-import bip39 from "./bip39";
+import bip39 from "../bip39";
 
-const ConfirmWord = ({ index }: { index: number }) => {
-    const [focus, setFocus] = useState(false);
-    const [proxyError, setProxyError] = useState(false);
+const ConfirmWord = ({ index, word, callback }: { index: number, word: string | undefined, callback: (index: number, value: string | undefined) => void }) => {
+    const [_focus, setFocus] = useState(false);
     const [error, setError] = useState(false);
-    const [values, setValue] = useState("");
+    const [value, setValue] = useState(word);
     const [validated, setValidated] = useState(false);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const isDesktop = window.innerWidth > 768;
@@ -22,6 +21,16 @@ const ConfirmWord = ({ index }: { index: number }) => {
 
         if (value.length > 2) {
             setSuggestions(bip39.filter((i) => i.startsWith(value)).slice(0, 5));
+        } else {
+            setSuggestions([]);
+        }
+
+        console.log(1);
+
+        if (bip39.includes(value)) {
+            callback(index, value);
+        } else {
+            callback(index, undefined);
         }
     };
 
@@ -30,6 +39,12 @@ const ConfirmWord = ({ index }: { index: number }) => {
         setValue(value);
         setValidated(bip39.includes(value));
         setSuggestions([]);
+
+        if (bip39.includes(value)) {
+            callback(index, value);
+        } else {
+            callback(index, undefined);
+        }
     };
 
     const handleBlur = (evt: any) => {
@@ -37,20 +52,26 @@ const ConfirmWord = ({ index }: { index: number }) => {
         setError(
             evt.target.value === "" ? false : !bip39.includes(evt.target.value)
         );
+
+        if (value && bip39.includes(value)) {
+            callback(index, value);
+        } else {
+            callback(index, undefined);
+        }
     };
 
     return (
         <>
             <div
-                className={`flex bg-black/30 p-1 pr-4 border ${error ? "border-red-500" : "border-transparent"}`}
+                className={`flex bg-contrast-1 p-0.5 pr-4 border ${error ? "border-red-500" : "border-transparent"}`}
             >
-                <label className="py-3 pl-3 text-sm">
+                <label className="py-2 pl-3 text-sm">
                     {index + 1}.
                 </label>
                 <input
                     type="text"
-                    className={`w-full py-3 px-3 text-white outline-none bg-transparent font-bold text-sm`}
-                    value={values}
+                    className={`w-full py-2 px-2 text-white outline-none bg-transparent font-bold text-sm`}
+                    value={value}
                     autoFocus={isDesktop}
                     onFocus={(e) => handleFocus(e)}
                     onChange={(evt) => handleOnChange(evt)}
@@ -68,14 +89,22 @@ const ConfirmWord = ({ index }: { index: number }) => {
     )
 }
 
-const ConfirmSeedPhrase = () => {
+const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedPhrase: React.Dispatch<React.SetStateAction<(string | undefined)[]>> }> = ({ seedPhrase, setSeedPhrase }) => {
+    const callback = (index: number, seedPhrasePart: string | undefined) => {
+        setSeedPhrase(prevState => {
+            const newState = [...prevState];
+            newState[index] = seedPhrasePart;
+            return newState;
+        });
+    }
+
     return (
         <div>
             <div>
                 <div className="grid grid-cols-12 w-full gap-3">
                     {new Array(24).fill(0).map((_i, index) => (
                         <div key={index} className="relative col-span-4 w-full flex items-center">
-                            <ConfirmWord index={index} />
+                            <ConfirmWord index={index} word={seedPhrase[index]} callback={callback} />
                         </div>
                     ))}
                 </div>

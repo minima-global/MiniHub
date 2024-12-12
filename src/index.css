@@ -20,6 +20,9 @@
   --core-black-contrast: #17191c;
   --core-black-contrast-2: #282b2e;
   --core-black-contrast-3: #464c4f;
+
+  --core-black: hsla(220, 16%, 4%, 1);
+  --contrast-1: hsla(216, 10%, 10%, 1);
 }
 
 html {
@@ -677,4 +680,18 @@ body.theme-light .search-container input {
 
 @keyframes spinner-border {
   to { transform: rotate(360deg); }
+}
+
+.after\:chevron-right:after {
+  position: absolute;
+  content: "";
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-image: url('/icons/chevron_right.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 18px;
+  height: 18px;
 }

@@ -31,6 +31,12 @@ export default {
       teal: colors.teal,
       neutral: colors.neutral,
       b: '#3f3cbb',
+      'orange': 'hsla(25, 100%, 59%, 1)',
+      'disabled-orange': 'hsla(33, 64%, 20%, 1)',
+      'core-black': 'hsla(220, 16%, 4%, 1)',
+      'contrast-1': 'hsla(216, 10%, 10%, 1)',
+      'contrast-1.5': 'hsla(210, 7%, 14%, 1)',
+      'contrast-2': 'hsla(210, 7%, 17%, 1)',
     },
     screens: {
       sm: '390px',
