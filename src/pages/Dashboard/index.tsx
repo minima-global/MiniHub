@@ -23,8 +23,6 @@ import Introduction from '../../components/Introduction';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Onboarding from '../../components/Onboarding';
-
 
 function Dashboard() {
   const {
@@ -105,7 +103,6 @@ function Dashboard() {
 
   return (
     <>
-      <Onboarding />
       <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
         <Introduction />
         <AppIsInReadMode />

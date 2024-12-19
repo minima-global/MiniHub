@@ -43,7 +43,7 @@ const DashboardActionBar = () => {
             <div className="relative mb-5">
               <input
                 type="text"
-                className="border-2 border-core-black-contrast-3 bg-transparent outline-none rounded w-full mx-auto py-3 px-4"
+                className="border-2 border-core-black-contrast-3 bg-black outline-none rounded w-full mx-auto py-3 px-4"
                 placeholder="Search"
                 value={query}
                 onChange={(evt) => setQuery(evt.target.value)}
@@ -80,7 +80,7 @@ const DashboardActionBar = () => {
             <div className="w-full flex-grow relative">
               <input
                 type="text"
-                className="w-full border-2 border-core-black-contrast-3 bg-transparent outline-none rounded mx-auto py-2 px-3"
+                className="w-full border-2 border-core-black-contrast-3 bg-black/50 outline-none rounded mx-auto py-2 px-3"
                 placeholder="Search"
                 value={query}
                 onChange={(evt) => setQuery(evt.target.value)}

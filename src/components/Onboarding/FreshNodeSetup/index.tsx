@@ -4,14 +4,16 @@ import OnboardingWrapper from "../OnboardingWrapper";
 import { appContext } from "../../../AppContext";
 import { addPeers } from "../../../lib";
 import OnboardingModal from "../OnboardingModal";
-import { buttonClassName, inputClassName, optionClassName } from "../styling";
+import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
 import { onboardingContext } from "..";
+import STEPS from "../steps";
+import { hideOnboarding } from "../utils";
 
-const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<React.SetStateAction<number | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
+const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
     const { appReady } = useContext(appContext);
-    const { setBackButton } = useContext(onboardingContext);
+    const { keysGenerated } = useContext(onboardingContext);
     const [seedPhrase, setSeedPhrase] = useState<string[] | null>(null);
     const [seedPhraseWritten, setSeedPhraseWritten] = useState(false);
     const [seedPhraseAccess, setSeedPhraseAccess] = useState(false);
@@ -19,8 +21,8 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
     const [peerListError, setPeerListError] = useState(false);
     const [autoConnectError, setAutoConnectError] = useState(false);
     const { autoConnectPeers } = useContext(appContext);
-    const [keysGenerated, setKeysGenerated] = useState(false);
     const { setPrompt } = useContext(onboardingContext);
+    const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
 
     useEffect(() => {
         if (appReady && !seedPhrase) {
@@ -30,25 +32,10 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
         }
     }, [appReady]);
 
-    useEffect(() => {
-        if (appReady && !keysGenerated) {
-            const interval = setInterval(() => {
-                MDS.cmd("keys", function (msg) {
-                    if (msg.response.total >= 64) {
-                        setKeysGenerated(true);
-                        clearInterval(interval);
-                    }
-                });
-            }, 1000);
-
-            return () => clearInterval(interval);
-        }
-    }, [appReady]);
-
     const connect = async () => {
         try {
             await addPeers(peerList);
-            setStep("WELCOME_TO_THE_NETWORK");
+            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
         } catch {
             setPeerListError(true);
         }
@@ -57,16 +44,44 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
     const autoConnect = async () => {
         try {
             await autoConnectPeers();
-            setShowOnboarding(false);
-            setStep("WELCOME_TO_THE_NETWORK");
+            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
         } catch {
             setAutoConnectError(true);
         }
     }
 
+    const handlePeerListInfo = () => {
+        setPrompt({ display: true, title: "Peer list", description: "Peer list is a list of connections to other nodes on the network. You can find this in the Settings menu." });
+    }
+
+    const continueFromSeedPhrase = () => {
+        setStep(STEPS.FRESH_NODE_LOADING_FOR_KEYS);
+    }
+
+    const goToConnectOptions = () => {
+        setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
+    }
+
+    const goToAddConnections = () => {
+        setStep(STEPS.FRESH_NODE_ADD_CONNECTIONS);
+    }
+
+    const goToAutoConnect = () => {
+        setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
+    }
+
+    const goToSkip = () => {
+        setStep(STEPS.FRESH_NODE_SKIP);
+    }
+
+    const finish = async () => {
+        hideOnboarding();
+        setShowOnboarding(false);
+    }
+
     return (
         <div>
-            <OnboardingWrapper display={step === "CREATE_ACCOUNT_ONE"}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SETUP}>
                 <OnboardingModal display={true}>
                     <OnboardingTitle title="Your seed phrase" icon="CREATE_NEW_ACCOUNT" />
                     <div className="text-left text-white mb-8">
@@ -75,31 +90,34 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                     </div>
                     <div className="grid grid-cols-12 gap-3 text-sm mb-8">
                         {seedPhrase?.map((word, index) => (
-                            <div key={index} className="col-span-4 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded">
-                                <span className="font-thin pr-2">{index + 1}.</span> <strong>{word}</strong>
+                            <div key={index} className="col-span-3 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
+                                <span className="font-thin pr-2">{index + 1}.</span> {showingSeedPhrase ? <strong>{word}</strong> : <span className="w-[100px] h-[12px] bg-contrast-2"></span>}
                             </div>
                         ))}
                     </div>
                     <div className="mb-8 flex flex-col gap-2">
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
-                            <div className="pointer-events-none absolute left-[2px] bg-black w-[12px] h-[12px] bg-blue-600 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
+                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
+                            <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I have written down my secret seed phrase.
                         </label>
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
-                            <div className="pointer-events-none absolute left-[2px] bg-black w-[12px] h-[12px] bg-blue-600 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
+                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
+                            <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I understand I can access my seed phrase from the Security MiniDapp
                         </label>
                     </div>
-                    <button className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess} onClick={() => setStep(2)}>Continue</button>
+                    <div className="flex flex-col gap-3">
+                        <button onClick={() => setShowingSeedPhrase(!showingSeedPhrase)} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
+                        <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess}>Continue</button>
+                    </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === 2}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_LOADING_FOR_KEYS}>
                 <OnboardingModal display={true} width="max-w-[572px]">
                     {!keysGenerated && (
                         <div className="block flex items-center justify-center mb-6">
-                            <img src="/icons/loader3.gif" className="w-[64px] h-[64px]" alt="Loading" />
+                            <img src="./icons/loader3.gif" className="w-[50px] h-[50px]" alt="Loading" />
                         </div>
                     )}
                     {keysGenerated && (
@@ -112,10 +130,10 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                     <div className="text-center text-white mb-8">
                         Your node is starting up. This may take a few minutes.
                     </div>
-                    <button className={buttonClassName} onClick={() => setStep(3)}>Continue</button>
+                    <button onClick={goToConnectOptions} className={buttonClassName} disabled={!keysGenerated}>Continue</button>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === 3}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_CONNECT_OPTIONS}>
                 <OnboardingModal display={true}>
                     <OnboardingTitle title="Join the network" icon="CREATE_NEW_ACCOUNT" />
                     <div className="text-white">
@@ -124,20 +142,20 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                             <p>To join, ask a Minima user to share connections with you.</p>
                         </div>
                         <div className="flex flex-col gap-3 text-sm">
-                            <button onClick={() => setStep(4)} className={optionClassName}>
+                            <button onClick={goToAddConnections} className={optionClassName}>
                                 Add connections
                             </button>
-                            <button onClick={() => setStep(5)} className={optionClassName}>
+                            <button onClick={goToAutoConnect} className={optionClassName}>
                                 Use auto-connect
                             </button>
-                            <button onClick={() => setStep(6)} className={optionClassName}>
+                            <button onClick={goToSkip} className={optionClassName}>
                                 I'll do it later
                             </button>
                         </div>
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === 4}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_ADD_CONNECTIONS}>
                 <OnboardingModal display={true}>
                     <OnboardingTitle title="Join the network" icon="CREATE_NEW_ACCOUNT" />
                     <div className="text-left text-white w-full max-w-2xl">
@@ -152,14 +170,14 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                                     <label className="block mb-3">Once they have shared them, paste the connections below.</label>
                                     <div className="relative">
                                         <input value={peerList} onChange={(e) => setPeerList(e.target.value)} type="text" className={inputClassName} placeholder="Enter connections" />
-                                        <div onClick={() => setPrompt({ display: true, title: "Example", description: "..." })} className="cursor-pointer absolute top-0 right-0 w-25 h-full flex items-center justify-end pr-4"><Info /></div>
+                                        <div onClick={handlePeerListInfo} className="cursor-pointer absolute top-0 right-0 w-25 h-full flex items-center justify-end pr-4"><Info /></div>
                                     </div>
                                 </div>
                                 <button onClick={connect} disabled={peerList === ''} className={buttonClassName}>
                                     Add connections
                                 </button>
                                 {peerListError && (
-                                    <div className={`${peerListError ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-2 py-1 bg-red-500/[5%]`}>
+                                    <div className={`${peerListError ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
                                         There was an unknown error connecting to peer list
                                     </div>
                                 )}
@@ -168,7 +186,7 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === 5}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_AUTO_CONNECT}>
                 <OnboardingModal display={true}>
                     <OnboardingTitle title="Auto-connect" icon="CREATE_NEW_ACCOUNT" />
                     <div className="text-white w-full max-w-2xl">
@@ -180,7 +198,7 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                                         Use Auto-connect
                                     </div>
                                     {autoConnectError && (
-                                        <div className={`${autoConnectError ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-2 py-1 bg-red-500/[5%]`}>
+                                        <div className={`${autoConnectError ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
                                             A connection could not be established, please try a different Mega node.
                                         </div>
                                     )}
@@ -190,17 +208,17 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === "WELCOME_TO_THE_NETWORK"}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
-                        <h1 className="text-[40px] mb-8">Welcome to the network</h1>
-                        <div onClick={() => setShowOnboarding(false)} className={buttonClassName}>
+                        <h1 className="text-[40px] mb-10 leading-[50px]">Welcome<br />to the network</h1>
+                        <div onClick={finish} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
                             Let's go
                         </div>
                     </div>
                 </div>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === 6}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP}>
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
                         <h1 className="text-2xl font-bold mb-8">Welcome to the network</h1>
@@ -208,7 +226,7 @@ const FreshNodeSetup: React.FC<{ step: number | null, setStep: React.Dispatch<Re
                             <p>You need to add connections before you can make transactions.</p>
                             <p>To add your connections later, visit Settings.</p>
                         </div>
-                        <div onClick={() => setShowOnboarding(false)} className={buttonClassName}>
+                        <div onClick={finish} className={buttonClassName}>
                             I'll do it later
                         </div>
                     </div>

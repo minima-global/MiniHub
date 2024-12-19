@@ -1,7 +1,7 @@
 import { useState } from "react";
 import bip39 from "../bip39";
 
-const ConfirmWord = ({ index, word, callback }: { index: number, word: string | undefined, callback: (index: number, value: string | undefined) => void }) => {
+const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { index: number, word: string | undefined, callback: (index: number, value: string | undefined) => void, activeIndex: number | null, setActiveIndex: React.Dispatch<React.SetStateAction<number | null>> }) => {
     const [_focus, setFocus] = useState(false);
     const [error, setError] = useState(false);
     const [value, setValue] = useState(word);
@@ -12,6 +12,7 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
     const handleFocus = (e) => {
         e.persist();
         setFocus(true);
+        setActiveIndex(index);
     };
 
     const handleOnChange = (evt: any) => {
@@ -24,8 +25,6 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
         } else {
             setSuggestions([]);
         }
-
-        console.log(1);
 
         if (bip39.includes(value)) {
             callback(index, value);
@@ -52,6 +51,7 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
         setError(
             evt.target.value === "" ? false : !bip39.includes(evt.target.value)
         );
+        setActiveIndex(null);
 
         if (value && bip39.includes(value)) {
             callback(index, value);
@@ -63,7 +63,7 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
     return (
         <>
             <div
-                className={`flex bg-contrast-1 p-0.5 pr-4 border ${error ? "border-red-500" : "border-transparent"}`}
+                className={`flex bg-contrast-1 p-0.5 pr-4 border ${error ? "border-red-500" : "border-transparent"} transition-opacity duration-200 ${activeIndex !== null ? activeIndex === index ? "opactity-100" : "opacity-[30%]" : ""}`}
             >
                 <label className="py-2 pl-3 text-sm">
                     {index + 1}.
@@ -79,9 +79,9 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
                 />
             </div>
             {suggestions && !validated && (
-                <div className="absolute top-[100%] z-10 w-full flex flex-col gap-1 mt-1">
+                <div className="absolute top-[100%] z-10 w-full flex flex-col gap-[1px] bg-contrast-1">
                     {suggestions.map((i) => (
-                        <button key={i} type="button" className="w-full flex bg-black text-black text-white p-3 text-sm" onClick={() => handleOnClick(i)}>{i}</button>
+                        <button key={i} type="button" className="w-full flex bg-contrast-2 text-black text-white p-3 text-sm" onClick={() => handleOnClick(i)}>{i}</button>
                     ))}
                 </div>
             )}
@@ -90,6 +90,8 @@ const ConfirmWord = ({ index, word, callback }: { index: number, word: string | 
 }
 
 const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedPhrase: React.Dispatch<React.SetStateAction<(string | undefined)[]>> }> = ({ seedPhrase, setSeedPhrase }) => {
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    
     const callback = (index: number, seedPhrasePart: string | undefined) => {
         setSeedPhrase(prevState => {
             const newState = [...prevState];
@@ -104,7 +106,7 @@ const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedP
                 <div className="grid grid-cols-12 w-full gap-3">
                     {new Array(24).fill(0).map((_i, index) => (
                         <div key={index} className="relative col-span-4 w-full flex items-center">
-                            <ConfirmWord index={index} word={seedPhrase[index]} callback={callback} />
+                            <ConfirmWord index={index} word={seedPhrase[index]} callback={callback} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
                         </div>
                     ))}
                 </div>

@@ -11,13 +11,13 @@ const OnboardingTitle = ({ title, icon }: OnboardingTitleProps) => (
             </div>
             <div className="col-span-4 flex justify-end">
                 {icon === "CREATE_NEW_ACCOUNT" && (
-                    <img src="/icons/create_a_new_account.svg" alt="Create a new account" className="w-10 h-10" />
+                    <img src="./icons/create_a_new_account.svg" alt="Create a new account" className="w-10 h-10" />
                 )}
                 {icon === "RESTORE_FROM_SEED_PHRASE" && (
-                    <img src="/icons/restore_from_phrase.svg" alt="Restore from seed phrase" className="w-10 h-10" />
+                    <img src="./icons/restore_from_phrase.svg" alt="Restore from seed phrase" className="w-10 h-10" />
                 )}
                 {icon === "RESTORE_FROM_BACKUP" && (
-                    <img src="/icons/restore_from_backup.svg" alt="Restore from backup" className="w-10 h-10" />
+                    <img src="./icons/restore_from_backup.svg" alt="Restore from backup" className="w-10 h-10" />
                 )}
             </div>
         </div>

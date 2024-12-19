@@ -17,6 +17,7 @@ import * as utils from './utilities';
 import { AppData } from './types/app';
 import useFoldersTheme from './hooks/useFolderTheme';
 import { toast } from 'react-toastify';
+import { shouldShowOnboarding } from './components/Onboarding/utils';
 
 export const appContext = createContext({} as any);
 
@@ -128,6 +129,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
   const [mdsFail, setMDSFail] = useState<string | boolean>(false);
 
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [bootstrapping, setBootstrapping] = useState(true);
+
+  useEffect(() => {
+    if (appReady) {
+      shouldShowOnboarding().then((show) => {
+        setShowOnboarding(show);
+
+        if (!show) {
+          setBootstrapping(false);
+        }
+
+        setTimeout(() => {
+          setBootstrapping(false);
+        }, 750);
+      });
+    }
+  }, [appReady]);
+
   useEffect(() => {
     if (window.innerWidth < 568) {
       setMode('mobile');
@@ -238,6 +258,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
               dateTime: blockInfo.date,
               timemilli: blockInfo.timemilli,
             });
+          }).catch(() => {
+            // do nothing, most likely the node has not been set up yet
           });
 
           status().then((response) => {
@@ -542,6 +564,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     appReady,
     setAppReady,
+
+    showOnboarding,
+    setShowOnboarding,
+    bootstrapping,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

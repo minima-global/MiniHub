@@ -24,7 +24,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   } else if (variant === 'primary') {
     base += ' text-black bg-white';
   } else if (variant === 'secondary') {
-    base += ' text-white core-black-contrast-3 hover:opacity-80';
+    base += ' text-white bg-contrast-2 hover:opacity-90';
   }
 
   if (disabled && variant === 'secondary') {

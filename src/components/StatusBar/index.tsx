@@ -58,7 +58,7 @@ const TitleBar = () => {
   return (
     <div
       onClick={openTitleBar}
-      className={`p-4 z-40 ${showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl xl:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
+      className={`p-4 z-40 ${showSearch ? 'sm:bg-black/80 sm:backdrop-blur-xl lg:bg-transparent lg:backdrop-blur-none' : 'bg-transparent'
         }`}
     >
       <BlockInfo display={showBlockInfo} close={() => setShowBlockInfo(false)} />

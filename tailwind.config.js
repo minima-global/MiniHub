@@ -31,6 +31,7 @@ export default {
       teal: colors.teal,
       neutral: colors.neutral,
       b: '#3f3cbb',
+      'grey-80': 'hsla(240, 5%, 67%, 1)',
       'orange': 'hsla(25, 100%, 59%, 1)',
       'disabled-orange': 'hsla(33, 64%, 20%, 1)',
       'core-black': 'hsla(220, 16%, 4%, 1)',
