@@ -56,10 +56,16 @@ const OnboardingBackButton = () => {
     }, [step]);
 
     return (
-        <div onClick={previousStep} className={`${showBackButton ? "opacity-100" : "opacity-0 pointer-events-none"} absolute z-[60] top-10 left-14 text-white text-sm cursor-pointer relative z-50 flex items-center gap-2`}>
-            <img src="./icons/chevron_backward.svg" alt="Back" className="w-4 h-4" />
-            Back
-        </div>
+        <>
+            <div onClick={previousStep} className={`block lg:hidden mb-10 ${showBackButton ? "opacity-100" : "opacity-0 pointer-events-none"} text-white text-sm cursor-pointer relative z-50 flex items-center gap-2`}>
+                <img src="./icons/chevron_backward.svg" alt="Back" className="w-4 h-4" />
+                Back
+            </div>
+            <div onClick={previousStep} className={`hidden flex ${showBackButton ? "opacity-100" : "opacity-0 pointer-events-none"} absolute z-[60] top-6 left-4 lg:top-10 lg:left-14 text-white text-sm cursor-pointer relative z-50 flex items-center gap-2`}>
+                <img src="./icons/chevron_backward.svg" alt="Back" className="w-4 h-4" />
+                Back
+            </div>
+        </>
     );
 };
 
