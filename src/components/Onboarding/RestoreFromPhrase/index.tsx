@@ -243,7 +243,7 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     <div className="text-white w-full max-w-2xl">
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div className="mb-8 flex gap-4">
-                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={(e) => setCustomPhrase(e.target.value)} onPaste={onPaste} className={inputClassName} placeholder="Enter your custom phrase" />
+                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={(e) => setCustomPhrase(e.target.value)} className={inputClassName} placeholder="Enter your custom phrase" />
                             <div onClick={() => setShowCustomPhrase(!showCustomPhrase)} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded ml-2 flex grow items-center justify-center h-[52px]">
                                 {showCustomPhrase && (
                                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>

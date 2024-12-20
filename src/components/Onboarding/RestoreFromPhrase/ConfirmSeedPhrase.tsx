@@ -91,7 +91,7 @@ const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { i
 
 const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedPhrase: React.Dispatch<React.SetStateAction<(string | undefined)[]>> }> = ({ seedPhrase, setSeedPhrase }) => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    
+
     const callback = (index: number, seedPhrasePart: string | undefined) => {
         setSeedPhrase(prevState => {
             const newState = [...prevState];
@@ -105,7 +105,7 @@ const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedP
             <div>
                 <div className="grid grid-cols-12 w-full gap-3">
                     {new Array(24).fill(0).map((_i, index) => (
-                        <div key={index} className="relative col-span-4 w-full flex items-center">
+                        <div key={index} className="relative col-span-6 lg:col-span-4 w-full flex items-center">
                             <ConfirmWord index={index} word={seedPhrase[index]} callback={callback} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
                         </div>
                     ))}

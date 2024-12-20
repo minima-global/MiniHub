@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useRef } from "react";
 import OnboardingWrapper from "../OnboardingWrapper";
-import OnboardingModal from "../OnboardingModal";
 import { buttonClassName, inputClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import STEPS from "../steps";
@@ -94,10 +93,10 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
         try {
             setError(null);
             setStep(STEPS.RESTORE_FROM_BACKUP_RESTORING);
-            // if (!backupFilePath) return;
-            // const path = await getPath(backupFilePath);
-            // await hideOnboarding();
-            // await restoreFromBackup('', path, backupFilePassword);
+            if (!backupFilePath) return;
+            const path = await getPath(backupFilePath);
+            await hideOnboarding();
+            await restoreFromBackup('', path, backupFilePassword);
         } catch (e) {
             await resetOnboarding();
             setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
@@ -136,38 +135,38 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                     <div className="grow">
                         <OnboardingBackButton />
                         <OnboardingTitle title="Upload backup file" icon="RESTORE_FROM_BACKUP" />
-                            <div className="text-white w-full max-w-2xl">
-                                <p className="mb-8">Importing a backup will restore your wallet to its locked or unlocked state when the backup was taken.</p>
-                                <label onClick={() => inputRef.current?.click()} className="cursor-pointer transition-all duration-100 border-transparent border hover:border-white/5 flex active:scale-[0.99] items-center justify-center mb-8 gap-5 w-full bg-contrast-1 p-4 rounded-lg">
-                                    <div className="rounded-full w-8 h-8 bg-orange flex items-center justify-center">
-                                        <svg className="stroke-black w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                    </div>
-                                    {inputRef?.current?.files?.[0]?.name ? <div className="grow text-white">{inputRef?.current?.files?.[0]?.name.length > 24 ? inputRef?.current?.files?.[0]?.name.slice(0, 24) + '...' : inputRef?.current?.files?.[0]?.name}</div> : <div className="grow text-grey-80">Please select a backup file</div>}
-                                </label>
-                                {inputRef.current && (
-                                    <div className="mb-8 hidden">
-                                        <input onClick={() => inputRef.current?.click()} value={inputRef.current.files?.[0]?.name} className={`${inputClassName} cursor-pointer`} readOnly={true} placeholder="Select a backup file" />
-                                    </div>
-                                )}
-                                <input
-                                    accept=".bak"
-                                    className="hidden"
-                                    type="file"
-                                    ref={inputRef}
-                                    readOnly={true}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const file = e.target.files ? e.target.files[0] : null;
-                                        if (file) {
-                                            setFile(file);
-                                        }
-                                    }}
-                                />
-                                {error && (
-                                    <div className={`-mt-2 mb-6 ${error ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
-                                        {error}
-                                    </div>
-                                )}
-                            </div>
+                        <div className="text-white w-full max-w-2xl">
+                            <p className="mb-8">Importing a backup will restore your wallet to its locked or unlocked state when the backup was taken.</p>
+                            <label onClick={() => inputRef.current?.click()} className="cursor-pointer transition-all duration-100 border-transparent border hover:border-white/5 flex active:scale-[0.99] items-center justify-center mb-8 gap-5 w-full bg-contrast-1 p-4 rounded-lg">
+                                <div className="rounded-full w-8 h-8 bg-orange flex items-center justify-center">
+                                    <svg className="stroke-black w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </div>
+                                {inputRef?.current?.files?.[0]?.name ? <div className="grow text-white">{inputRef?.current?.files?.[0]?.name.length > 24 ? inputRef?.current?.files?.[0]?.name.slice(0, 24) + '...' : inputRef?.current?.files?.[0]?.name}</div> : <div className="grow text-grey-80">Please select a backup file</div>}
+                            </label>
+                            {inputRef.current && (
+                                <div className="mb-8 hidden">
+                                    <input onClick={() => inputRef.current?.click()} value={inputRef.current.files?.[0]?.name} className={`${inputClassName} cursor-pointer`} readOnly={true} placeholder="Select a backup file" />
+                                </div>
+                            )}
+                            <input
+                                accept=".bak"
+                                className="hidden"
+                                type="file"
+                                ref={inputRef}
+                                readOnly={true}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    const file = e.target.files ? e.target.files[0] : null;
+                                    if (file) {
+                                        setFile(file);
+                                    }
+                                }}
+                            />
+                            {error && (
+                                <div className={`-mt-2 mb-6 ${error ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                    {error}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="flex flex-col gap-3">
                         <button disabled={!file} onClick={uploadBackupFile} className={buttonClassName}>

@@ -12,6 +12,7 @@ import { appContext } from "../../AppContext";
 import MobileRestoreFromBackup from "./RestoreFromBackup/mobile";
 import MobileOnboardingWrapper from "./OnboardingMobileWrapper";
 import MobileFreshNodeSetup from "./FreshNodeSetup/mobile";
+import MobileRestoreFromPhrase from "./RestoreFromPhrase/mobile";
 
 export type Step = number | string | null;
 export type Prompt = {
@@ -143,25 +144,26 @@ const Onboarding = () => {
                         </div>
                     </OnboardingWrapper>
                     <MobileOnboardingWrapper display={step === 1}>
-                        <div className="pt-10 px-5">
-                            <h1 className="mb-8 text-xl text-center mx-auto">Let's get started</h1>
+                        <div className="pt-8 px-5">
+                            <h1 className="mb-6 text-xl text-center mx-auto">Let's get started</h1>
                             <div className="flex flex-col lg:flex-row gap-3 text-sm">
-                                <div onClick={goToFreshNodeSetup} className="flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
-                                    <img src="./icons/create_a_new_account.svg" alt="Create a new account" className="w-10 h-10 mx-auto" />
+                                <div onClick={goToFreshNodeSetup} className="relative after:chevron-right flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
+                                    <img src="./icons/create_a_new_account.svg" alt="Create a new account" className="w-8 h-8 mx-auto" />
                                     <div className="grow text-left">Create a new account</div>
                                 </div>
-                                <div onClick={goToSeedPhraseOptions} className="flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
-                                    <img src="./icons/restore_from_phrase.svg" alt="Create a new account" className="w-10 h-10 mx-auto" />
+                                <div onClick={goToSeedPhraseOptions} className="relative after:chevron-right flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
+                                    <img src="./icons/restore_from_phrase.svg" alt="Create a new account" className="w-8 h-8 mx-auto" />
                                     <div className="grow text-left">Import a seed phrase</div>
                                 </div>
-                                <div onClick={goToRestoreFromBackup} className="flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
-                                    <img src="./icons/restore_from_backup.svg" alt="Create a new account" className="w-10 h-10 mx-auto" />
+                                <div onClick={goToRestoreFromBackup} className="relative after:chevron-right flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
+                                    <img src="./icons/restore_from_backup.svg" alt="Create a new account" className="w-8 h-8 mx-auto" />
                                     <div className="grow text-left">Import a Minima backup</div>
                                 </div>
                             </div>
                         </div>
                     </MobileOnboardingWrapper>
                     <MobileFreshNodeSetup step={step} setStep={setStep} setShowOnboarding={setShowOnboarding} />
+                    <MobileRestoreFromPhrase step={step} setStep={setStep} />
                     <MobileRestoreFromBackup step={step} setStep={setStep} />
                 </div>
                 <div className="fixed z-20 top-0 left-0 w-full h-full p-3 overflow-hidden">

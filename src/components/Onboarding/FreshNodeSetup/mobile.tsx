@@ -1,9 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import OnboardingWrapper from "../OnboardingWrapper";
 import { appContext } from "../../../AppContext";
 import { addPeers } from "../../../lib";
-import OnboardingModal from "../OnboardingModal";
 import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
