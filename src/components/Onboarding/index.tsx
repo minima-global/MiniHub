@@ -145,7 +145,7 @@ const Onboarding = () => {
                     </OnboardingWrapper>
                     <MobileOnboardingWrapper display={step === 1}>
                         <div className="pt-8 px-5">
-                            <h1 className="mb-6 text-xl text-center mx-auto">Let's get started</h1>
+                            <h1 className="mb-7 text-xl text-center mx-auto">Let's get started</h1>
                             <div className="flex flex-col lg:flex-row gap-3 text-sm">
                                 <div onClick={goToFreshNodeSetup} className="relative after:chevron-right flex gap-5 p-4 items-center bg-contrast-1 hover:bg-contrast-1.5 active:scale-[98%] text-center transition-all duration-100 cursor-pointe rounded">
                                     <img src="./icons/create_a_new_account.svg" alt="Create a new account" className="w-8 h-8 mx-auto" />
