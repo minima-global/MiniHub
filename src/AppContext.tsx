@@ -18,6 +18,7 @@ import { AppData } from './types/app';
 import useFoldersTheme from './hooks/useFolderTheme';
 import { toast } from 'react-toastify';
 import { shouldShowOnboarding } from './components/Onboarding/utils';
+import { session } from './env';
 
 export const appContext = createContext({} as any);
 
@@ -128,13 +129,20 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
   const [mdsFail, setMDSFail] = useState<string | boolean>(false);
+  const [nodeRestored, setNodeRestored] = useState<boolean>(false);
 
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [bootstrapping, setBootstrapping] = useState(true);
 
   useEffect(() => {
     if (appReady) {
+      const clearBootstrapRegardlessOfShowing = setTimeout(() => {
+        setBootstrapping(false);
+      }, 750);
+
       shouldShowOnboarding().then((show) => {
+        clearTimeout(clearBootstrapRegardlessOfShowing);
+
         setShowOnboarding(show);
 
         if (!show) {
@@ -294,7 +302,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
 
         if (evt.event === 'MDSFAIL' || evt.event === 'MDS_SHUTDOWN') {
-          setMDSFail(true);
+          if (session.IS_RESTORING) {
+            if (evt.event === 'MDS_SHUTDOWN') {
+              setNodeRestored(true);
+            }
+          } else {
+            setMDSFail(true);
+          }
         }
       });
     }
@@ -568,6 +582,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showOnboarding,
     setShowOnboarding,
     bootstrapping,
+
+    nodeRestored,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

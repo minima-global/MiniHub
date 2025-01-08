@@ -8,6 +8,7 @@ import { hideOnboarding, resetOnboarding } from "../utils";
 import { onboardingContext } from "..";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
+import { session } from "../../../env";
 
 export const getPath = (filename: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -96,8 +97,10 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
             if (!backupFilePath) return;
             const path = await getPath(backupFilePath);
             await hideOnboarding();
+            session.IS_RESTORING = true;
             await restoreFromBackup('', path, backupFilePassword);
         } catch (e) {
+            session.IS_RESTORING = false;
             await resetOnboarding();
             setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
             setError("There was an error with your backup file, please double check your backup file and password and try again.");

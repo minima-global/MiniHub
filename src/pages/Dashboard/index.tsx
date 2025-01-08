@@ -23,6 +23,7 @@ import Introduction from '../../components/Introduction';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NodeRestored from '../../components/NodeRestored';
 
 function Dashboard() {
   const {
@@ -112,11 +113,13 @@ function Dashboard() {
         <DeleteMiniDapp />
         <MobileRightMenu />
         <Utilities />
-        <MDSFail />
         <UpdateMiniDapp />
         <HasNoPeersModal />
         <AddConnectionsLaterModal />
         <ToastContainer />
+
+        <MDSFail />
+        <NodeRestored />
 
         <div
           className="dashboard flex flex-col h-screen"

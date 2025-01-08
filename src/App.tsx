@@ -48,4 +48,7 @@ function App() {
   );
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+global.UID = urlParams.get('uid');
+
 export default App;

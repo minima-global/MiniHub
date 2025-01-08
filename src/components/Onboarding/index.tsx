@@ -130,6 +130,7 @@ const Onboarding = () => {
     return (
         <onboardingContext.Provider value={{ keysGenerated, step, setStep, prompt, setPrompt, backButton, setBackButton }}>
             
+            {/* Mobile */}
             <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto transition-all duration-300 ${showOnboarding ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 <div className="absolute z-50 top-0 left-0 w-full">
                     <OnboardingPrompt />

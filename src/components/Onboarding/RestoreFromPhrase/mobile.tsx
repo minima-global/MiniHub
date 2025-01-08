@@ -7,6 +7,7 @@ import { buttonClassName, greyButtonClassName, inputClassName, optionClassName }
 import { hideOnboarding } from "../utils";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
+import { session } from "../../../env";
 
 type ImportProps = {
     step: number | string | null;
@@ -57,6 +58,10 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
 
             if (resp.response.valid) {
                 setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
+
+                await hideOnboarding();
+                session.IS_RESTORING = true;
+
                 if (action === 'phrase') {
                     await resync(ip, seedPhrase.join(" "), keys, keyUses);
                 } else if (action === 'secret') {
@@ -65,10 +70,10 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     await resync(ip, customPhrase, keys, keyUses, true);
                 }
 
-                await hideOnboarding();
                 setIsLoading(false);
             }
         } catch {
+            session.IS_RESTORING = false;
             setIsLoading(false);
             setError("Enable to connect to the Mega node. Please try a different Mega node.");
         }
@@ -82,6 +87,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
             const ip = 'megammr.minima.global:9001';
 
             await hideOnboarding();
+            session.IS_RESTORING = true;
 
             if (action === 'phrase') {
                 await resync(ip, seedPhrase.join(" "), keys, keyUses);
@@ -93,6 +99,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
 
             setIsLoading(false);
         } catch {
+            session.IS_RESTORING = false;
             setIsLoading(false);
             setError("Enable to connect to the Mega node. Please try a different Mega node.");
         }
