@@ -20,7 +20,7 @@ export type Prompt = {
     title: string;
     description: string;
 }
-type BackButton = string | number |null;
+type BackButton = string | number | null;
 
 export const onboardingContext = createContext<{
     step: Step;
@@ -124,14 +124,18 @@ const Onboarding = () => {
     };
 
     const goToRestoreFromBackup = () => {
-        setStep(STEPS.RESTORE_FROM_BACKUP);
+        if (keysGenerated) {
+            setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
+        } else {
+            setStep(STEPS.RESTORE_FROM_BACKUP);
+        }
     };
 
     return (
         <onboardingContext.Provider value={{ keysGenerated, step, setStep, prompt, setPrompt, backButton, setBackButton }}>
-            
+
             {/* Mobile */}
-            <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto transition-all duration-300 ${showOnboarding ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto transition-all duration-300 ${showOnboarding ? 'opacity-100' : '!hidden opacity-0 pointer-events-none'}`}>
                 <div className="absolute z-50 top-0 left-0 w-full">
                     <OnboardingPrompt />
                     <OnboardingWrapper display={step === 0}>
@@ -167,14 +171,14 @@ const Onboarding = () => {
                     <MobileRestoreFromPhrase step={step} setStep={setStep} />
                     <MobileRestoreFromBackup step={step} setStep={setStep} />
                 </div>
-                <div className="fixed z-20 top-0 left-0 w-full h-full p-3 overflow-hidden">
+                <div className="fixed z-20 top-0 left-0 w-full h-full p-2 overflow-hidden">
                     <div className="relative w-full h-full overflow-hidden rounded-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 776" fill="none" className={`absolute inset-0 w-full h-full transition-all duration-[1s] ${fullGradientOnSteps.includes(step as number) ? 'scale-[1.1]' : 'scale-1 grayscale-[80%] opacity-[70%]'}`}>
-                            <g clipPath="url(#clip0_6032_13353)" className="w-full h-full" filter="url(#noise)">
-                                <path className="blur-[100px]" d="M1386.94 404.211C1505.02 293.322 1484.31 157.503 1608.58 53.5939C1859.49 -156.205 1730.8 733.997 1434.66 872.837C1210.66 977.858 751.681 980.449 814.974 741.285C861.422 565.77 1074.4 623.676 1225.3 522.73C1290.36 479.209 1329.88 457.793 1386.94 404.211Z" fill="#FF8630" />
-                                <path className="blur-[150px]" d="M204.744 586.528C100.422 534.55 112.001 394.547 -2.25632 371.528C-199.032 331.883 -94.5664 707.283 -2.25632 885.528C175.988 1229.71 1093.59 1259.09 990.244 885.528C946.599 727.771 883.292 598.582 723.744 562.028C607.916 535.491 546.556 634.521 427.744 632.528C338.836 631.036 284.332 626.183 204.744 586.528Z" fill="#6162FB" />
-                                <ellipse className="blur-[100px]" cx="915" cy="964.117" rx="492" ry="326.5" fill="#FF8630" />
-                                <circle className="blur-[100px]" cx="1396" cy="699.617" r="233" fill="#FF8630" />
+                        <svg className={`absolute inset-0 w-full h-full transition-all duration-[1s] ${fullGradientOnSteps.includes(step as number) ? 'scale-[1]' : 'scale-1 grayscale-[80%] opacity-[70%]'}`} width="444px" height="776px" viewBox="0 0 444 776" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Artboard" transform="translate(2.000000, -64.000000)">
+                                    <path className="blur-[100px]" d="M-128.231869,352.443406 C-195.476812,320.311585 -212.292602,366.673318 -285.941755,352.443406 C-412.781438,327.935614 -348.138724,725.151378 -288.636547,835.33908 C-173.741999,1048.10591 417.735292,1066.26807 351.119469,835.33908 C322.986328,737.816674 282.179254,657.954467 179.336171,635.357473 C152.8613,629.540405 96.2711873,631.311184 53.480399,588.517922 C-24.4028147,510.630206 -95.1216955,368.264768 -128.231869,352.443406 Z" id="Path" fill="#6162FB"></path>
+                                    <path className="blur-[100px]" d="M526.769306,507.464924 C614.991094,396.575924 599.517912,260.756924 692.36447,156.847824 C879.828298,-52.9510756 783.6794,837.250924 562.422623,976.090924 C395.064218,1081.11192 52.1446047,1083.70292 99.4330669,844.538924 C134.136028,669.023924 293.259503,726.929924 406.002285,625.983924 C454.610936,582.462924 484.137741,561.046924 526.769306,507.464924 Z" id="Path" fill="#FF8630"></path>
+                                </g>
                             </g>
                         </svg>
                     </div>

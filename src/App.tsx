@@ -15,12 +15,9 @@ import { useContext } from 'react';
 const Bootstrapper = () => {
   const { bootstrapping } = useContext(appContext);
 
-  if (bootstrapping) {
-    return <div className="h-screen w-screen bg-black" />;
-  }
-
   return (
     <>
+      {bootstrapping && <div className="fixed top-0 left-0 h-screen w-screen bg-black z-[100]" />}
       <Routes>
         <Route path="*" element={<Dashboard />} />
       </Routes>

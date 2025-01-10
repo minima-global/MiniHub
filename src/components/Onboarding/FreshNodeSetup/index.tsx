@@ -10,6 +10,7 @@ import Info from "./info";
 import { onboardingContext } from "..";
 import STEPS from "../steps";
 import { hideOnboarding } from "../utils";
+import { hasPeers } from "./api";
 
 const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
     const { appReady } = useContext(appContext);
@@ -23,6 +24,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
     const { autoConnectPeers } = useContext(appContext);
     const { setPrompt } = useContext(onboardingContext);
     const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
+    const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
 
     useEffect(() => {
         if (appReady && !seedPhrase) {
@@ -58,8 +60,12 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
         setStep(STEPS.FRESH_NODE_LOADING_FOR_KEYS);
     }
 
-    const goToConnectOptions = () => {
-        setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
+    const goToConnectOptions = async () => {
+        if (await hasPeers()) {
+            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+        } else {
+            setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
+        }
     }
 
     const goToAddConnections = () => {
@@ -77,6 +83,11 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
     const finish = async () => {
         hideOnboarding();
         setShowOnboarding(false);
+    }
+
+    const toggleShowingSeedPhrase = () => {
+        setShowingSeedPhrase(!showingSeedPhrase)
+        setViewedSeedPhrase(true)
     }
 
     return (
@@ -108,8 +119,8 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                         </label>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <button onClick={() => setShowingSeedPhrase(!showingSeedPhrase)} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
-                        <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess}>Continue</button>
+                        <button onClick={toggleShowingSeedPhrase} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
+                        <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess || !viewedSeedPhrase}>Continue</button>
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
@@ -128,9 +139,11 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                         </div>
                     )}
                     <div className="text-center text-white mb-8">
-                        Your node is starting up. This may take a few minutes.
+                        {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys. You can now continue." }
                     </div>
-                    <button onClick={goToConnectOptions} className={buttonClassName} disabled={!keysGenerated}>Continue</button>
+                    <button onClick={goToConnectOptions} className={buttonClassName}>
+                        {keysGenerated ? "Continue" : "Skip"}
+                    </button>
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_CONNECT_OPTIONS}>
@@ -195,7 +208,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                                 <p className="mb-4">This method will randomly select peers for you from a megammr node by running</p>
                                 <div>
                                     <div onClick={autoConnect} className={buttonClassName}>
-                                        Use Auto-connect
+                                        Use auto-connect
                                     </div>
                                     {autoConnectError && (
                                         <div className={`${autoConnectError ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>

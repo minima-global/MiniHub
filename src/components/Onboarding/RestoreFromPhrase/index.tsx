@@ -8,26 +8,11 @@ import OnboardingTitle from "../OnboardingTitle";
 import { buttonClassName, inputClassName, optionClassName } from "../styling";
 import { hideOnboarding } from "../utils";
 import { session } from "../../../env";
+import { ping, resync } from "./api";
 
 type ImportProps = {
     step: number | string | null;
     setStep: (step: number | string) => void;
-}
-
-const resync = (ip: string, phrase: string, keys: number, keyuses: number, useAnyPhrase: boolean = false) => {
-    return new Promise((resolve) => {
-        MDS.cmd(`megammrsync action:resync host:${ip.trim()} phrase:"${phrase}" keys:${keys} keyuses:${keyuses}  phrase:"${phrase}" anyphrase:${useAnyPhrase ? "true" : "false"}`, (resp) => {
-            resolve(resp);
-        });
-    });
-}
-
-const ping = (ip: string): Promise<{ response: { valid: boolean } }> => {
-    return new Promise((resolve) => {
-        MDS.cmd(`ping host:${ip}`, (resp) => {
-            resolve(resp);
-        });
-    });
 }
 
 const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {

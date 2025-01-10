@@ -7,67 +7,8 @@ import OnboardingTitle from "../OnboardingTitle";
 import STEPS from "../steps";
 import { hideOnboarding, resetOnboarding } from "../utils";
 import { onboardingContext } from "..";
-import { IS_RESTORING, session } from "../../../env";
-
-export const getPath = (filename: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        MDS.file.getpath(filename, (response: any) => {
-            if (response.status) {
-                resolve(response.response.getpath.path);
-            }
-
-            if (!response.status && !response.pending) {
-                reject(response.error ? response.error : "RPC FAILED");
-            }
-        });
-    });
-};
-
-export const restoreFromBackup = (
-    host: string,
-    filepath: string,
-    password: string
-) => {
-    return new Promise((resolve, reject) => {
-        MDS.cmd(
-            `restoresync ${host.length ? 'host:"' + host + '"' : ""
-            } file:"${filepath}" password:"${password.length ? password : "minima"}"`,
-            (response: any) => {
-                if (!response.status)
-                    return reject(
-                        response.error
-                            ? response.error
-                            : "Restoring from backup failed, please try again"
-                    );
-
-                resolve(response);
-            }
-        );
-    });
-};
-
-const uploadBackup = (file: File): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        MDS.file.upload(file, async function (resp: any) {
-            const fileName = resp.filename;
-            if (resp.allchunks === resp.chunk) {
-
-                // Move uploaded file to internal, then set full path to prepare for reset command
-                MDS.file.move(
-                    "/fileupload/" + fileName,
-                    "/archives/" + fileName,
-                    (resp: any) => {
-                        if (resp.status) {
-                            resolve(resp);
-                        } else {
-                            reject(resp.error);
-                        }
-                    }
-                );
-            }
-        });
-    });
-}
+import { session } from "../../../env";
+import { getPath, restoreFromBackup, uploadBackup } from "./api";
 
 const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>> }> = ({ step, setStep }) => {
     const { keysGenerated } = useContext(onboardingContext);
@@ -123,9 +64,11 @@ const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React
                         </div>
                     )}
                     <div className="text-center text-white mb-8">
-                        Your node is starting up. This may take a few minutes.
+                        {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys. You can now continue." }
                     </div>
-                    <button className={buttonClassName} disabled={!keysGenerated} onClick={() => setStep("RESTORE_FROM_BACKUP_SELECT_FILE")}>Continue</button>
+                    <button className={buttonClassName} onClick={() => setStep("RESTORE_FROM_BACKUP_SELECT_FILE")}>
+                        Continue
+                    </button>
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_SELECT_FILE}>

@@ -10,6 +10,7 @@ import STEPS from "../steps";
 import { hideOnboarding } from "../utils";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
+import { hasPeers } from "./api";
 
 const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
     const { appReady } = useContext(appContext);
@@ -23,6 +24,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
     const { autoConnectPeers } = useContext(appContext);
     const { setPrompt } = useContext(onboardingContext);
     const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
+    const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
 
     useEffect(() => {
         if (appReady && !seedPhrase) {
@@ -58,8 +60,12 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
         setStep(STEPS.FRESH_NODE_LOADING_FOR_KEYS);
     }
 
-    const goToConnectOptions = () => {
-        setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
+    const goToConnectOptions = async () => {
+        if (await hasPeers()) {
+            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+        } else {
+            setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
+        }
     }
 
     const goToAddConnections = () => {
@@ -79,38 +85,64 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
         setShowOnboarding(false);
     }
 
+    const toggleShowingSeedPhrase = () => {
+        setShowingSeedPhrase(!showingSeedPhrase)
+        setViewedSeedPhrase(true)
+    }
+
     return (
         <div className="text-sm">
             <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_SETUP}>
                 <MobileOnboardingContent>
-                    <OnboardingBackButton />
-                    <OnboardingTitle title="Your seed phrase" icon="CREATE_NEW_ACCOUNT" />
-                    <div className="text-left text-white mb-8">
-                        This phrase can be used to recover your wallet.{" "}
-                        <span className="font-bold">DO NOT SHARE IT WITH ANYONE!</span>
-                    </div>
-                    <div className="grid grid-cols-12 gap-1 text-sm mb-8">
-                        {seedPhrase?.map((word, index) => (
-                            <div key={index} className="col-span-6 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
-                                <span className="font-thin pr-2">{index + 1}.</span> {showingSeedPhrase ? <strong>{word}</strong> : <span className="w-[100px] h-[12px] bg-contrast-2"></span>}
+                    <div className="grow">
+                        <OnboardingBackButton />
+                        <OnboardingTitle title="Your seed phrase" icon="CREATE_NEW_ACCOUNT" />
+                        <div className="text-left text-white mb-4">
+                            This phrase can be used to recover your wallet.{" "}
+                            <span className="font-bold">DO NOT SHARE IT WITH ANYONE!</span>.
+                        </div>
+                        <div className="text-white mb-8">
+                            Please click the <strong>'Show seed phrase'</strong> button below to view your seed phrase.
+                        </div>
+                        {showingSeedPhrase && (
+                            <div className="fixed top-0 left-0 w-full h-full z-50">
+                                <div className="bg-black w-full h-full p-5 relative z-[60] flex flex-col gap-4">
+                                    <div className="grow">
+                                        <div className="grid grid-cols-12 gap-1 text-sm mb-8">
+                                            {seedPhrase?.map((word, index) => (
+                                                <div key={index} className="text-sm col-span-6 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
+                                                    <span className="font-thin pr-3">{index + 1}.</span> <strong>{word}</strong>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <button className={buttonClassName} onClick={toggleShowingSeedPhrase}>Close</button>
+                                </div>
                             </div>
-                        ))}
-                    </div>
-                    <div className="mb-8 flex flex-col gap-2">
-                        <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
-                            <div className="pointer-events-none absolute left-[3px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
-                            I have written down my secret seed phrase.
-                        </label>
-                        <label className="relative text-sm flex items-start cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 mt-1 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
-                            <div className="pointer-events-none absolute left-[3px] top-[7px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
-                            <span className="flex-1">I understand I can access my seed phrase from the Security MiniDapp</span>
-                        </label>
+                        )}
+                        {/* <div className="grid grid-cols-12 gap-1 text-sm mb-8">
+                            {seedPhrase?.map((word, index) => (
+                                <div key={index} className="col-span-6 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
+                                    <span className="font-thin pr-2">{index + 1}.</span> {showingSeedPhrase ? <strong>{word}</strong> : <span className="w-[100px] h-[12px] bg-contrast-2"></span>}
+                                </div>
+                            ))}
+                        </div> */}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <button onClick={() => setShowingSeedPhrase(!showingSeedPhrase)} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
-                        <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess}>Continue</button>
+                        <div className="mb-2 flex flex-col gap-2">
+                            <label className="relative text-sm flex items-center cursor-pointer">
+                                <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
+                                <div className="pointer-events-none absolute left-[3px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
+                                I have written down my secret seed phrase.
+                            </label>
+                            <label className="relative text-sm flex items-start cursor-pointer">
+                                <input type="checkbox" className="peer mr-3 mt-1 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
+                                <div className="pointer-events-none absolute left-[3px] top-[7px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
+                                <span className="flex-1">I understand I can access my seed phrase from the Security MiniDapp</span>
+                            </label>
+                        </div>
+                        <button onClick={toggleShowingSeedPhrase} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
+                        <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess || !viewedSeedPhrase}>Continue</button>
                     </div>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
@@ -131,11 +163,13 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                                 </div>
                             )}
                             <div className="text-center text-white mb-8">
-                                Your node is starting up. This may take a few minutes.
+                                {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys. You can now continue."}
                             </div>
                         </div>
                     </div>
-                    <button onClick={goToConnectOptions} className={buttonClassName} disabled={!keysGenerated}>Continue</button>
+                    <button onClick={goToConnectOptions} className={buttonClassName}>
+                        {keysGenerated ? "Continue" : "Skip"}
+                    </button>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_CONNECT_OPTIONS}>
@@ -210,7 +244,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                     </div>
                     <div>
                         <div onClick={autoConnect} className={buttonClassName}>
-                            Use Auto-connect
+                            Use auto-connect
                         </div>
                         {autoConnectError && (
                             <div className={`${autoConnectError ? 'opacity-100' : 'opacity-0 h-0'} text-xs transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[10%] mb-4`}>
