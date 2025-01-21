@@ -1,5 +1,8 @@
 # Changelog
 
+##### [0.22.0] - 21 Jan 25
+
+- Additional refinements to the block height loading state
 
 ##### [0.21.1] - 25 Nov 24
 
