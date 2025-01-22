@@ -2,18 +2,19 @@
   "name": "minihub",
   "private": true,
   "description": "MinimaOS home screen",
-  "version": "0.20.0",
+  "version": "0.22.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "npm run info && vite",
+    "build": "npm run info && tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "package": "bash ./create-minima-app/package.sh",
     "postbuild": "node ./create-minima-app/postbuild.js",
     "copysrc": "bash ./create-minima-app/copySrcToBuild.sh",
     "zip": "npm run build && npm run postbuild && npm run copysrc && npm run package",
-    "src:zip": "bash create-minima-app/zip.sh"
+    "src:zip": "bash create-minima-app/zip.sh",
+    "info": "node createInfoFile.js"
   },
   "dependencies": {
     "@types/lodash": "^4.14.195",
