@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.22.1] - 22 Jan 25
+
+- Fixed an issue where the Health app was appearing twice in the folder view
+
 ##### [0.22.0] - 21 Jan 25
 
 - Additional refinements to the block height loading state
