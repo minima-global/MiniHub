@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.23.0] - 18 Feb 25
+
+- Added the ability to open the security app from the status bar when the node needs quick resync
+
 ##### [0.22.1] - 22 Jan 25
 
 - Fixed an issue where the Health app was appearing twice in the folder view

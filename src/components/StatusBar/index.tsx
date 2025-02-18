@@ -42,11 +42,27 @@ const TitleBar = () => {
 
   const displayBlockInfo = async (evt) => {
     evt.stopPropagation();
-    const healthApp = appList.find((i) => i.conf.name.toLowerCase() === 'health');
+    const statusApp = appList.find((i) => i.conf.name.toLowerCase() === 'status');
+    const fallbackHealthApp = appList.find((i) => i.conf.name.toLowerCase() === 'health');
+    const securityApp = appList.find((i) => i.conf.name.toLowerCase() === 'security');
+
+    if (isNodeFiveMinutesAgoBehind && securityApp) {
+      const link = await dAppLink(securityApp.conf.name);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      return window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}#/dashboard/quicksync/host`, '_blank');
+    }
 
     // open health app instead of showing block panel if installed
-    if (healthApp) {
-      const link = await dAppLink(healthApp.conf.name);
+    if (statusApp) {
+      const link = await dAppLink(statusApp.conf.name);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      return window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, '_blank');
+    }
+
+    if (fallbackHealthApp) {
+      const link = await dAppLink(fallbackHealthApp.conf.name);
       await new Promise((resolve) => setTimeout(resolve, 150));
 
       return window.open(`${(window as any).MDS.filehost}${link.uid}/index.html?uid=${link.sessionid}`, '_blank');
