@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from 'react';
 import { blobToArrayBuffer, bufferToHex } from '../../../utilities';
 import { deleteFile, getPath, saveFile, update } from '../../../lib';
 import { appContext } from '../../../AppContext';
-import reloadImg from '../../../utilities/reloadImageUrl';
 import { useLocation, useNavigate } from 'react-router-dom';
 import checkIfDappMatchesZip from '../../../checkIfDappMatchesZip';
 
