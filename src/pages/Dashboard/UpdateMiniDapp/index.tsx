@@ -129,14 +129,22 @@ export function Update() {
                       <div>
                         {!installed && !error && (
                           <form onSubmit={handleOnSubmit} className="text-center">
-                            <h1 className="mt-1 text-2xl text-center mb-6">Update {showUpdateApp?.conf?.name}</h1>
                             {confirmWarning && (
-                              <p className="text-center line-height text-[15px] mt-3 mb-8 line-height">
-                                The name of the MiniDapp does not match the name of the installed Minidapp. Please confirm the update by clicking the button below.
-                              </p>
+                              <div>
+                                <h1 className="text-2xl text-center mb-6">Warning</h1>
+                                <div className="space-y-4 text-center line-height text-[15px] mt-3 mb-8 line-height">
+                                  <p>
+                                    The MiniDapp you are installing does not match the name of the existing one. Updating may result in data loss.
+                                  </p>
+                                  <p className="font-bold">
+                                    Please confirm to continue, or cancel the update.
+                                  </p>
+                                </div>
+                              </div>
                             )}
                             {!confirmWarning && (
                               <div>
+                                <h1 className="text-2xl text-center mb-6">Update {showUpdateApp?.conf?.name}</h1>
                                 <p className="text-center mb-10 line-height">Please select the new minidapp (.mds.zip) file.</p>
                                 <div className="mt-3 mb-10">
                                   <div className="relative">
