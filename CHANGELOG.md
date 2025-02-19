@@ -3,6 +3,7 @@
 ##### [0.23.0] - 18 Feb 25
 
 - Added the ability to open the security app from the status bar when the node needs quick resync
+- Added a warning when updating a MiniDapp that the name does not match the existing one
 
 ##### [0.22.1] - 22 Jan 25
 
