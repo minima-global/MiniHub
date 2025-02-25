@@ -11,7 +11,7 @@ const MobileRightMenu = () => {
 
   return (
     <div
-      className={`z-50 absolute bottom-0 left-0 w-full transition-all duration-20 origin-bottom ${
+      className={`z-[50] md:z-[25] absolute bottom-0 left-0 w-full transition-all duration-20 origin-bottom ${
         rightMenu ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
       }`}
     >

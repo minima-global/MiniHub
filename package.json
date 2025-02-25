@@ -2,7 +2,7 @@
   "name": "minihub",
   "private": true,
   "description": "MinimaOS home screen",
-  "version": "0.22.0",
+  "version": "0.24.0",
   "type": "module",
   "scripts": {
     "dev": "npm run info && vite",
@@ -24,6 +24,7 @@
     "date-fns": "^2.30.0",
     "embla-carousel-react": "^8.0.0-rc05",
     "embla-carousel-wheel-gestures": "^8.0.0-rc04",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",

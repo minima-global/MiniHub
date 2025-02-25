@@ -1,5 +1,18 @@
 # Changelog
 
+##### [0.23.0] - 18 Feb 25
+
+- Added the ability to open the security app from the status bar when the node needs quick resync
+- Added a warning when updating a MiniDapp that the name does not match the existing one
+
+##### [0.22.1] - 22 Jan 25
+
+- Fixed an issue where the Health app was appearing twice in the folder view
+
+##### [0.22.0] - 21 Jan 25
+
+- Additional refinements to the block height loading state
+
 ##### [0.21.1] - 25 Nov 24
 
 - Fix block height loading state
