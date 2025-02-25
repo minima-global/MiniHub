@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.24.0] - 25 Feb 25
+
+- Implemented new onboarding flow
+
 ##### [0.23.0] - 18 Feb 25
 
 - Added the ability to open the security app from the status bar when the node needs quick resync
