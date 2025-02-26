@@ -51,8 +51,11 @@ export default {
         'thumbnail-feather': "url('../assets/thumbnails/feather.png')",
       },
       colors: {
+        grey80: '#A7A7B0',
         contrast1: '#17191C',
         contrast2: '#282b2e',
+        contrast4: '#52535B',
+        statusBlue: '#4FDAE3',
       },
       keyframes: {
         fadeIn: {
