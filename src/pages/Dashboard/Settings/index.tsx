@@ -34,20 +34,20 @@ export function Settings() {
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
   const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
   const [showShareConnections, setShowShareConnections] = useState(false);
-  const [showShareConnectionsNav, setShowShareConnectionsNav] = useState(false);
+  const [showShareConnectionsNav, setShowShareConnectionsNav] = useState(true);
 
   /**
    * Show share connections nav only if user has a peer list
    */
-  useEffect(() => {
-    if (display && loaded) {
-      peers().then((response) => {
-        if (response['peerslist'] && response['peerslist'] !== '') {
-          setShowShareConnectionsNav(true);
-        }
-      });
-    }
-  }, [display, loaded]);
+  // useEffect(() => {
+  //   if (display && loaded) {
+  //     peers().then((response) => {
+  //       if (response['peerslist'] && response['peerslist'] !== '') {
+  //         setShowShareConnectionsNav(true);
+  //       }
+  //     });
+  //   }
+  // }, [display, loaded]);
 
   const dismiss = () => {
     navigate('/');
@@ -73,13 +73,31 @@ export function Settings() {
 
       <Folders display={showFoldersTheme} dismiss={() => setShowFoldersTheme(false)} />
       <div className="flex flex-col h-full min-h-[700px]">
-        <InScreenTitleBar onExit={dismiss} />
+        <div className="absolute top-0 left-0 p-5">
+          <svg onClick={dismiss} className="cursor-pointer" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.6041 5.99957L7.3291 10.7246L6.40035 11.6533L0.746601 5.99957L6.40035 0.345819L7.3291 1.27457L2.6041 5.99957Z" fill="#A7A7B0" />
+          </svg>
+        </div>
+        <div className="pt-16 w-full mx-auto flex justify-center">
+          <div className="text-center flex flex-col items-center gap-2">
+            <svg className="block mb-1" width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.5" width="48" height="48" rx="8" fill="#4FDAE3" />
+              <mask id="mask0_8367_17461" maskUnits="userSpaceOnUse" x="8" y="8" width="33" height="33">
+                <rect x="8.5" y="8.00098" width="32" height="32" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_8367_17461)">
+                <path d="M20.831 37.3337L20.2977 33.067C20.0088 32.9559 19.7365 32.8225 19.481 32.667C19.2254 32.5114 18.9754 32.3448 18.731 32.167L14.7643 33.8337L11.0977 27.5003L14.531 24.9003C14.5088 24.7448 14.4977 24.5948 14.4977 24.4503V23.5503C14.4977 23.4059 14.5088 23.2559 14.531 23.1003L11.0977 20.5003L14.7643 14.167L18.731 15.8337C18.9754 15.6559 19.231 15.4892 19.4977 15.3337C19.7643 15.1781 20.031 15.0448 20.2977 14.9337L20.831 10.667H28.1643L28.6977 14.9337C28.9865 15.0448 29.2588 15.1781 29.5143 15.3337C29.7699 15.4892 30.0199 15.6559 30.2643 15.8337L34.231 14.167L37.8977 20.5003L34.4643 23.1003C34.4865 23.2559 34.4977 23.4059 34.4977 23.5503V24.4503C34.4977 24.5948 34.4754 24.7448 34.431 24.9003L37.8643 27.5003L34.1977 33.8337L30.2643 32.167C30.0199 32.3448 29.7643 32.5114 29.4977 32.667C29.231 32.8225 28.9643 32.9559 28.6977 33.067L28.1643 37.3337H20.831ZM24.5643 28.667C25.8532 28.667 26.9532 28.2114 27.8643 27.3003C28.7754 26.3892 29.231 25.2892 29.231 24.0003C29.231 22.7114 28.7754 21.6114 27.8643 20.7003C26.9532 19.7892 25.8532 19.3337 24.5643 19.3337C23.2532 19.3337 22.1477 19.7892 21.2477 20.7003C20.3477 21.6114 19.8977 22.7114 19.8977 24.0003C19.8977 25.2892 20.3477 26.3892 21.2477 27.3003C22.1477 28.2114 23.2532 28.667 24.5643 28.667Z" fill="#08090B" />
+              </g>
+            </svg>
+            <h1 className="text-2xl mb-2">Settings</h1>
+            <p className="text-sm max-w-md">Configure your Minima settings, including connections, wallpapers, and folder layouts</p>
+          </div>
+        </div>
         <div className="pt-4 px-4 pb-4 flex flex-col h-full max-w-xl mx-auto w-full">
-          <h1 className="text-2xl mb-4">Settings</h1>
           <div className="flex-grow my-4 flex flex-col gap-3">
             <div
               onClick={() => setShowBatteryOptimisation(true)}
-              className="hidden relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="hidden relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Battery optimisation
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -94,7 +112,7 @@ export function Settings() {
             {showShareConnectionsNav && (
               <div
                 onClick={() => setShowShareConnections(true)}
-                className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+                className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
               >
                 Share connections
                 <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -109,7 +127,7 @@ export function Settings() {
             )}
             <div
               onClick={() => setShowAddConnections(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Add connections
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -123,7 +141,7 @@ export function Settings() {
             </div>
             <div
               onClick={() => setShowWallpaper(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Wallpaper
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -137,7 +155,7 @@ export function Settings() {
             </div>
             <div
               onClick={() => setShowDesktopConnect(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Desktop Connect
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -151,7 +169,7 @@ export function Settings() {
             </div>
             <div
               onClick={() => setShowUpdateMinHub(true)}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Update MiniHub
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -168,7 +186,7 @@ export function Settings() {
                 setShowOnboard(true);
                 dismiss();
               }}
-              className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer"
+              className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer"
             >
               Onboard tutorial
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
@@ -180,8 +198,8 @@ export function Settings() {
                 </svg>
               </div>
             </div>
-            
-            <div onClick={() => setShowFoldersTheme(true)} className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer">
+
+            <div onClick={() => setShowFoldersTheme(true)} className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer">
               Folders
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,8 +210,8 @@ export function Settings() {
                 </svg>
               </div>
             </div>
-            
-            <div onClick={() => setShowTermsAndConditions(true)} className="relative core-black-contrast-2 py-4 px-5 rounded cursor-pointer">
+
+            <div onClick={() => setShowTermsAndConditions(true)} className="relative bg-contrast1 py-4 px-5 rounded cursor-pointer">
               Terms & Conditions
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -204,8 +222,8 @@ export function Settings() {
                 </svg>
               </div>
             </div>
-            
-            
+
+
 
             <div
               onClick={() => setShutdown(true)}

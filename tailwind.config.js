@@ -50,6 +50,10 @@ export default {
         'thumbnail-galaxy': "url('../assets/thumbnails/galaxy.png')",
         'thumbnail-feather': "url('../assets/thumbnails/feather.png')",
       },
+      colors: {
+        contrast1: '#17191C',
+        contrast2: '#282b2e',
+      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: 0 },
