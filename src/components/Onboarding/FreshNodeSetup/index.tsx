@@ -224,7 +224,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
-                        <h1 className="text-[40px] mb-10 leading-[50px]">Welcome<br />to the network</h1>
+                        <h1 className="text-white text-xl lg:text-4xl mb-10">Welcome to the network</h1>
                         <div onClick={finish} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
                             Let's go
                         </div>
