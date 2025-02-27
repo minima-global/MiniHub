@@ -134,6 +134,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [bootstrapping, setBootstrapping] = useState(true);
 
+  /**
+   * Tutorial
+   */
+  const [showOnboard, setShowOnboard] = useState(false);
+  const [tutorialMode, setTutorialMode] = useState(false);
+
   useEffect(() => {
     if (appReady) {
       const clearBootstrapRegardlessOfShowing = setTimeout(() => {
@@ -584,6 +590,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     bootstrapping,
 
     nodeRestored,
+
+    /**
+     * Tutorial
+     */
+    showOnboard,
+    setShowOnboard,
+    tutorialMode,
+    setTutorialMode,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
