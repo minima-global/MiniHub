@@ -3,6 +3,7 @@ import { appContext } from '../../../../AppContext';
 import Block from '../../../../components/UI/Block';
 import { networkRecalculate } from '../../../../lib';
 import SlideScreen from '../../../../components/UI/SlideScreen';
+import BackButton from '../_BackButton';
 
 type DesktopConnectProps = {
   display: boolean;
@@ -34,24 +35,8 @@ const DesktopConnect = ({ display, dismiss }: DesktopConnectProps) => {
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-full bg-black">
-        <div className="p-4 flex flex-col h-full max-w-xl mx-auto">
-          <div className="pt-10 mt-8" />
-          <div onClick={dismiss} className="cursor-pointer flex items-center mb-6">
-            <svg
-              className="mt-0.5 mr-4"
-              width="8"
-              height="14"
-              viewBox="0 0 8 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.90017 13.1693L0.730957 7.00009L6.90017 0.830872L7.79631 1.72701L2.52324 7.00009L7.79631 12.2732L6.90017 13.1693Z"
-                fill="#F9F9FA"
-              />
-            </svg>
-            Settings
-          </div>
+        <BackButton dismiss={dismiss} />
+        <div className="p-4 pt-20 flex flex-col h-full max-w-xl mx-auto">
           <h1 className="text-2xl mb-8">Desktop connect</h1>
           <p className="text-core-grey-20 mb-4">
             You can login to your mobile node from a computer by going to the URL shown below on your computer and

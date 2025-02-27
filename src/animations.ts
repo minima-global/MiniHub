@@ -33,7 +33,7 @@ export const modalAnimation: any = {
     opacity: 0,
   },
   config: {
-    duration: 100,
+    duration: 75,
   },
 };
 

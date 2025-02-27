@@ -20,7 +20,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
     'relative w-full transition-all px-4 py-3.5 rounded font-bold disabled:opacity-40 disabled:cursor-not-allowed';
 
   if (disabled) {
-    base += ' text-core-black-contrast-3 core-black-contrast';
+    base += ' text-core-black-contrast-3 bg-contrast2';
   } else if (variant === 'primary') {
     base += ' text-black bg-white';
   } else if (variant === 'secondary') {

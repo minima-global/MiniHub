@@ -5,6 +5,7 @@ import SlideScreen from '../../../../components/UI/SlideScreen';
 import Button from '../../../../components/UI/Button';
 import * as React from 'react';
 import { copyToWeb, deleteFile, moveFile, set, upload } from '../../../../lib';
+import BackButton from '../_BackButton';
 
 const bgOptions = ['thumbnail-minima', 'thumbnail-feather', 'thumbnail-liquid'];
 const gradientOptions = [
@@ -83,30 +84,15 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
   return (
     <SlideScreen display={display}>
       <div className="flex flex-col h-fit bg-black">
-        <div className="pt-20 px-4 lg:px-0 w-full pb-4 flex flex-col">
+        <div className="pt-16 px-4 lg:px-0 w-full pb-4 flex flex-col">
           <div className="max-w-xl mx-auto w-full">
-            <div onClick={dismiss} className="sticky top-0 cursor-pointer flex items-center">
-              <svg
-                className="mt-0.5 mr-4"
-                width="8"
-                height="14"
-                viewBox="0 0 8 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.90017 13.1693L0.730957 7.00009L6.90017 0.830872L7.79631 1.72701L2.52324 7.00009L7.79631 12.2732L6.90017 13.1693Z"
-                  fill="#F9F9FA"
-                />
-              </svg>
-              Settings
-            </div>
+            <BackButton dismiss={dismiss} />
             <div className="mt-6 text-2xl mb-8">Wallpaper</div>
             <div className="flex flex-col gap-5">
               <p className="text-core-grey-20">Set the background for your Minima home screen.</p>
 
               <div className="block mt-2 mb-4">
-                <div className="core-black-contrast-2 p-4 rounded">
+                <div className="bg-contrast1 p-4 rounded">
                   <div className="text-lg -mt-0.5 mb-4">Custom wallpaper</div>
                   <div className={`mb-4 ${showCustomWallpaperBlock ? 'block' : 'hidden'}`}>
                     <div className="mb-4">You have selected a custom wallpaper</div>
@@ -133,7 +119,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
                   </Button>
                 </div>
               </div>
-              <div className="core-black-contrast-2 p-4 rounded mb-5">
+              <div className="bg-contrast1 p-4 rounded mb-5">
                 <div className="mb-4">Images</div>
                 <div className="grid grid-cols-12 gap-3">
                   {bgOptions.map((option) => (
@@ -148,7 +134,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
                   ))}
                 </div>
               </div>
-              <div className="core-black-contrast-2 p-4 rounded">
+              <div className="bg-contrast1 p-4 rounded">
                 <div className="mb-4">Gradient</div>
                 <div className="grid grid-cols-12 gap-3">
                   {gradientOptions.map((option) => (
@@ -163,7 +149,7 @@ export function Wallpaper({ display, dismiss }: WallpaperProps) {
                   ))}
                 </div>
               </div>
-              <div className="core-black-contrast-2 p-4 rounded">
+              <div className="bg-contrast1 p-4 rounded">
                 <div className="mb-4">Solids</div>
                 <div className="grid grid-cols-12 gap-3">
                   {solidOptions.map((option) => (
