@@ -18,7 +18,7 @@ export type Step = number | string | null;
 export type Prompt = {
     display: boolean;
     title: string;
-    description: string;
+    description: string | JSX.Element;
 }
 type BackButton = string | number | null;
 
@@ -48,11 +48,7 @@ const Onboarding = () => {
     const { appReady, showOnboarding, setShowOnboarding } = useContext(appContext);
     const [step, setStep] = useState<number | string | null>(0);
     const [introductionStep, setIntroductionStep] = useState(0);
-    const [prompt, setPrompt] = useState<{
-        display: boolean;
-        title: string;
-        description: string;
-    }>({
+    const [prompt, setPrompt] = useState<Prompt>({
         display: false,
         title: "",
         description: "",
@@ -135,7 +131,7 @@ const Onboarding = () => {
         <onboardingContext.Provider value={{ keysGenerated, step, setStep, prompt, setPrompt, backButton, setBackButton }}>
 
             {/* Mobile */}
-            <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto transition-all duration-300 ${showOnboarding ? 'opacity-100' : '!hidden opacity-0 pointer-events-none'}`}>
+            <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto ${showOnboarding ? 'opacity-100' : 'transition-all duration-200 !hidden opacity-0 pointer-events-none'}`}>
                 <div className="absolute z-50 top-0 left-0 w-full">
                     <OnboardingPrompt />
                     <OnboardingWrapper display={step === 0}>
@@ -186,7 +182,7 @@ const Onboarding = () => {
             </div>
 
             {/* Desktop */}
-            <div className={`hidden lg:block fixed top-0 left-0 w-full h-full z-50 bg-cover bg-center transition-all duration-300 ${showOnboarding ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className={`hidden lg:block fixed top-0 left-0 w-full h-full z-50 bg-cover bg-center ${showOnboarding ? 'opacity-100' : 'transition-all duration-200 opacity-0 pointer-events-none'}`}>
                 <div className="absolute z-50 top-0 left-0 w-full h-full">
                     <OnboardingBackButton />
                     <div className="relative z-30">

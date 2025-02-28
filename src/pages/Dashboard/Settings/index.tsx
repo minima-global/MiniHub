@@ -1,23 +1,20 @@
-import { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { PropsWithChildren, useContext, useState } from 'react';
 import PeerList from './AddConnections';
 import Wallpaper from './Wallpaper';
 import ShutdownNode from './ShutdownNode';
 import { appContext } from '../../../AppContext';
 import BatteryOptimisation from './BatteryOptimisation';
 import FullScreen from '../../../components/UI/FullScreen';
-import InScreenTitleBar from '../../../components/InScreenStatusBar';
 import DesktopConnect from './DesktopConnect';
 import UpdateMiniHub from './UpdateMiniHub';
 import { useNavigate } from 'react-router-dom';
 import ShareConnections from './ShareConnections';
-import { peers } from '../../../lib';
 import Folders from './Folders';
 import TermsAndConditions from './TermsAndConditions';
 
 export function Settings() {
   const navigate = useNavigate();
   const {
-    loaded,
     setShowSettings,
     showSettings: display,
     showAddConnections,
@@ -34,7 +31,7 @@ export function Settings() {
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
   const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
   const [showShareConnections, setShowShareConnections] = useState(false);
-  const [showShareConnectionsNav, setShowShareConnectionsNav] = useState(true);
+  const [showShareConnectionsNav, _setShowShareConnectionsNav] = useState(true);
 
   /**
    * Show share connections nav only if user has a peer list

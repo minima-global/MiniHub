@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useRef } from "react";
 import OnboardingWrapper from "../OnboardingWrapper";
 import OnboardingModal from "../OnboardingModal";
-import { buttonClassName, inputClassName } from "../styling";
+import { buttonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import STEPS from "../steps";
 import { hideOnboarding, resetOnboarding } from "../utils";
@@ -18,6 +18,9 @@ const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React
     const [backupFilePassword, setBackupFilePassword] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [ip, setIp] = useState<string>("");
+    const [keyUses, setKeyUses] = useState<number>(1000);
 
     const uploadBackupFile = async () => {
         try {
@@ -30,22 +33,52 @@ const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React
         }
     }
 
-    const restore = async () => {
+    const restore = async (ip: string) => {
         try {
+            setIsLoading(true);
             setError(null);
             setStep(STEPS.RESTORE_FROM_BACKUP_RESTORING);
             if (!backupFilePath) return;
             const path = await getPath(backupFilePath);
             session.IS_RESTORING = true;
             await hideOnboarding();
-            await restoreFromBackup('', path, backupFilePassword);
+            await restoreFromBackup(ip, path, backupFilePassword, keyUses);
         } catch (e) {
             session.IS_RESTORING = false;
             await resetOnboarding();
             setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
             setError("There was an error with your backup file, please double check your backup file and password and try again.");
+        } finally {
+            setIsLoading(false);
         }
     }
+
+    const goToKeyUses = () => {
+        setError("");
+        setStep(STEPS.RESTORE_FROM_BACKUP_KEY_USES);
+    }
+
+    const goToRecoverWithMegaNodeOptions = () => {
+        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS);
+    };
+
+    const goToRecoverWithMegaNodeManually = () => {
+        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_MANUALLY);
+    };
+
+    const goToRecoverWithMegaNodeAutoConnect = () => {
+        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
+    };
+
+    const manuallyConnectAndRestore = async () => {
+        restore(ip);
+    }
+
+    const autoConnectAndRestore = async () => {
+        restore("megammr.minima.global:9001");
+    }
+
+    const disableIfNotIPAndHost = !/^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}:\d+)$/.test(ip);
 
     return (
         <div>
@@ -64,9 +97,9 @@ const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React
                         </div>
                     )}
                     <div className="text-center text-white mb-8">
-                        {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys. You can now continue." }
+                        {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys." }
                     </div>
-                    <button className={buttonClassName} onClick={() => setStep("RESTORE_FROM_BACKUP_SELECT_FILE")}>
+                    <button className={buttonClassName} disabled={!keysGenerated} onClick={() => setStep("RESTORE_FROM_BACKUP_SELECT_FILE")}>
                         Continue
                     </button>
                 </OnboardingModal>
@@ -131,8 +164,76 @@ const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React
                             </div>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <div onClick={restore} className={buttonClassName}>
+                            <div onClick={goToKeyUses} className={buttonClassName}>
                                 Continue
+                            </div>
+                        </div>
+                    </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_KEY_USES}>
+                <OnboardingModal display={step === STEPS.RESTORE_FROM_BACKUP_KEY_USES}>
+                    <OnboardingTitle title="Key uses" icon="RESTORE_FROM_BACKUP" />
+                    <div className="text-white w-full max-w-2xl">
+                        <p className="mb-4 text-sm">
+                            This number should be <strong>higher than the total times your node has generated a signature</strong>. A signature is created each time you spend from a wallet address, including all transactions, consolidating, and splitting coins. Some transactions may involve multiple signatures.
+                        </p>
+                        <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
+                        <div className="mb-8">
+                            <label className="block mb-3">Enter the number of times you have signed with your keys</label>
+                            <input type="number" value={keyUses} onChange={(e) => setKeyUses(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                        </div>
+                        <div onClick={goToRecoverWithMegaNodeOptions} className={buttonClassName}>
+                            Continue
+                        </div>
+                    </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS}>
+                <OnboardingModal display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS}>
+                    <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
+                    <div className="text-white w-full max-w-2xl">
+                        <p className="mb-8">To import your seed phrase/secret/custom phrase (delete as appropriate), you will need to connect to a Mega node to restore your coins and join the network.</p>
+                        <div className="flex flex-col gap-3">
+                            <button disabled={isLoading} onClick={goToRecoverWithMegaNodeManually} className={optionClassName}>
+                                Enter manually
+                            </button>
+                            <button disabled={isLoading} onClick={goToRecoverWithMegaNodeAutoConnect} className={optionClassName}>
+                                Use auto-connect
+                            </button>
+                        </div>
+                        {error && <div className="mt-6 text-red-500 font-bold text-xs">{error}</div>}
+                    </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_MANUALLY}>
+                <OnboardingModal display={step === STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_MANUALLY}>
+                    <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
+                    <div className="text-white w-full max-w-2xl">
+                        <p className="mb-6">To import your seed phrase/secret/custom phrase (delete as appropriate), you will need to connect to a Mega node to restore your coins and join the network.</p>
+                        <div className="mb-8">
+                            <label className="mb-3 block">
+                                Please enter the url:port or ip:port of a Mega node.
+                            </label>
+                            <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <button disabled={isLoading || disableIfNotIPAndHost} onClick={manuallyConnectAndRestore} className={buttonClassName}>
+                                Restore
+                            </button>
+                        </div>
+                        {error && <div className="mt-6 text-red-500 font-bold text-xs">{error}</div>}
+                    </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT}>
+                <OnboardingModal display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT}>
+                    <OnboardingTitle title="Confirmation" icon="RESTORE_FROM_BACKUP" />
+                    <div className="text-white w-full max-w-2xl">
+                        <p className="mb-8">You are about to import a seed phrase to this node and restore all coins.</p>
+                        <div className="flex flex-col gap-3">
+                            <div onClick={autoConnectAndRestore} className={buttonClassName}>
+                                Start restore
                             </div>
                         </div>
                     </div>

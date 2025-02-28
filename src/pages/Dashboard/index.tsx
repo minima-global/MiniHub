@@ -193,7 +193,7 @@ function Dashboard() {
   );
 }
 
-const Tutorial = ({ emblaApi, entireAppList }: { emblaApi: EmblaCarouselType, entireAppList: unknown[][] }) => {
+const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, entireAppList: unknown[][] }) => {
   const {
     tutorialMode,
     showOnboard,

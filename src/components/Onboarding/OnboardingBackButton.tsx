@@ -20,6 +20,10 @@ const BACKWARD_STEPS: Record<string | number, string | number> = {
 
     [STEPS.RESTORE_FROM_BACKUP_SELECT_FILE]: 1,
     [STEPS.RESTORE_FROM_BACKUP_PASSWORD]: STEPS.RESTORE_FROM_BACKUP_SELECT_FILE,
+    [STEPS.RESTORE_FROM_BACKUP_KEY_USES]: STEPS.RESTORE_FROM_BACKUP_PASSWORD,
+    [STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS]: STEPS.RESTORE_FROM_BACKUP_KEY_USES,
+    [STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_MANUALLY]: STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS,
+    [STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT]: STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS,
 }
 
 const OnboardingBackButton = () => {
@@ -51,6 +55,10 @@ const OnboardingBackButton = () => {
 
             STEPS.RESTORE_FROM_BACKUP_SELECT_FILE,
             STEPS.RESTORE_FROM_BACKUP_PASSWORD,
+            STEPS.RESTORE_FROM_BACKUP_KEY_USES,
+            STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS,
+            STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_MANUALLY,
+            STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT,
         ];
         return backButtonSteps.includes(step as string);
     }, [step]);
@@ -61,7 +69,7 @@ const OnboardingBackButton = () => {
                 <img src="./icons/chevron_backward.svg" alt="Back" className="w-4 h-4" />
                 Back
             </div>
-            <div onClick={previousStep} className={`hidden flex ${showBackButton ? "opacity-100" : "opacity-0 pointer-events-none"} absolute z-[60] top-6 left-4 lg:top-10 lg:left-14 text-white text-sm cursor-pointer relative z-50 flex items-center gap-2`}>
+            <div onClick={previousStep} className={`hidden lg:flex ${showBackButton ? "opacity-100" : "opacity-0 pointer-events-none"} absolute z-[60] top-6 left-4 lg:top-10 lg:left-14 text-white text-sm cursor-pointer relative z-50 flex items-center gap-2`}>
                 <img src="./icons/chevron_backward.svg" alt="Back" className="w-4 h-4" />
                 Back
             </div>

@@ -25,6 +25,15 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
     const { setPrompt } = useContext(onboardingContext);
     const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
     const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
+    const [copiedSeedPhrase, setCopiedSeedPhrase] = useState(false);
+
+    useEffect(() => {
+        if (copiedSeedPhrase) {
+            setTimeout(() => {
+                setCopiedSeedPhrase(false);
+            }, 2000);
+        }
+    }, [copiedSeedPhrase]);
 
     useEffect(() => {
         if (appReady && !seedPhrase) {
@@ -53,7 +62,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
     }
 
     const handlePeerListInfo = () => {
-        setPrompt({ display: true, title: "Peer list", description: "Peer list is a list of connections to other nodes on the network. You can find this in the Settings menu." });
+        setPrompt({ display: true, title: "Peer list", description: <span>An initial set of Minima nodes that are available to connect to.<br/><br/> Must be a comma separated list of nodes in the format ip:port or domain:port.<br/><br/> Existing users can find a shareable list of peers in the Settings of their MiniHub.</span> });
     }
 
     const continueFromSeedPhrase = () => {
@@ -88,6 +97,11 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
     const toggleShowingSeedPhrase = () => {
         setShowingSeedPhrase(!showingSeedPhrase)
         setViewedSeedPhrase(true)
+    }
+
+    const copySeedPhrase = () => {
+        navigator.clipboard.writeText(seedPhrase?.join(" ") || "");
+        setCopiedSeedPhrase(true);
     }
 
     return (
@@ -142,6 +156,9 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                             </label>
                         </div>
                         <button onClick={toggleShowingSeedPhrase} className={greyButtonClassName}>{showingSeedPhrase ? "Hide seed phrase" : "Show seed phrase"}</button>
+                        <button onClick={copySeedPhrase} className={`${greyButtonClassName} !duration-[100ms] ${copiedSeedPhrase ? '!bg-emerald-500 !text-black' : ''} relative`}>
+                            {copiedSeedPhrase ? "Copied" : "Copy seed phrase"}
+                        </button>
                         <button onClick={continueFromSeedPhrase} className={buttonClassName} disabled={!seedPhraseWritten || !seedPhraseAccess || !viewedSeedPhrase}>Continue</button>
                     </div>
                 </MobileOnboardingContent>
@@ -163,7 +180,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                                 </div>
                             )}
                             <div className="text-center text-white mb-8">
-                                {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys. You can now continue."}
+                                {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys."}
                             </div>
                         </div>
                     </div>
@@ -179,11 +196,11 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                     <div className="text-white">
                         <div className="mb-8">
                             <p>Minima is a completely decentralised network.</p>
-                            <p>To join, ask a Minima user to share connections with you.</p>
+                            <p>To join, add connections manually or use auto-connect</p>
                         </div>
                         <div className="flex flex-col gap-3 text-sm">
                             <button onClick={goToAddConnections} className={optionClassName}>
-                                Add connections
+                                Add connections manually
                             </button>
                             <button onClick={goToAutoConnect} className={optionClassName}>
                                 Use auto-connect
@@ -203,7 +220,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                         <div className="text-left text-white w-full max-w-2xl">
                             <div className="w-full">
                                 <div className="flex flex-col gap-4">
-                                    <p>Ask someone on the network to:</p>
+                                    <p>Ask another Minima user to:</p>
                                     <div className="text-gray-400 mb-2">
                                         <div>1. Open Settings &amp; select 'Share connections'</div>
                                         <div>2. Copy their connections or press the 'Share connections' button</div>

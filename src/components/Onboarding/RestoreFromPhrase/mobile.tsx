@@ -28,7 +28,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
     const [customPhrase, setCustomPhrase] = useState("");
 
     const [keys, setKeys] = useState(64);
-    const [keyUses, setKeyUses] = useState(1);
+    const [keyUses, setKeyUses] = useState(1000);
 
     const [showSecretKey, setShowSecretKey] = useState(false);
     const [showCustomPhrase, setShowCustomPhrase] = useState(false);
@@ -143,7 +143,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                                     I have a 24 word seed phrase
                                 </div>
                                 <div onClick={goToRestoreFromSecretKey} className={optionClassName}>
-                                    I have a Public Wallet 16 character secret
+                                    I have a Web Wallet secret key
                                 </div>
                                 <div onClick={goToRestoreFromCustomPhrase} className={optionClassName}>
                                     I want to use a custom seed phrase
@@ -155,24 +155,26 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.IMPORT_SEED_PHRASE_ENTER_SEED_PHRASE}>
                 <MobileOnboardingContent>
-                    <OnboardingBackButton />
-                    <OnboardingTitle title="Enter your seed phrase" icon="RESTORE_FROM_SEED_PHRASE" />
-                    <div className="text-white w-full max-w-2xl">
-                        <p className="mb-8">Please review your entry carefully before continuing</p>
-                        <div className="mb-8">
-                            <ConfirmSeedPhrase seedPhrase={seedPhrase} setSeedPhrase={setSeedPhrase} />
+                    <div className="grow text-white w-full max-w-2xl">
+                        <OnboardingBackButton />
+                        <OnboardingTitle title="Enter your seed phrase" icon="RESTORE_FROM_SEED_PHRASE" />
+                        <div className="text-white w-full max-w-2xl">
+                            <p className="mb-8">Please review your entry carefully before continuing</p>
+                            <div className="mb-8">
+                                <ConfirmSeedPhrase seedPhrase={seedPhrase} setSeedPhrase={setSeedPhrase} />
+                            </div>
                         </div>
-                        <button onClick={goToNumberOfKeys} disabled={disableContinueWithSeedPhrase} className={buttonClassName}>
-                            Continue
-                        </button>
                     </div>
+                    <button onClick={goToNumberOfKeys} disabled={disableContinueWithSeedPhrase} className={buttonClassName}>
+                        Continue
+                    </button>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.IMPORT_SEED_PHRASE_ENTER_SECRET_KEY}>
                 <MobileOnboardingContent>
                     <div className="grow text-white w-full max-w-2xl">
                         <OnboardingBackButton />
-                        <OnboardingTitle title="Enter your 16 character secret" icon="RESTORE_FROM_SEED_PHRASE" />
+                        <OnboardingTitle title="Enter your 20 character secret" icon="RESTORE_FROM_SEED_PHRASE" />
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div>
                             <input id="phrase" type={showSecretKey ? 'text' : 'password'} maxLength={24} value={secretKeyOne} onChange={(evt) => setSecretKeyOne(evt.target.value)} className="bg-contrast-1 text-left font-bold w-full p-3 outline-none placeholder-gray-500" />
@@ -215,7 +217,8 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <OnboardingTitle title="Number of Keys" icon="RESTORE_FROM_SEED_PHRASE" />
                         <div className="text-white w-full max-w-2xl">
                             <p className="mb-4">Enter the number of wallet addresses (keys) to create.</p>
-                            <p className="mb-8 text-sm">All Minima nodes are started with 64 addresses by default. If you previously manually created more, you can set the number of addresses to create here. Note that in future you should always create at least this many addresses to ensure all your coins are recovered.</p>
+                            <p className="mb-4">All Minima nodes start with 64 addresses by default. If you previously manually created more, you can set the number of addresses to create here.</p>
+                            <p className="mb-8 text-sm">Note that in future you should always create at least this many addresses to ensure all your coins are recovered.</p>
                             <div className="mb-8">
                                 <label className="block mb-3">Enter number of keys</label>
                                 <input type="number" value={keys} onChange={(e) => setKeys(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
@@ -231,14 +234,14 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                 <MobileOnboardingContent>
                     <div className="grow">
                         <OnboardingBackButton />
-                        <OnboardingTitle title="Enter your key uses (nonce)" icon="RESTORE_FROM_SEED_PHRASE" />
+                        <OnboardingTitle title="Key uses" icon="RESTORE_FROM_SEED_PHRASE" />
                         <div className="text-white w-full max-w-2xl">
                             <p className="mb-4 text-sm">
                                 This number should be <strong>higher than the total times your node has generated a signature</strong>. A signature is created each time you spend from a wallet address, including all transactions, consolidating, and splitting coins. Some transactions may involve multiple signatures.
                             </p>
                             <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
                             <div className="mb-8">
-                                <label className="block mb-3">Enter your key uses</label>
+                                <label className="block mb-3">Enter the number of times you have signed with your keys</label>
                                 <input type="number" value={keyUses} onChange={(e) => setKeyUses(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
                             </div>
                         </div>

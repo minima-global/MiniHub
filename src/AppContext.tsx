@@ -142,22 +142,24 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (appReady) {
-      const clearBootstrapRegardlessOfShowing = setTimeout(() => {
-        setBootstrapping(false);
-      }, 750);
-
       shouldShowOnboarding().then((show) => {
-        clearTimeout(clearBootstrapRegardlessOfShowing);
-
-        setShowOnboarding(show);
+        if (show) {
+          MDS.cmd("keys", (resp) => {
+            setShowOnboarding(true);
+            setBootstrapping(false);
+            // if (resp.response.total < 60) {
+            //   setShowOnboarding(true);
+            //   setBootstrapping(false);
+            // } else {
+            //   setShowOnboarding(false);
+            //   setBootstrapping(false);
+            // }
+          });
+        }
 
         if (!show) {
           setBootstrapping(false);
         }
-
-        setTimeout(() => {
-          setBootstrapping(false);
-        }, 750);
       });
     }
   }, [appReady]);
@@ -225,14 +227,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         )
       );
 
-      // let apps = response.minidapps;
-
-      // if (sort === 'alphabetical') {
-      //   apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
-      // } else if (sort === 'last_added') {
-      //   apps = apps.reverse();
-      // }
-
       setAppList([...apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name))]);
 
       return true;
@@ -253,10 +247,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
           setAppReady(true);
-
-          // MDS.keypair.get('onboarding', (resp) => {
-          //   console.log(resp);
-          // });
 
           getMaximaDetails();
 

@@ -15,12 +15,13 @@ export const getPath = (filename: string): Promise<string> => {
 export const restoreFromBackup = (
     host: string,
     filepath: string,
-    password: string
+    password: string,
+    keyuses: number
 ) => {
     return new Promise((resolve, reject) => {
         MDS.cmd(
-            `restoresync ${host.length ? 'host:"' + host + '"' : ""
-            } file:"${filepath}" password:"${password.length ? password : "minima"}"`,
+            `megammrsync action:resync ${host.length ? 'host:"' + host + '"' : ""
+            } file:"${filepath}" keyuses:${keyuses} password:"${password.length ? password : "minima"}"`,
             (response: any) => {
                 if (!response.status)
                     return reject(

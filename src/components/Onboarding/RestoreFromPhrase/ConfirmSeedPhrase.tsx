@@ -1,11 +1,24 @@
 import { useState } from "react";
 import bip39 from "../bip39";
 
-const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { index: number, word: string | undefined, callback: (index: number, value: string | undefined) => void, activeIndex: number | null, setActiveIndex: React.Dispatch<React.SetStateAction<number | null>> }) => {
+const ConfirmWord = ({
+  index,
+  seedPhrase,
+  setSeedPhrase,
+  errorBag,
+  setErrorBag,
+  activeIndex,
+  setActiveIndex
+}: {
+  index: number;
+  seedPhrase: (string | undefined)[];
+  setSeedPhrase: React.Dispatch<React.SetStateAction<(string | undefined)[]>>;
+  errorBag: (boolean | undefined)[];
+  setErrorBag: React.Dispatch<React.SetStateAction<(boolean | undefined)[]>>;
+  activeIndex: number | null;
+  setActiveIndex: React.Dispatch<React.SetStateAction<number | null>>;
+}) => {
     const [_focus, setFocus] = useState(false);
-    const [error, setError] = useState(false);
-    const [value, setValue] = useState(word);
-    const [validated, setValidated] = useState(false);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const isDesktop = window.innerWidth > 768;
 
@@ -17,8 +30,6 @@ const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { i
 
     const handleOnChange = (evt: any) => {
         const value = evt.target.value.toUpperCase().trim();
-        setValue(value);
-        setValidated(bip39.includes(value));
 
         if (value.length > 2) {
             setSuggestions(bip39.filter((i) => i.startsWith(value)).slice(0, 5));
@@ -26,44 +37,68 @@ const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { i
             setSuggestions([]);
         }
 
-        if (bip39.includes(value)) {
-            callback(index, value);
-        } else {
-            callback(index, undefined);
-        }
+        setSeedPhrase(prevState => {
+            const newState = [...prevState];
+            newState[index] = value;
+            return newState;
+        });
     };
 
     const handleOnClick = (value: any) => {
-        setError(false);
-        setValue(value);
-        setValidated(bip39.includes(value));
+        setErrorBag(prevState => {
+            const newState = [...prevState];
+            newState[index] = !bip39.includes(value);
+            return newState;
+        });
         setSuggestions([]);
 
         if (bip39.includes(value)) {
-            callback(index, value);
+            setSeedPhrase(prevState => {
+                const newState = [...prevState];
+                newState[index] = value;
+                return newState;
+            });
         } else {
-            callback(index, undefined);
+            setSeedPhrase(prevState => {
+                const newState = [...prevState];
+                newState[index] = undefined;
+                return newState;
+            });
         }
     };
 
     const handleBlur = (evt: any) => {
         setFocus(false);
-        setError(
-            evt.target.value === "" ? false : !bip39.includes(evt.target.value)
-        );
+        console.log(evt.target.value);
+        setErrorBag(prevState => {
+            const newState = [...prevState];
+            newState[index] = !bip39.includes(evt.target.value);
+            return newState;
+        });
         setActiveIndex(null);
-
-        if (value && bip39.includes(value)) {
-            callback(index, value);
-        } else {
-            callback(index, undefined);
-        }
     };
+
+    const handleOnPaste = (evt: any) => {
+        evt.preventDefault();
+        const text = evt.clipboardData.getData('text/plain');
+
+        if (text.trim().split(' ').length === 24) {
+            setActiveIndex(null);
+            setErrorBag(Array(24).fill(undefined));
+            return setSeedPhrase(text.trim().split(' '));
+        }
+
+        setSeedPhrase(prevState => {
+            const newState = [...prevState];
+            newState[index] = text;
+            return newState;
+        });
+    }
 
     return (
         <>
             <div
-                className={`flex bg-contrast-1 p-0.5 pr-4 border ${error ? "border-red-500" : "border-transparent"} transition-opacity duration-200 ${activeIndex !== null ? activeIndex === index ? "opactity-100" : "opacity-[30%]" : ""}`}
+                className={`flex bg-contrast-1 p-0.5 pr-4 border ${errorBag[index] === true ? "border-red-500" : "border-transparent"} transition-opacity duration-200 ${activeIndex !== null ? activeIndex === index ? "opactity-100" : "opacity-[30%]" : ""}`}
             >
                 <label className="py-2 pl-3 text-sm">
                     {index + 1}.
@@ -71,14 +106,15 @@ const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { i
                 <input
                     type="text"
                     className={`w-full py-2 px-2 text-white outline-none bg-transparent font-bold text-sm`}
-                    value={value}
+                    value={seedPhrase[index] || ""}
                     autoFocus={isDesktop}
                     onFocus={(e) => handleFocus(e)}
                     onChange={(evt) => handleOnChange(evt)}
                     onBlur={(evt) => handleBlur(evt)}
+                    onPaste={(evt) => handleOnPaste(evt)}
                 />
             </div>
-            {suggestions && !validated && (
+            {suggestions && !errorBag[index] && (
                 <div className="absolute top-[100%] z-10 w-full flex flex-col gap-[1px] bg-contrast-1">
                     {suggestions.map((i) => (
                         <button key={i} type="button" className="w-full flex bg-contrast-2 text-black text-white p-3 text-sm" onClick={() => handleOnClick(i)}>{i}</button>
@@ -91,14 +127,7 @@ const ConfirmWord = ({ index, word, callback, activeIndex, setActiveIndex }: { i
 
 const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedPhrase: React.Dispatch<React.SetStateAction<(string | undefined)[]>> }> = ({ seedPhrase, setSeedPhrase }) => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-    const callback = (index: number, seedPhrasePart: string | undefined) => {
-        setSeedPhrase(prevState => {
-            const newState = [...prevState];
-            newState[index] = seedPhrasePart;
-            return newState;
-        });
-    }
+    const [errorBag, setErrorBag] = useState<(boolean | undefined)[]>([]);
 
     return (
         <div>
@@ -106,7 +135,15 @@ const ConfirmSeedPhrase: React.FC<{ seedPhrase: (string | undefined)[], setSeedP
                 <div className="grid grid-cols-12 w-full gap-3">
                     {new Array(24).fill(0).map((_i, index) => (
                         <div key={index} className="relative col-span-6 lg:col-span-4 w-full flex items-center">
-                            <ConfirmWord index={index} word={seedPhrase[index]} callback={callback} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+                            <ConfirmWord
+                                index={index}
+                                seedPhrase={seedPhrase}
+                                setSeedPhrase={setSeedPhrase}
+                                errorBag={errorBag}
+                                setErrorBag={setErrorBag}
+                                activeIndex={activeIndex}
+                                setActiveIndex={setActiveIndex}
+                            />
                         </div>
                     ))}
                 </div>
