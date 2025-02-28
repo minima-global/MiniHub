@@ -144,7 +144,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (appReady) {
       shouldShowOnboarding().then((show) => {
         if (show) {
-          MDS.cmd("keys", (resp) => {
+          MDS.cmd("keys", () => {
             setShowOnboarding(true);
             setBootstrapping(false);
             // if (resp.response.total < 60) {

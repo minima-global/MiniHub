@@ -210,7 +210,7 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                         <OnboardingBackButton />
                         <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
                         <div className="text-white w-full max-w-2xl">
-                            <p className="mb-8">To import your seed phrase/secret/custom phrase (delete as appropriate), you will need to connect to a Mega node to restore your coins and join the network.</p>
+                            <p className="mb-8">To import your backup, you will need to connect to a Mega node to restore your coins and join the network.</p>
                             <div className="flex flex-col gap-3">
                                 <button disabled={isLoading} onClick={goToRecoverWithMegaNodeManually} className={optionClassName}>
                                     Enter manually
@@ -232,13 +232,13 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                         <OnboardingBackButton />
                         <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
                         <div className="text-white w-full max-w-2xl">
-                            <p className="mb-6">To import your seed phrase/secret/custom phrase (delete as appropriate), you will need to connect to a Mega node to restore your coins and join the network.</p>
-                            <div className="mb-8">
+                            <div className="mb-6">
                                 <label className="mb-3 block">
                                     Please enter the url:port or ip:port of a Mega node.
                                 </label>
                                 <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
                             </div>
+                            <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
@@ -255,7 +255,8 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                         <OnboardingBackButton />
                         <OnboardingTitle title="Confirmation" icon="RESTORE_FROM_BACKUP" />
                         <div className="text-white w-full max-w-2xl">
-                            <p className="mb-8">You are about to import a seed phrase to this node and restore all coins.</p>
+                            <p className="mb-6">You are about to import your backup to this node and restore all coins.</p>
+                            <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">

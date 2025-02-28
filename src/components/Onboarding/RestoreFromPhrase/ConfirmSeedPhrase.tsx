@@ -45,37 +45,30 @@ const ConfirmWord = ({
     };
 
     const handleOnClick = (value: any) => {
-        setErrorBag(prevState => {
-            const newState = [...prevState];
-            newState[index] = !bip39.includes(value);
-            return newState;
-        });
         setSuggestions([]);
 
-        if (bip39.includes(value)) {
-            setSeedPhrase(prevState => {
-                const newState = [...prevState];
-                newState[index] = value;
-                return newState;
-            });
-        } else {
-            setSeedPhrase(prevState => {
-                const newState = [...prevState];
-                newState[index] = undefined;
-                return newState;
-            });
-        }
+        setSeedPhrase(prevState => {
+            const newState = [...prevState];
+            newState[index] = value;
+            return newState;
+        });
+        setErrorBag(prevState => {
+            const newState = [...prevState];
+            newState[index] = false;
+            return newState;
+        });
     };
 
     const handleBlur = (evt: any) => {
         setFocus(false);
-        console.log(evt.target.value);
-        setErrorBag(prevState => {
-            const newState = [...prevState];
-            newState[index] = !bip39.includes(evt.target.value);
-            return newState;
-        });
         setActiveIndex(null);
+        setTimeout(() => {
+            setErrorBag(prevState => {
+                const newState = [...prevState];
+                newState[index] = !bip39.includes(evt.target.value);
+                return newState;
+            });
+        }, 100);
     };
 
     const handleOnPaste = (evt: any) => {
@@ -98,7 +91,7 @@ const ConfirmWord = ({
     return (
         <>
             <div
-                className={`flex bg-contrast-1 p-0.5 pr-4 border ${errorBag[index] === true ? "border-red-500" : "border-transparent"} transition-opacity duration-200 ${activeIndex !== null ? activeIndex === index ? "opactity-100" : "opacity-[30%]" : ""}`}
+                className={`flex bg-contrast-1 p-0.5 pr-4 border ${errorBag[index] === true && seedPhrase[index] ? "border-red-500" : "border-transparent"} transition-opacity duration-200 ${activeIndex !== null ? activeIndex === index ? "opactity-100" : "opacity-[30%]" : ""}`}
             >
                 <label className="py-2 pl-3 text-sm">
                     {index + 1}.
@@ -114,7 +107,7 @@ const ConfirmWord = ({
                     onPaste={(evt) => handleOnPaste(evt)}
                 />
             </div>
-            {suggestions && !errorBag[index] && (
+            {suggestions && (
                 <div className="absolute top-[100%] z-10 w-full flex flex-col gap-[1px] bg-contrast-1">
                     {suggestions.map((i) => (
                         <button key={i} type="button" className="w-full flex bg-contrast-2 text-black text-white p-3 text-sm" onClick={() => handleOnClick(i)}>{i}</button>

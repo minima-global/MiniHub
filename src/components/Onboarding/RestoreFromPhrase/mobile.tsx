@@ -4,7 +4,7 @@ import bip39 from "../bip39";
 import STEPS from "../steps";
 import OnboardingTitle from "../OnboardingTitle";
 import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
-import { hideOnboarding } from "../utils";
+import { hideOnboarding, resetOnboarding } from "../utils";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
 import { session } from "../../../env";
@@ -37,25 +37,38 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
 
     const restoreFromIp = async () => {
         try {
+            let resp;
             setError("");
             setIsLoading(true);
-            const resp = await ping(ip);
+            const pingTest = await ping(ip);
 
-            if (resp.response.valid) {
+            if (pingTest.response.valid) {
                 setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
 
                 await hideOnboarding();
                 session.IS_RESTORING = true;
 
                 if (action === 'phrase') {
-                    await resync(ip, seedPhrase.join(" "), keys, keyUses);
+                    resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
                 } else if (action === 'secret') {
-                    await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
+                    resp = await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
                 } else if (action === 'custom') {
-                    await resync(ip, customPhrase, keys, keyUses, true);
+                    resp = await resync(ip, customPhrase, keys, keyUses, true);
+                }
+
+                if (resp.status === false) {
+                    session.IS_RESTORING = false;
+                    resetOnboarding();
+                    setIsLoading(false);
+                    setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
+                    return setError("Unable to restore from Mega node. Please try again.");
                 }
 
                 setIsLoading(false);
+            } else {
+                session.IS_RESTORING = false;
+                setIsLoading(false);
+                setError("Unable to connect to the Mega node. Please try a different Mega node.");
             }
         } catch {
             session.IS_RESTORING = false;
@@ -66,6 +79,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
 
     const autoConnectAndRestore = async () => {
         try {
+            let resp;
             setIsLoading(true);
             setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
 
@@ -75,11 +89,19 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
             session.IS_RESTORING = true;
 
             if (action === 'phrase') {
-                await resync(ip, seedPhrase.join(" "), keys, keyUses);
+                resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
             } else if (action === 'secret') {
-                await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
+                resp = await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
             } else if (action === 'custom') {
-                await resync(ip, customPhrase, keys, keyUses, true);
+                resp = await resync(ip, customPhrase, keys, keyUses, true);
+            }
+
+            if (resp.status === false) {
+                session.IS_RESTORING = false;
+                resetOnboarding();
+                setIsLoading(false);
+                setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
+                return setError("Unable to restore from Mega node. Please try again.");
             }
 
             setIsLoading(false);
@@ -118,10 +140,12 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
     };
 
     const goToRecoverWithMegaNodeManually = () => {
+        setError("");
         setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_MANUALLY);
     };
 
     const goToRecoverWithMegaNodeAutoConnect = () => {
+        setError("");
         setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
     };
 
@@ -256,7 +280,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     <OnboardingBackButton />
                     <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_SEED_PHRASE" />
                     <div className="text-white w-full max-w-2xl">
-                        <p className="mb-8">To import your seed phrase/secret/custom phrase (delete as appropriate), you will need to connect to a Mega node to restore your coins and join the network.</p>
+                        <p className="mb-8">To import your {action === 'phrase' && 'seed phrase'}{action === 'secret' && 'secret key'}{action === 'custom' && 'custom phrase'}, you will need to connect to a Mega node to restore your coins and join the network.</p>
                         <div className="flex flex-col gap-3">
                             <button disabled={isLoading} onClick={goToRecoverWithMegaNodeManually} className={optionClassName}>
                                 Enter manually
@@ -274,12 +298,13 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     <OnboardingBackButton />
                     <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_SEED_PHRASE" />
                     <div className="grow text-white w-full max-w-2xl">
-                        <div className="mb-8">
+                        <div className="mb-6">
                             <label className="mb-3 block">
                                 Please enter the url:port or ip:port of a Mega node.
                             </label>
                             <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
                         </div>
+                        <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         <div className="flex flex-col gap-3">
                         </div>
                         {error && <div className="mt-6 text-red-500 font-bold text-xs">{error}</div>}
@@ -295,10 +320,8 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <OnboardingBackButton />
                         <OnboardingTitle title="Confirmation" icon="RESTORE_FROM_SEED_PHRASE" />
                         <div className="text-white w-full max-w-2xl">
-                            <p className="mb-8">You are about to import a seed phrase to this node and restore all coins.</p>
-                            <div className="flex flex-col gap-3">
-
-                            </div>
+                            <p className="mb-6">You are about to import your {action === 'phrase' && 'seed phrase'}{action === 'secret' && 'secret key'}{action === 'custom' && 'custom phrase'} to this node and restore all coins.</p>
+                            <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         </div>
                     </div>
                     <div onClick={autoConnectAndRestore} className={buttonClassName}>

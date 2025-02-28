@@ -13,8 +13,8 @@ import Onboarding from './components/Onboarding';
 import { useContext } from 'react';
 
 const Bootstrapper = () => {
-  const { bootstrapping, appReady } = useContext(appContext);
-  console.log(appReady);
+  const { bootstrapping } = useContext(appContext);
+
   return (
     <>
       {bootstrapping && <div id="hello" className="fixed top-0 left-0 h-screen w-screen bg-black z-[100]" />}
