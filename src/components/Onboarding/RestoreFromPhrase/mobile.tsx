@@ -1,158 +1,60 @@
-import { useState } from "react";
 import ConfirmSeedPhrase from "./ConfirmSeedPhrase";
-import bip39 from "../bip39";
 import STEPS from "../steps";
 import OnboardingTitle from "../OnboardingTitle";
 import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
-import { hideOnboarding, resetOnboarding } from "../utils";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
-import { session } from "../../../env";
-import { ping, resync } from "./api";
+import { restoreFromPhraseContext } from "./_context";
+import { useContext } from "react";
 
 type ImportProps = {
     step: number | string | null;
     setStep: (step: number | string) => void;
 }
 
-const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [action, setAction] = useState('');
-
-    const [seedPhrase, setSeedPhrase] = useState<(string | undefined)[]>([]);
-
-    const [secretKeyOne, setSecretKeyOne] = useState("");
-
-    const [customPhrase, setCustomPhrase] = useState("");
-
-    const [keys, setKeys] = useState(64);
-    const [keyUses, setKeyUses] = useState(1000);
-
-    const [showSecretKey, setShowSecretKey] = useState(false);
-    const [showCustomPhrase, setShowCustomPhrase] = useState(false);
-
-    const [ip, setIp] = useState('');
-
-    const restoreFromIp = async () => {
-        try {
-            let resp;
-            setError("");
-            setIsLoading(true);
-            const pingTest = await ping(ip);
-
-            if (pingTest.response.valid) {
-                setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
-
-                await hideOnboarding();
-                session.IS_RESTORING = true;
-
-                if (action === 'phrase') {
-                    resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
-                } else if (action === 'secret') {
-                    resp = await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
-                } else if (action === 'custom') {
-                    resp = await resync(ip, customPhrase, keys, keyUses, true);
-                }
-
-                if (resp.status === false) {
-                    session.IS_RESTORING = false;
-                    resetOnboarding();
-                    setIsLoading(false);
-                    setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-                    return setError("Unable to restore from Mega node. Please try again.");
-                }
-
-                setIsLoading(false);
-            } else {
-                session.IS_RESTORING = false;
-                setIsLoading(false);
-                setError("Unable to connect to the Mega node. Please try a different Mega node.");
-            }
-        } catch {
-            session.IS_RESTORING = false;
-            setIsLoading(false);
-            setError("Enable to connect to the Mega node. Please try a different Mega node.");
-        }
-    }
-
-    const autoConnectAndRestore = async () => {
-        try {
-            let resp;
-            setIsLoading(true);
-            setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
-
-            const ip = 'megammr.minima.global:9001';
-
-            await hideOnboarding();
-            session.IS_RESTORING = true;
-
-            if (action === 'phrase') {
-                resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
-            } else if (action === 'secret') {
-                resp = await resync(ip, `${secretKeyOne}`, keys, keyUses, true);
-            } else if (action === 'custom') {
-                resp = await resync(ip, customPhrase, keys, keyUses, true);
-            }
-
-            if (resp.status === false) {
-                session.IS_RESTORING = false;
-                resetOnboarding();
-                setIsLoading(false);
-                setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-                return setError("Unable to restore from Mega node. Please try again.");
-            }
-
-            setIsLoading(false);
-        } catch {
-            session.IS_RESTORING = false;
-            setIsLoading(false);
-            setError("Enable to connect to the Mega node. Please try a different Mega node.");
-        }
-    }
-
-    const goToRestoreFromPhrase = () => {
-        setAction('phrase');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_SEED_PHRASE);
-    };
-
-    const goToRestoreFromSecretKey = () => {
-        setAction('secret');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_SECRET_KEY);
-    };
-
-    const goToRestoreFromCustomPhrase = () => {
-        setAction('custom');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_CUSTOM_PHRASE);
-    };
-
-    const goToNumberOfKeys = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_NUMBER_OF_KEYS);
-    };
-
-    const goToKeyUses = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_KEY_USES);
-    };
-
-    const goToRecoverWithMegaNodeOptions = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-    };
-
-    const goToRecoverWithMegaNodeManually = () => {
-        setError("");
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_MANUALLY);
-    };
-
-    const goToRecoverWithMegaNodeAutoConnect = () => {
-        setError("");
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
-    };
-
-    const disableContinueWithSeedPhrase = seedPhrase.filter(i => i ? !bip39.includes(i) : true).length > 0;
-    const disableContinueWithSecretKey = secretKeyOne.length !== 24 || !/^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/.test(secretKeyOne);
-    const disableContinueWithCustomPhrase = customPhrase.length === 0;
-    const disableIfNotIPAndHost = !/^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}:\d+)$/.test(ip);
+const MobileRestoreFromPhrase: React.FC<ImportProps> = () => {
+    const {
+        step,
+        action,
+        error,
+        isLoading,
+        seedPhrase,
+        setSeedPhrase,
+        showSecretKey,
+        secretKey,
+        handleSecretKeyChange,
+        customPhrase,
+        showCustomPhrase,
+        toggleShowSecretKey,
+        toggleShowCustomPhrase,
+        handleCustomPhraseChange,
+        keys,
+        handleKeysChange,
+        keyUses,
+        handleKeyUsesChange,
+        ip,
+        handleIpChange,
+        restoreFromIp,
+        autoConnectAndRestore,
+        /**
+         * Gotos
+         */
+        goToKeyUses,
+        goToNumberOfKeys,
+        goToRestoreFromPhrase,
+        goToRestoreFromSecretKey,
+        goToRestoreFromCustomPhrase,
+        goToRecoverWithMegaNodeOptions,
+        goToRecoverWithMegaNodeManually,
+        goToRecoverWithMegaNodeAutoConnect,
+        /**
+         * Disabled states
+         */
+        disableContinueWithSeedPhrase,
+        disableContinueWithSecretKey,
+        disableContinueWithCustomPhrase,
+        disableIfNotIPAndHost,
+    } = useContext(restoreFromPhraseContext);
 
     return (
         <div className="text-sm">
@@ -201,11 +103,11 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <OnboardingTitle title="Enter your 20 character secret" icon="RESTORE_FROM_SEED_PHRASE" />
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div>
-                            <input id="phrase" type={showSecretKey ? 'text' : 'password'} maxLength={24} value={secretKeyOne} onChange={(evt) => setSecretKeyOne(evt.target.value)} className="bg-contrast-1 text-left font-bold w-full p-3 outline-none placeholder-gray-500" />
+                            <input id="phrase" type={showSecretKey ? 'text' : 'password'} maxLength={24} value={secretKey} onChange={handleSecretKeyChange} className="bg-contrast-1 text-left font-bold w-full p-3 outline-none placeholder-gray-500" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <button onClick={() => setShowSecretKey(!showSecretKey)} className={greyButtonClassName}>
+                        <button onClick={toggleShowSecretKey} className={greyButtonClassName}>
                             {!showSecretKey ? "Show secret key" : "Hide secret key"}
                         </button>
                         <button disabled={disableContinueWithSecretKey} onClick={goToNumberOfKeys} className={buttonClassName}>
@@ -221,12 +123,12 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <OnboardingTitle title="Enter your custom phrase" icon="RESTORE_FROM_SEED_PHRASE" />
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div className="mb-8 flex gap-4">
-                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={(e) => setCustomPhrase(e.target.value)} className={inputClassName} placeholder="Enter your custom phrase" />
+                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={handleCustomPhraseChange} className={inputClassName} placeholder="Enter your custom phrase" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <button onClick={() => setShowCustomPhrase(!showCustomPhrase)} className={greyButtonClassName}>
-                            {!showSecretKey ? "Show custom phrase" : "Hide custom phrase"}
+                        <button onClick={toggleShowCustomPhrase} className={greyButtonClassName}>
+                            {!showCustomPhrase ? "Show custom phrase" : "Hide custom phrase"}
                         </button>
                         <button disabled={disableContinueWithCustomPhrase} onClick={goToNumberOfKeys} className={buttonClassName}>
                             Continue
@@ -245,7 +147,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                             <p className="mb-8 text-sm">Note that in future you should always create at least this many addresses to ensure all your coins are recovered.</p>
                             <div className="mb-8">
                                 <label className="block mb-3">Enter number of keys</label>
-                                <input type="number" value={keys} onChange={(e) => setKeys(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                                <input type="number" value={keys} onChange={handleKeysChange} className={inputClassName} placeholder="Enter number of keys" />
                             </div>
                         </div>
                     </div>
@@ -266,7 +168,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                             <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
                             <div className="mb-8">
                                 <label className="block mb-3">Enter the number of times you have signed with your keys</label>
-                                <input type="number" value={keyUses} onChange={(e) => setKeyUses(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                                <input type="number" value={keyUses} onChange={handleKeyUsesChange} className={inputClassName} placeholder="Enter number of keys" />
                             </div>
                         </div>
                     </div>
@@ -302,7 +204,7 @@ const MobileRestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                             <label className="mb-3 block">
                                 Please enter the url:port or ip:port of a Mega node.
                             </label>
-                            <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
+                            <input type="text" value={ip} onChange={handleIpChange} placeholder="" className={inputClassName} />
                         </div>
                         <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         <div className="flex flex-col gap-3">

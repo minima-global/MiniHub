@@ -1,187 +1,65 @@
-import { useState } from "react";
+import { useContext } from "react";
 import OnboardingWrapper from "../OnboardingWrapper";
 import ConfirmSeedPhrase from "./ConfirmSeedPhrase";
-import bip39 from "../bip39";
 import STEPS from "../steps";
 import OnboardingModal from "../OnboardingModal";
 import OnboardingTitle from "../OnboardingTitle";
 import { buttonClassName, inputClassName, optionClassName } from "../styling";
-import { hideOnboarding, resetOnboarding } from "../utils";
-import { session } from "../../../env";
-import { ping, resync } from "./api";
+import { restoreFromPhraseContext } from "./_context";
 
-type ImportProps = {
-    step: number | string | null;
-    setStep: (step: number | string) => void;
-}
-
-const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [action, setAction] = useState('');
-
-    const [seedPhrase, setSeedPhrase] = useState<(string | undefined)[]>([]);
-
-    const [secretKeyOne, setSecretKeyOne] = useState("");
-    const [secretKeyTwo, setSecretKeyTwo] = useState("");
-    const [secretKeyThree, setSecretKeyThree] = useState("");
-    const [secretKeyFour, setSecretKeyFour] = useState("");
-    const [secretKeyFive, setSecretKeyFive] = useState("");
-
-    const [customPhrase, setCustomPhrase] = useState("");
-
-    const [keys, setKeys] = useState(64);
-    const [keyUses, setKeyUses] = useState(1000);
-
-    const [showSecretKey, setShowSecretKey] = useState(false);
-    const [showCustomPhrase, setShowCustomPhrase] = useState(false);
-
-    const [ip, setIp] = useState('');
-
-    const restoreFromIp = async () => {
-        try {
-            let resp;
-            setError("");
-            setIsLoading(true);
-            const pingTest = await ping(ip);
-
-            if (pingTest.response.valid) {
-                setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
-
-                await hideOnboarding();
-                session.IS_RESTORING = true;
-
-                if (action === 'phrase') {
-                    resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
-                } else if (action === 'secret') {
-                    resp = await resync(ip, `${secretKeyOne}-${secretKeyTwo}-${secretKeyThree}-${secretKeyFour}-${secretKeyFive}`, keys, keyUses, true);
-                } else if (action === 'custom') {
-                    resp = await resync(ip, customPhrase, keys, keyUses, true);
-                }
-
-                if (resp.status === false) {
-                    session.IS_RESTORING = false;
-                    resetOnboarding();
-                    setIsLoading(false);
-                    setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-                    return setError("Unable to restore from Mega node. Please try again.");
-                }
-
-                setIsLoading(false);
-            }
-        } catch {
-            session.IS_RESTORING = false;
-            setIsLoading(false);
-            setError("Enable to connect to the Mega node. Please try a different Mega node.");
-        }
-    }
-
-    const autoConnectAndRestore = async () => {
-        try {
-            let resp;
-            setIsLoading(true);
-            setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
-
-            const ip = 'megammr.minima.global:9001';
-
-            await hideOnboarding();
-            session.IS_RESTORING = true;
-
-            if (action === 'phrase') {
-                resp = await resync(ip, seedPhrase.join(" "), keys, keyUses);
-            } else if (action === 'secret') {
-                resp = await resync(ip, `${secretKeyOne}-${secretKeyTwo}-${secretKeyThree}-${secretKeyFour}-${secretKeyFive}`, keys, keyUses, true);
-            } else if (action === 'custom') {
-                resp = await resync(ip, customPhrase, keys, keyUses, true);
-            }
-
-            if (resp.status === false) {
-                session.IS_RESTORING = false;
-                resetOnboarding();
-                setIsLoading(false);
-                setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-                return setError("Unable to restore from Mega node. Please try again.");
-            }
-
-            setIsLoading(false);
-        } catch {
-            session.IS_RESTORING = false;
-            setIsLoading(false);
-            setError("Enable to connect to the Mega node. Please try a different Mega node.");
-        }
-    }
-
-    const onPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-        const pastedData = e.clipboardData.getData('Text');
-        if (/[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}/gmi.test(pastedData)) {
-            setSecretKeyOne(pastedData.split('-')[0]);
-            setSecretKeyTwo(pastedData.split('-')[1]);
-            setSecretKeyThree(pastedData.split('-')[2]);
-            setSecretKeyFour(pastedData.split('-')[3]);
-            setSecretKeyFive(pastedData.split('-')[4]);
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => input.blur());
-        }
-    }
-
-    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement;
-        if (target.value.length === 0) {
-            const nextTarget = document.getElementById(`phrase-${parseInt(target.id.split('-')[1]) - 1}`);
-            if (nextTarget) {
-                return nextTarget.focus();
-            }
-        }
-        if (target.value.length === 4) {
-            const nextTarget = document.getElementById(`phrase-${parseInt(target.id.split('-')[1]) + 1}`);
-            if (nextTarget) {
-                nextTarget.focus();
-            }
-        }
-    }
-
-    const goToRestoreFromPhrase = () => {
-        setAction('phrase');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_SEED_PHRASE);
-    };
-
-    const goToRestoreFromSecretKey = () => {
-        setAction('secret');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_SECRET_KEY);
-    };
-
-    const goToRestoreFromCustomPhrase = () => {
-        setAction('custom');
-        setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_CUSTOM_PHRASE);
-    };
-
-    const goToNumberOfKeys = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_NUMBER_OF_KEYS);
-    };
-
-    const goToKeyUses = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_KEY_USES);
-    };
-
-    const goToRecoverWithMegaNodeOptions = () => {
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
-    };
-
-    const goToRecoverWithMegaNodeManually = () => {
-        setError("");
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_MANUALLY);
-    };
-
-    const goToRecoverWithMegaNodeAutoConnect = () => {
-        setError("");
-        setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
-    };
-
-    const disableContinueWithSeedPhrase = seedPhrase.filter(i => i ? !bip39.includes(i) : true).length > 0;
-    const disableContinueWithSecretKey = secretKeyOne.length !== 4 || secretKeyTwo.length !== 4 || secretKeyThree.length !== 4 || secretKeyFour.length !== 4 || secretKeyFive.length !== 4;
-    const disableContinueWithCustomPhrase = customPhrase.length === 0;
-    const disableIfNotIPAndHost = !/^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}:\d+)$/.test(ip);
+const RestoreFromPhrase: React.FC = () => {
+    const {
+        step,
+        action,
+        error,
+        isLoading,
+        seedPhrase,
+        setSeedPhrase,
+        showSecretKey,
+        secretKeyOne,
+        setSecretKeyOne,
+        secretKeyTwo,
+        setSecretKeyTwo,
+        secretKeyThree,
+        setSecretKeyThree,
+        secretKeyFour,
+        setSecretKeyFour,
+        secretKeyFive,
+        setSecretKeyFive,
+        toggleShowSecretKey,
+        onSecretKeyPaste,
+        handleSecretKeyKeyUp,
+        customPhrase,
+        showCustomPhrase,
+        toggleShowCustomPhrase,
+        handleCustomPhraseChange,
+        keys,
+        handleKeysChange,
+        keyUses,
+        handleKeyUsesChange,
+        ip,
+        handleIpChange,
+        restoreFromIp,
+        autoConnectAndRestore,
+        /**
+         * Gotos
+         */
+        goToKeyUses,
+        goToNumberOfKeys,
+        goToRestoreFromPhrase,
+        goToRestoreFromSecretKey,
+        goToRestoreFromCustomPhrase,
+        goToRecoverWithMegaNodeOptions,
+        goToRecoverWithMegaNodeManually,
+        goToRecoverWithMegaNodeAutoConnect,
+        /**
+         * Disabled states
+         */
+        disableContinueWithSeedPhrase,
+        disableContinueWithSecretKey,
+        disableContinueWithCustomPhrase,
+        disableIfNotIPAndHost,
+    } = useContext(restoreFromPhraseContext);
 
     return (
         <div>
@@ -225,16 +103,16 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     <div className="text-white w-full max-w-2xl">
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div className="flex items-center gap-2 mb-8 w-full h-[40px]">
-                            <input id="phrase-1" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyOne} onChange={(e) => setSecretKeyOne(e.target.value)} onPaste={onPaste} onKeyUp={(e) => handleKeyUp(e)} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
+                            <input id="phrase-1" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyOne} onChange={(e) => setSecretKeyOne(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
                             <span className="text-white opacity-50 font-bold">-</span>
-                            <input id="phrase-2" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyTwo} onChange={(e) => setSecretKeyTwo(e.target.value)} onPaste={onPaste} onKeyUp={(e) => handleKeyUp(e)} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
+                            <input id="phrase-2" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyTwo} onChange={(e) => setSecretKeyTwo(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
                             <span className="text-white opacity-50 font-bold">-</span>
-                            <input id="phrase-3" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyThree} onChange={(e) => setSecretKeyThree(e.target.value)} onPaste={onPaste} onKeyUp={(e) => handleKeyUp(e)} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
+                            <input id="phrase-3" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyThree} onChange={(e) => setSecretKeyThree(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
                             <span className="text-white opacity-50 font-bold">-</span>
-                            <input id="phrase-4" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFour} onChange={(e) => setSecretKeyFour(e.target.value)} onPaste={onPaste} onKeyUp={(e) => handleKeyUp(e)} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
+                            <input id="phrase-4" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFour} onChange={(e) => setSecretKeyFour(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
                             <span className="text-white opacity-50 font-bold">-</span>
-                            <input id="phrase-5" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFive} onChange={(e) => setSecretKeyFive(e.target.value)} onPaste={onPaste} onKeyUp={(e) => handleKeyUp(e)} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
-                            <div onClick={() => setShowSecretKey(!showSecretKey)} className="bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded w-full ml-2 flex grow items-center justify-center h-[52px]">
+                            <input id="phrase-5" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFive} onChange={(e) => setSecretKeyFive(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
+                            <div onClick={toggleShowSecretKey} className="bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded w-full ml-2 flex grow items-center justify-center h-[52px]">
                                 {showSecretKey && (
                                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                 )}
@@ -255,8 +133,8 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                     <div className="text-white w-full max-w-2xl">
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div className="mb-8 flex gap-4">
-                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={(e) => setCustomPhrase(e.target.value)} className={inputClassName} placeholder="Enter your custom phrase" />
-                            <div onClick={() => setShowCustomPhrase(!showCustomPhrase)} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded ml-2 flex grow items-center justify-center h-[52px]">
+                            <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={handleCustomPhraseChange} className={inputClassName} placeholder="Enter your custom phrase" />
+                            <div onClick={toggleShowCustomPhrase} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded ml-2 flex grow items-center justify-center h-[52px]">
                                 {showCustomPhrase && (
                                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                 )}
@@ -280,7 +158,7 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <p className="mb-8 text-sm">Note that in future you should always create at least this many addresses to ensure all your coins are recovered.</p>
                         <div className="mb-8">
                             <label className="block mb-3">Enter number of keys</label>
-                            <input type="number" value={keys} onChange={(e) => setKeys(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                            <input type="number" value={keys} onChange={handleKeysChange} className={inputClassName} placeholder="Enter number of keys" />
                         </div>
                         <div onClick={goToKeyUses} className={buttonClassName}>
                             Continue
@@ -298,7 +176,7 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                         <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
                         <div className="mb-8">
                             <label className="block mb-3">Enter the number of times you have signed with your keys</label>
-                            <input type="number" value={keyUses} onChange={(e) => setKeyUses(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                            <input type="number" value={keyUses} onChange={handleKeyUsesChange} className={inputClassName} placeholder="Enter number of keys" />
                         </div>
                         <div onClick={goToRecoverWithMegaNodeOptions} className={buttonClassName}>
                             Continue
@@ -331,7 +209,7 @@ const RestoreFromPhrase: React.FC<ImportProps> = ({ step, setStep }) => {
                             <label className="mb-3 block">
                                 Please enter the url:port or ip:port of a Mega node.
                             </label>
-                            <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
+                            <input type="text" value={ip} onChange={handleIpChange} placeholder="" className={inputClassName} />
                         </div>
                         <p className="mb-8">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         <div className="flex flex-col gap-3">

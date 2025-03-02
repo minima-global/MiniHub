@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import RestoreFromPhrase from "./RestoreFromPhrase";
+import RestoreFromPhrase from "./RestoreFromPhrase/desktop";
 import RestoreFromBackup from "./RestoreFromBackup/desktop";
 import OnboardingWrapper from "./OnboardingWrapper";
 import FreshNodeSetup from "./FreshNodeSetup/desktop";
@@ -15,6 +15,7 @@ import MobileFreshNodeSetup from "./FreshNodeSetup/mobile";
 import MobileRestoreFromPhrase from "./RestoreFromPhrase/mobile";
 import { FreshNodeSetupProvider } from "./FreshNodeSetup/_context";
 import { RestoreFromBackupProvider } from "./RestoreFromBackup/_context";
+import { RestoreFromPhraseProvider } from "./RestoreFromPhrase/_context";
 
 export type Step = number | string | null;
 export type Prompt = {
@@ -167,10 +168,12 @@ const Onboarding = () => {
                     <FreshNodeSetupProvider>
                         <MobileFreshNodeSetup />
                     </FreshNodeSetupProvider>
+                    <RestoreFromPhraseProvider>
+                        <MobileRestoreFromPhrase step={step} setStep={setStep} />
+                    </RestoreFromPhraseProvider>
                     <RestoreFromBackupProvider>
                         <MobileRestoreFromBackup />
                     </RestoreFromBackupProvider>
-                    <MobileRestoreFromPhrase step={step} setStep={setStep} />
                 </div>
                 <div className="fixed z-20 top-0 left-0 w-full h-full p-2 overflow-hidden">
                     <div className="relative w-full h-full overflow-hidden rounded-sm">
@@ -224,13 +227,14 @@ const Onboarding = () => {
                         <FreshNodeSetupProvider>
                             <FreshNodeSetup />
                         </FreshNodeSetupProvider>
+                        <RestoreFromPhraseProvider>
+                            <RestoreFromPhrase />
+                        </RestoreFromPhraseProvider>
                         <RestoreFromBackupProvider>
                             <RestoreFromBackup />
                         </RestoreFromBackupProvider>
-
-                        <RestoreFromPhrase step={step} setStep={setStep} />
                     </div>
-                </div >
+                </div>
                 <div className="fixed z-20 top-0 left-0 w-full h-full p-4 lg:p-10 overflow-hidden">
                     <div className="relative w-full h-full overflow-hidden rounded-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 776" fill="none" className={`absolute inset-0 w-full h-full transition-all duration-[1s] ${fullGradientOnSteps.includes(step as number) ? 'scale-[1.1]' : 'scale-1 grayscale-[80%] opacity-[70%]'}`}>
