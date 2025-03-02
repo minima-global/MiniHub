@@ -9,7 +9,7 @@ import { onboardingContext } from "..";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
 import { session } from "../../../env";
-import { restoreFromBackup, getPath, uploadBackup } from "./api";
+import { restoreFromBackup, getPath, uploadBackup } from "./_api";
 
 const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>> }> = ({ step, setStep }) => {
     const { keysGenerated } = useContext(onboardingContext);

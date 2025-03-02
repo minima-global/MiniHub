@@ -1,108 +1,38 @@
-import { useContext, useEffect } from "react";
-import { useState } from "react";
 import OnboardingWrapper from "../OnboardingWrapper";
-import { appContext } from "../../../AppContext";
-import { addPeers } from "../../../lib";
 import OnboardingModal from "../OnboardingModal";
 import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
-import { onboardingContext } from "..";
 import STEPS from "../steps";
-import { hideOnboarding } from "../utils";
-import { hasPeers } from "./api";
+import freshNodeContext from "./_context";
+import { useContext } from "react";
 
-const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
-    const { appReady } = useContext(appContext);
-    const { keysGenerated } = useContext(onboardingContext);
-    const [seedPhrase, setSeedPhrase] = useState<string[] | null>(null);
-    const [seedPhraseWritten, setSeedPhraseWritten] = useState(false);
-    const [seedPhraseAccess, setSeedPhraseAccess] = useState(false);
-    const [peerList, setPeerList] = useState<string>("");
-    const [peerListError, setPeerListError] = useState(false);
-    const [autoConnectError, setAutoConnectError] = useState(false);
-    const { autoConnectPeers } = useContext(appContext);
-    const { setPrompt } = useContext(onboardingContext);
-    const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
-    const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
-    const [copiedSeedPhrase, setCopiedSeedPhrase] = useState(false);
-
-    useEffect(() => {
-        if (appReady && !seedPhrase) {
-            MDS.cmd("vault", function (msg) {
-                setSeedPhrase(msg.response.phrase.split(" "));
-            })
-        }
-    }, [appReady]);
-
-    useEffect(() => {
-        if (copiedSeedPhrase) {
-            setTimeout(() => {
-                setCopiedSeedPhrase(false);
-            }, 2000);
-        }
-    }, [copiedSeedPhrase]);
-
-    const connect = async () => {
-        try {
-            await addPeers(peerList);
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } catch {
-            setPeerListError(true);
-        }
-    }
-
-    const autoConnect = async () => {
-        try {
-            await autoConnectPeers();
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } catch {
-            setAutoConnectError(true);
-        }
-    }
-
-    const handlePeerListInfo = () => {
-        setPrompt({ display: true, title: "Peer list", description: <span>An initial set of Minima nodes that are available to connect to.<br/><br/> Must be a comma separated list of nodes in the format ip:port or domain:port.<br/><br/> Existing users can find a shareable list of peers in the Settings of their MiniHub.</span> });
-    }
-
-    const continueFromSeedPhrase = () => {
-        setStep(STEPS.FRESH_NODE_LOADING_FOR_KEYS);
-    }
-
-    const goToConnectOptions = async () => {
-        if (await hasPeers()) {
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } else {
-            setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
-        }
-    }
-
-    const goToAddConnections = () => {
-        setStep(STEPS.FRESH_NODE_ADD_CONNECTIONS);
-    }
-
-    const goToAutoConnect = () => {
-        setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
-    }
-
-    const goToSkip = () => {
-        setStep(STEPS.FRESH_NODE_SKIP);
-    }
-
-    const finish = async () => {
-        hideOnboarding();
-        setShowOnboarding(false);
-    }
-
-    const toggleShowingSeedPhrase = () => {
-        setShowingSeedPhrase(!showingSeedPhrase)
-        setViewedSeedPhrase(true)
-    }
-
-    const copySeedPhrase = () => {
-        navigator.clipboard.writeText(seedPhrase?.join(" ") || "");
-        setCopiedSeedPhrase(true);
-    }
+const FreshNodeSetup: React.FC = () => {
+    const {
+        step,
+        seedPhrase,
+        autoConnectError,
+        showingSeedPhrase,
+        toggleShowingSeedPhrase,
+        copiedSeedPhrase,
+        viewedSeedPhrase,
+        seedPhraseWritten,
+        seedPhraseAccess,
+        copySeedPhrase,
+        continueFromSeedPhrase,
+        connectToNetwork,
+        autoConnectToNetwork,
+        completeOnboarding,
+        keysGenerated,
+        peerList,
+        setPeerList,
+        peerListError,
+        goToConnectOptions,
+        goToAddConnections,
+        goToAutoConnect,
+        goToSkipPeers,
+        handlePeerListInfo,
+    } = useContext(freshNodeContext);
 
     return (
         <div>
@@ -178,7 +108,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                             <button onClick={goToAutoConnect} className={optionClassName}>
                                 Use auto-connect
                             </button>
-                            <button onClick={goToSkip} className={optionClassName}>
+                            <button onClick={goToSkipPeers} className={optionClassName}>
                                 I'll do it later
                             </button>
                         </div>
@@ -203,7 +133,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                                         <div onClick={handlePeerListInfo} className="cursor-pointer absolute top-0 right-0 w-25 h-full flex items-center justify-end pr-4"><Info /></div>
                                     </div>
                                 </div>
-                                <button onClick={connect} disabled={peerList === ''} className={buttonClassName}>
+                                <button onClick={connectToNetwork} disabled={peerList === ''} className={buttonClassName}>
                                     Add connections
                                 </button>
                                 {peerListError && (
@@ -224,7 +154,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                             <div className="flex flex-col gap-5">
                                 <p className="mb-4">This method will attempt to search for peers and automatically connect you to the Minima network</p>
                                 <div>
-                                    <div onClick={autoConnect} className={buttonClassName}>
+                                    <div onClick={autoConnectToNetwork} className={buttonClassName}>
                                         Use auto-connect
                                     </div>
                                     {autoConnectError && (
@@ -242,7 +172,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
                         <h1 className="text-white text-xl lg:text-4xl mb-10">Welcome to the network</h1>
-                        <div onClick={finish} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
+                        <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
                             Let's go
                         </div>
                     </div>
@@ -256,7 +186,7 @@ const FreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Di
                             <p>You need to add connections before you can make transactions.</p>
                             <p>To add your connections later, visit Settings.</p>
                         </div>
-                        <div onClick={finish} className={buttonClassName}>
+                        <div onClick={completeOnboarding} className={buttonClassName}>
                             I'll do it later
                         </div>
                     </div>

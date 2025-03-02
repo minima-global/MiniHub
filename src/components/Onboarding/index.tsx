@@ -13,6 +13,7 @@ import MobileRestoreFromBackup from "./RestoreFromBackup/mobile";
 import MobileOnboardingWrapper from "./OnboardingMobileWrapper";
 import MobileFreshNodeSetup from "./FreshNodeSetup/mobile";
 import MobileRestoreFromPhrase from "./RestoreFromPhrase/mobile";
+import { FreshNodeSetupProvider } from "./FreshNodeSetup/_context";
 
 export type Step = number | string | null;
 export type Prompt = {
@@ -129,7 +130,6 @@ const Onboarding = () => {
 
     return (
         <onboardingContext.Provider value={{ keysGenerated, step, setStep, prompt, setPrompt, backButton, setBackButton }}>
-
             {/* Mobile */}
             <div className={`block lg:hidden fixed z-50 bg-black top-0 left-0 w-full h-full overflow-y-auto ${showOnboarding ? 'opacity-100' : 'transition-all duration-200 !hidden opacity-0 pointer-events-none'}`}>
                 <div className="absolute z-50 top-0 left-0 w-full">
@@ -163,7 +163,9 @@ const Onboarding = () => {
                             </div>
                         </div>
                     </MobileOnboardingWrapper>
-                    <MobileFreshNodeSetup step={step} setStep={setStep} setShowOnboarding={setShowOnboarding} />
+                    <FreshNodeSetupProvider>
+                        <MobileFreshNodeSetup />
+                    </FreshNodeSetupProvider>
                     <MobileRestoreFromPhrase step={step} setStep={setStep} />
                     <MobileRestoreFromBackup step={step} setStep={setStep} />
                 </div>
@@ -216,7 +218,9 @@ const Onboarding = () => {
                                 </div>
                             </OnboardingModal>
                         </OnboardingWrapper>
-                        <FreshNodeSetup step={step} setStep={setStep} setShowOnboarding={setShowOnboarding} />
+                        <FreshNodeSetupProvider>
+                            <FreshNodeSetup step={step} setStep={setStep} setShowOnboarding={setShowOnboarding} />
+                        </FreshNodeSetupProvider>
                         <RestoreFromPhrase step={step} setStep={setStep} />
                         <RestoreFromBackup step={step} setStep={setStep} />
                     </div>

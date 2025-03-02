@@ -1,108 +1,40 @@
-import { useContext, useEffect } from "react";
-import { useState } from "react";
-import { appContext } from "../../../AppContext";
-import { addPeers } from "../../../lib";
+import { useContext } from "react";
 import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
-import { onboardingContext } from "..";
 import STEPS from "../steps";
-import { hideOnboarding } from "../utils";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
-import { hasPeers } from "./api";
+import freshNodeContext from "./_context";
 
-const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>>, setShowOnboarding: React.Dispatch<React.SetStateAction<boolean>> }> = ({ step, setStep, setShowOnboarding }) => {
-    const { appReady } = useContext(appContext);
-    const { keysGenerated } = useContext(onboardingContext);
-    const [seedPhrase, setSeedPhrase] = useState<string[] | null>(null);
-    const [seedPhraseWritten, setSeedPhraseWritten] = useState(false);
-    const [seedPhraseAccess, setSeedPhraseAccess] = useState(false);
-    const [peerList, setPeerList] = useState<string>("");
-    const [peerListError, setPeerListError] = useState(false);
-    const [autoConnectError, setAutoConnectError] = useState(false);
-    const { autoConnectPeers } = useContext(appContext);
-    const { setPrompt } = useContext(onboardingContext);
-    const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
-    const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
-    const [copiedSeedPhrase, setCopiedSeedPhrase] = useState(false);
-
-    useEffect(() => {
-        if (copiedSeedPhrase) {
-            setTimeout(() => {
-                setCopiedSeedPhrase(false);
-            }, 2000);
-        }
-    }, [copiedSeedPhrase]);
-
-    useEffect(() => {
-        if (appReady && !seedPhrase) {
-            MDS.cmd("vault", function (msg) {
-                setSeedPhrase(msg.response.phrase.split(" "));
-            })
-        }
-    }, [appReady]);
-
-    const connect = async () => {
-        try {
-            await addPeers(peerList);
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } catch {
-            setPeerListError(true);
-        }
-    }
-
-    const autoConnect = async () => {
-        try {
-            await autoConnectPeers();
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } catch {
-            setAutoConnectError(true);
-        }
-    }
-
-    const handlePeerListInfo = () => {
-        setPrompt({ display: true, title: "Peer list", description: <span>An initial set of Minima nodes that are available to connect to.<br/><br/> Must be a comma separated list of nodes in the format ip:port or domain:port.<br/><br/> Existing users can find a shareable list of peers in the Settings of their MiniHub.</span> });
-    }
-
-    const continueFromSeedPhrase = () => {
-        setStep(STEPS.FRESH_NODE_LOADING_FOR_KEYS);
-    }
-
-    const goToConnectOptions = async () => {
-        if (await hasPeers()) {
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
-        } else {
-            setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
-        }
-    }
-
-    const goToAddConnections = () => {
-        setStep(STEPS.FRESH_NODE_ADD_CONNECTIONS);
-    }
-
-    const goToAutoConnect = () => {
-        setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
-    }
-
-    const goToSkip = () => {
-        setStep(STEPS.FRESH_NODE_SKIP);
-    }
-
-    const finish = async () => {
-        hideOnboarding();
-        setShowOnboarding(false);
-    }
-
-    const toggleShowingSeedPhrase = () => {
-        setShowingSeedPhrase(!showingSeedPhrase)
-        setViewedSeedPhrase(true)
-    }
-
-    const copySeedPhrase = () => {
-        navigator.clipboard.writeText(seedPhrase?.join(" ") || "");
-        setCopiedSeedPhrase(true);
-    }
+const MobileFreshNodeSetup: React.FC = () => {
+    const {
+        step,
+        keysGenerated,
+        showingSeedPhrase,
+        seedPhrase,
+        seedPhraseWritten,
+        setSeedPhraseWritten,
+        seedPhraseAccess,
+        setSeedPhraseAccess,
+        toggleShowingSeedPhrase,
+        copySeedPhrase,
+        copiedSeedPhrase,
+        continueFromSeedPhrase,
+        goToConnectOptions,
+        goToAddConnections,
+        goToAutoConnect,
+        goToSkipPeers,
+        peerList,
+        setPeerList,
+        handlePeerListInfo,
+        peerListError,
+        autoConnectError,
+        viewedSeedPhrase,
+        connectToNetwork,
+        autoConnectToNetwork,
+        completeOnboarding,
+    } = useContext(freshNodeContext);
 
     return (
         <div className="text-sm">
@@ -134,13 +66,6 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                                 </div>
                             </div>
                         )}
-                        {/* <div className="grid grid-cols-12 gap-1 text-sm mb-8">
-                            {seedPhrase?.map((word, index) => (
-                                <div key={index} className="col-span-6 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
-                                    <span className="font-thin pr-2">{index + 1}.</span> {showingSeedPhrase ? <strong>{word}</strong> : <span className="w-[100px] h-[12px] bg-contrast-2"></span>}
-                                </div>
-                            ))}
-                        </div> */}
                     </div>
                     <div className="flex flex-col gap-3">
                         <div className="mb-2 flex flex-col gap-2">
@@ -166,7 +91,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
             <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_LOADING_FOR_KEYS}>
                 <MobileOnboardingContent>
                     <div className="grow flex items-center">
-                        <div className="px-8 mt-8">
+                        <div className="px-8 mt-8 mx-auto">
                             {!keysGenerated && (
                                 <div className="block flex items-center justify-center mb-6">
                                     <img src="./icons/loader3.gif" className="w-[50px] h-[50px]" alt="Loading" />
@@ -179,7 +104,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                                     </svg>
                                 </div>
                             )}
-                            <div className="text-center text-white mb-8">
+                            <div className="text-center mx-auto text-white mb-8">
                                 {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys."}
                             </div>
                         </div>
@@ -205,7 +130,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                             <button onClick={goToAutoConnect} className={optionClassName}>
                                 Use auto-connect
                             </button>
-                            <button onClick={goToSkip} className={optionClassName}>
+                            <button onClick={goToSkipPeers} className={optionClassName}>
                                 I'll do it later
                             </button>
                         </div>
@@ -241,7 +166,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                             There was an unknown error connecting<br /> to peer list
                         </div>
                     )}
-                    <button onClick={connect} disabled={peerList === ''} className={buttonClassName}>
+                    <button onClick={connectToNetwork} disabled={peerList === ''} className={buttonClassName}>
                         Add connections
                     </button>
                 </MobileOnboardingContent>
@@ -260,7 +185,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                         </div>
                     </div>
                     <div>
-                        <div onClick={autoConnect} className={buttonClassName}>
+                        <div onClick={autoConnectToNetwork} className={buttonClassName}>
                             Use auto-connect
                         </div>
                         {autoConnectError && (
@@ -276,7 +201,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                     <div className="grow w-full h-full flex items-center justify-center text-center text-white w-full">
                         <div>
                             <h1 className="text-[28px] mb-10 leading-[36px]">Welcome<br />to the network</h1>
-                            <div onClick={finish} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
+                            <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
                                 Let's go
                             </div>
                         </div>
@@ -291,7 +216,7 @@ const MobileFreshNodeSetup: React.FC<{ step: number | string | null, setStep: Re
                             <div className="mb-10">
                                 <p>You need to add connections before you can make transactions. To add your connections later, visit Settings.</p>
                             </div>
-                            <div onClick={finish} className={buttonClassName}>
+                            <div onClick={completeOnboarding} className={buttonClassName}>
                                 I'll do it later
                             </div>
                         </div>

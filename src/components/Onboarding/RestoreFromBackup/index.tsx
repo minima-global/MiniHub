@@ -8,7 +8,7 @@ import STEPS from "../steps";
 import { hideOnboarding, resetOnboarding } from "../utils";
 import { onboardingContext } from "..";
 import { session } from "../../../env";
-import { getPath, restoreFromBackup, uploadBackup } from "./api";
+import { getPath, restoreFromBackup, uploadBackup } from "./_api";
 
 const RestoreFromBackup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>> }> = ({ step, setStep }) => {
     const { keysGenerated } = useContext(onboardingContext);
