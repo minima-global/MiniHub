@@ -1,86 +1,45 @@
-import { useContext, useState } from "react";
-import { useRef } from "react";
+import { useContext, useRef, } from "react";
 import OnboardingWrapper from "../OnboardingWrapper";
 import { buttonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
-import STEPS from "../steps";
-import { hideOnboarding, resetOnboarding } from "../utils";
-import { onboardingContext } from "..";
 import MobileOnboardingWrapper, { MobileOnboardingContent } from "../OnboardingMobileWrapper";
 import OnboardingBackButton from "../OnboardingBackButton";
-import { session } from "../../../env";
-import { restoreFromBackup, getPath, uploadBackup } from "./_api";
+import { restoreFromBackupContext } from "./_context";
+import STEPS from "../steps";
 
-const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep: React.Dispatch<React.SetStateAction<number | string | null>> }> = ({ step, setStep }) => {
-    const { keysGenerated } = useContext(onboardingContext);
+const MobileRestoreFromBackup: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [file, setFile] = useState<File | null>(null);
-    const [backupFilePath, setBackupFilePath] = useState<string | null>(null);
-    const [backupFilePassword, setBackupFilePassword] = useState<string>("");
-    const [error, setError] = useState<string | null>(null);
-    const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [ip, setIp] = useState<string>("");
-    const [keyUses, setKeyUses] = useState<number>(1000);
-
-    const uploadBackupFile = async () => {
-        try {
-            if (!file) return;
-            const response = await uploadBackup(file);
-            setBackupFilePath(response.response.move.movefile);
-            setStep(STEPS.RESTORE_FROM_BACKUP_PASSWORD);
-        } catch {
-            // do nothing
-        }
-    }
-
-    const restore = async (ip: string) => {
-        try {
-            setIsLoading(true);
-            setError(null);
-            setStep(STEPS.RESTORE_FROM_BACKUP_RESTORING);
-            if (!backupFilePath) return;
-            const path = await getPath(backupFilePath);
-            await hideOnboarding();
-            session.IS_RESTORING = true;
-            await restoreFromBackup(ip, path, backupFilePassword, keyUses);
-        } catch (e) {
-            session.IS_RESTORING = false;
-            await resetOnboarding();
-            setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
-            setError("There was an error with your backup file, please double check your backup file and password and try again.");
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const goToKeyUses = () => {
-        setError("");
-        setStep(STEPS.RESTORE_FROM_BACKUP_KEY_USES);
-    }
-
-    const goToRecoverWithMegaNodeOptions = () => {
-        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS);
-    };
-
-    const goToRecoverWithMegaNodeManually = () => {
-        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_MANUALLY);
-    };
-
-    const goToRecoverWithMegaNodeAutoConnect = () => {
-        setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
-    };
-
-    const manuallyConnectAndRestore = async () => {
-        restore(ip);
-    }
-
-    const autoConnectAndRestore = async () => {
-        restore("megammr.minima.global:9001");
-    }
-
-    const disableIfNotIPAndHost = !/^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}:\d+)$/.test(ip);
-
+    const {
+        step,
+        isLoading,
+        /**
+         * State
+         */
+        keysGenerated,
+        error,
+        file,
+        setFile,
+        showPassword,
+        setShowPassword,
+        uploadBackupFile,
+        backupFilePassword,
+        handleBackupFilePassword,
+        keyUses,
+        handleKeyUses,
+        ip,
+        handleIp,
+        disableIfNotIPAndHost,
+        /**
+         * Gotos
+         */
+        goToSelectFile,
+        goToKeyUses,
+        goToRecoverWithMegaNodeOptions,
+        goToRecoverWithMegaNodeManually,
+        goToRecoverWithMegaNodeAutoConnect,
+        manuallyConnectAndRestore,
+        autoConnectAndRestore,
+    } = useContext(restoreFromBackupContext);
 
     return (
         <div className="text-sm">
@@ -105,7 +64,7 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                             </div>
                         </div>
                     </div>
-                    <button className={buttonClassName} disabled={!keysGenerated} onClick={() => setStep("RESTORE_FROM_BACKUP_SELECT_FILE")}>
+                    <button className={buttonClassName} disabled={!keysGenerated} onClick={goToSelectFile}>
                         Continue
                     </button>
                 </MobileOnboardingContent>
@@ -164,7 +123,7 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                             <p className="mb-4">Enter the password you used when creating your backup.</p>
                             <p className="italic mb-8 text-sm">Keep the field empty if you did not set one.</p>
                             <div className="mb-8 flex gap-3">
-                                <input type={showPassword ? 'text' : 'password'} value={backupFilePassword} onChange={(e) => setBackupFilePassword(e.target.value)} className={inputClassName} placeholder="Enter password" />
+                                <input type={showPassword ? 'text' : 'password'} value={backupFilePassword} onChange={handleBackupFilePassword} className={inputClassName} placeholder="Enter password" />
                                 <div onClick={() => setShowPassword(!showPassword)} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded flex grow items-center justify-center h-[52px]">
                                     {showPassword && (
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
@@ -195,7 +154,7 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                             <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
                             <div className="mb-8">
                                 <label className="block mb-3">Enter the number of times you have signed with your keys</label>
-                                <input type="number" value={keyUses} onChange={(e) => setKeyUses(parseInt(e.target.value))} className={inputClassName} placeholder="Enter number of keys" />
+                                <input type="number" value={keyUses} onChange={handleKeyUses} className={inputClassName} placeholder="Enter number of keys" />
                             </div>
                         </div>
                     </div>
@@ -236,7 +195,7 @@ const MobileRestoreFromBackup: React.FC<{ step: number | string | null, setStep:
                                 <label className="mb-3 block">
                                     Please enter the url:port or ip:port of a Mega node.
                                 </label>
-                                <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="" className={inputClassName} />
+                                <input type="text" value={ip} onChange={handleIp} placeholder="" className={inputClassName} />
                             </div>
                             <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         </div>

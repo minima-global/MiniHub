@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import RestoreFromPhrase from "./RestoreFromPhrase";
-import RestoreFromBackup from "./RestoreFromBackup";
+import RestoreFromBackup from "./RestoreFromBackup/desktop";
 import OnboardingWrapper from "./OnboardingWrapper";
-import FreshNodeSetup from "./FreshNodeSetup";
+import FreshNodeSetup from "./FreshNodeSetup/desktop";
 import OnboardingModal from "./OnboardingModal";
 import STEPS from "./steps";
 import OnboardingPrompt from "./OnboardingPrompt";
@@ -14,6 +14,7 @@ import MobileOnboardingWrapper from "./OnboardingMobileWrapper";
 import MobileFreshNodeSetup from "./FreshNodeSetup/mobile";
 import MobileRestoreFromPhrase from "./RestoreFromPhrase/mobile";
 import { FreshNodeSetupProvider } from "./FreshNodeSetup/_context";
+import { RestoreFromBackupProvider } from "./RestoreFromBackup/_context";
 
 export type Step = number | string | null;
 export type Prompt = {
@@ -166,8 +167,10 @@ const Onboarding = () => {
                     <FreshNodeSetupProvider>
                         <MobileFreshNodeSetup />
                     </FreshNodeSetupProvider>
+                    <RestoreFromBackupProvider>
+                        <MobileRestoreFromBackup />
+                    </RestoreFromBackupProvider>
                     <MobileRestoreFromPhrase step={step} setStep={setStep} />
-                    <MobileRestoreFromBackup step={step} setStep={setStep} />
                 </div>
                 <div className="fixed z-20 top-0 left-0 w-full h-full p-2 overflow-hidden">
                     <div className="relative w-full h-full overflow-hidden rounded-sm">
@@ -219,10 +222,13 @@ const Onboarding = () => {
                             </OnboardingModal>
                         </OnboardingWrapper>
                         <FreshNodeSetupProvider>
-                            <FreshNodeSetup step={step} setStep={setStep} setShowOnboarding={setShowOnboarding} />
+                            <FreshNodeSetup />
                         </FreshNodeSetupProvider>
+                        <RestoreFromBackupProvider>
+                            <RestoreFromBackup />
+                        </RestoreFromBackupProvider>
+
                         <RestoreFromPhrase step={step} setStep={setStep} />
-                        <RestoreFromBackup step={step} setStep={setStep} />
                     </div>
                 </div >
                 <div className="fixed z-20 top-0 left-0 w-full h-full p-4 lg:p-10 overflow-hidden">
