@@ -116,7 +116,7 @@ const DashboardActionBar = () => {
         <div className="flex grid grid-cols-12">
           <div className="col-span-3 md:col-span-6">
             <MaximaProfile />
-          </div>
+          </div> 
 
           <div className="col-span-9 md:col-span-6 flex items-center justify-end gap-4">
             <svg

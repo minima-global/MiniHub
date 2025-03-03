@@ -28,7 +28,7 @@ const Status = () => {
       onMouseOver={handleOnMouseOver}
       onMouseLeave={handleOnMouseLeave}
       onClick={(evt) => evt.stopPropagation()}
-      className={`onboard_security_1 mr-1 rounded-[15px] flex items-center bg-status-red h-[32px] px-3.5 text-sm font-bold duration-500 ease-in-out text-black transition-all ${
+      className={`onboard_security_1 mr-2 rounded-[15px] flex items-center bg-status-red h-[32px] px-3.5 text-sm font-bold duration-500 ease-in-out text-black transition-all ${
         display ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
       }`}
     >

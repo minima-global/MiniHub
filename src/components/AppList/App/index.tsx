@@ -94,7 +94,10 @@ const AppList = ({ data }) => {
             data.conf.name === 'Settings' ? 'onboard_settings' : data.conf.name === 'Wallet' ? 'onboard_wallet' : ''
           } item w-full z-30 ${
             rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
-          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
+          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}
+          
+          ${data.conf.name === 'Dapp Store' ? 'onboard_dapp_store' : ''}
+          `}
         >
           <img
             alt="app_icon"

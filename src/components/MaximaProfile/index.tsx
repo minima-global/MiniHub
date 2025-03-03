@@ -55,6 +55,7 @@ const MaximaProfile = () => {
 
   return (
     <div
+      id="maxima-profile"
       onClick={(e) => {
         e.stopPropagation(); // Prevent event bubbling
         // Invoke the custom function to open the link
