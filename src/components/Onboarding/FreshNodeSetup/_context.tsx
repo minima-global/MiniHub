@@ -21,11 +21,11 @@ const freshNodeContext = createContext<{
     copiedSeedPhrase: boolean;
     setCopiedSeedPhrase: (copiedSeedPhrase: boolean) => void;
     viewedSeedPhrase: boolean;
-    setViewedSeedPhrase: (viewedSeedPhrase: boolean) => void;
     seedPhraseWritten: boolean;
-    setSeedPhraseWritten: (seedPhraseWritten: boolean) => void;
     seedPhraseAccess: boolean;
-    setSeedPhraseAccess: (seedPhraseAccess: boolean) => void;
+    toggleViewedSeedPhrase: () => void;
+    toggleSeedPhraseWritten: () => void;
+    toggleSeedPhraseAccess: () => void;
     goToConnectOptions: () => void;
     goToAddConnections: () => void;
     goToAutoConnect: () => void;
@@ -36,6 +36,7 @@ const freshNodeContext = createContext<{
     connectToNetwork: () => void;
     autoConnectToNetwork: () => void;
     completeOnboarding: () => void;
+    completeOnboardingButStartTour: () => void;
 }>({
     step: null,
     setStep: () => { },
@@ -50,26 +51,27 @@ const freshNodeContext = createContext<{
     copiedSeedPhrase: false,
     setCopiedSeedPhrase: () => { },
     viewedSeedPhrase: false,
-    setViewedSeedPhrase: () => { },
     seedPhraseWritten: false,
-    setSeedPhraseWritten: () => { },
     seedPhraseAccess: false,
-    setSeedPhraseAccess: () => { },
+    toggleViewedSeedPhrase: () => { },
+    toggleSeedPhraseWritten: () => { },
+    toggleSeedPhraseAccess: () => { },
     goToConnectOptions: () => { },
     goToAddConnections: () => { },
     goToAutoConnect: () => { },
     goToSkipPeers: () => { },
+    copySeedPhrase: () => { },
     continueFromSeedPhrase: () => { },
     toggleShowingSeedPhrase: () => { },
     handlePeerListInfo: () => { },
     connectToNetwork: () => { },
     autoConnectToNetwork: () => { },
     completeOnboarding: () => { },  
-    copySeedPhrase: () => { },
+    completeOnboardingButStartTour: () => { },
 });
 
 export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode }) => {
-    const { appReady, setShowOnboarding, autoConnectPeers } = useContext(appContext);
+    const { appReady, setShowOnboarding, autoConnectPeers, setShowOnboard } = useContext(appContext);
     const { keysGenerated, setPrompt, step, setStep } = useContext(onboardingContext);
     const [seedPhrase, setSeedPhrase] = useState<string[] | null>(null);
     const [seedPhraseWritten, setSeedPhraseWritten] = useState(false);
@@ -148,6 +150,12 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         setShowOnboarding(false);
     }
 
+    const completeOnboardingButStartTour = async () => {
+        hideOnboarding();
+        setShowOnboarding(false);
+        setShowOnboard(true); // tour
+    }
+
     const toggleShowingSeedPhrase = () => {
         setShowingSeedPhrase(!showingSeedPhrase)
         setViewedSeedPhrase(true)
@@ -156,6 +164,18 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
     const copySeedPhrase = () => {
         navigator.clipboard.writeText(seedPhrase?.join(" ") || "");
         setCopiedSeedPhrase(true);
+    }
+
+    const toggleViewedSeedPhrase = () => {
+        setViewedSeedPhrase(!viewedSeedPhrase)
+    }
+
+    const toggleSeedPhraseWritten = () => {
+        setSeedPhraseWritten(!seedPhraseWritten)
+    }
+
+    const toggleSeedPhraseAccess = () => {
+        setSeedPhraseAccess(!seedPhraseAccess)
     }
 
     const value = {
@@ -170,11 +190,11 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         copiedSeedPhrase,
         setCopiedSeedPhrase,
         viewedSeedPhrase,
-        setViewedSeedPhrase,
         seedPhraseWritten,
-        setSeedPhraseWritten,
         seedPhraseAccess,
-        setSeedPhraseAccess,
+        toggleViewedSeedPhrase,
+        toggleSeedPhraseWritten,
+        toggleSeedPhraseAccess,
         peerList,
         setPeerList,
         autoConnectError,
@@ -194,6 +214,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         connectToNetwork,
         autoConnectToNetwork,
         completeOnboarding,
+        completeOnboardingButStartTour,
     };
 
     return (

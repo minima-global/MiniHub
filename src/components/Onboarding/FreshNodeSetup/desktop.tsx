@@ -1,6 +1,6 @@
 import OnboardingWrapper from "../OnboardingWrapper";
 import OnboardingModal from "../OnboardingModal";
-import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
+import { blackButtonClassName, buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
 import STEPS from "../steps";
@@ -14,6 +14,8 @@ const FreshNodeSetup: React.FC = () => {
         autoConnectError,
         showingSeedPhrase,
         toggleShowingSeedPhrase,
+        toggleSeedPhraseWritten,
+        toggleSeedPhraseAccess,
         copiedSeedPhrase,
         viewedSeedPhrase,
         seedPhraseWritten,
@@ -32,6 +34,7 @@ const FreshNodeSetup: React.FC = () => {
         goToAutoConnect,
         goToSkipPeers,
         handlePeerListInfo,
+        completeOnboardingButStartTour,
     } = useContext(freshNodeContext);
 
     return (
@@ -44,20 +47,25 @@ const FreshNodeSetup: React.FC = () => {
                         <span className="font-bold">DO NOT SHARE IT WITH ANYONE!</span>
                     </div>
                     <div className="grid grid-cols-12 gap-3 text-sm mb-8">
-                        {seedPhrase?.map((word, index) => (
+                        {seedPhrase && seedPhrase?.length > 4 && seedPhrase?.map((word, index) => (
                             <div key={index} className="col-span-3 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
                                 <span className="font-thin pr-2">{index + 1}.</span> {showingSeedPhrase ? <strong>{word}</strong> : <span className="w-[100px] h-[12px] bg-contrast-2"></span>}
                             </div>
                         ))}
+                        {seedPhrase && seedPhrase?.length < 4 && (
+                            <div className="col-span-12 bg-contrast-1 transition-all duration-300 px-2 py-2 w-full rounded">
+                                <div>{showingSeedPhrase ? seedPhrase : <div className="block w-full h-full min-h-[20px] rounded bg-contrast-2"/>}</div>
+                            </div>
+                        )}
                     </div>
                     <div className="mb-8 flex flex-col gap-2">
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
+                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={toggleSeedPhraseWritten} />
                             <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I have written down my secret seed phrase.
                         </label>
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
+                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={toggleSeedPhraseAccess} />
                             <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I understand I can access my seed phrase from the Security MiniDapp
                         </label>
@@ -168,17 +176,22 @@ const FreshNodeSetup: React.FC = () => {
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
+            <OnboardingWrapper display={step === "x"}>
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
                         <h1 className="text-white text-xl lg:text-4xl mb-10">Welcome to the network</h1>
-                        <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
-                            Let's go
+                        <div className="flex flex-col gap-3">
+                            <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
+                                Let's go
+                            </div>
+                            <div onClick={completeOnboardingButStartTour} className={blackButtonClassName}>
+                                Start tour
+                            </div>
                         </div>
                     </div>
                 </div>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP}>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
                 <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                     <div>
                         <h1 className="text-2xl font-bold mb-8">Welcome to the network</h1>
@@ -186,8 +199,13 @@ const FreshNodeSetup: React.FC = () => {
                             <p>You need to add connections before you can make transactions.</p>
                             <p>To add your connections later, visit Settings.</p>
                         </div>
-                        <div onClick={completeOnboarding} className={buttonClassName}>
-                            I'll do it later
+                        <div className="flex flex-col gap-3">
+                            <div onClick={completeOnboarding} className={buttonClassName}>
+                                I'll do it later
+                            </div>
+                            <div onClick={completeOnboardingButStartTour} className={blackButtonClassName}>
+                                Start tour
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -24,10 +24,11 @@ import Introduction from '../../components/Introduction';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NodeRestored from '../../components/NodeRestored';
-import Joyride from 'react-joyride';
+import Joyride, { TooltipRenderProps } from 'react-joyride';
 import { ACTIONS, EVENTS } from 'react-joyride';
 import { Step } from 'react-joyride';
 import { CallBackProps } from 'react-joyride';
+import { buttonClassName } from '../../components/Onboarding/styling';
 
 function Dashboard() {
   const {
@@ -193,6 +194,55 @@ function Dashboard() {
   );
 }
 
+function CustomTooltip(props: TooltipRenderProps) {
+  const { backProps, size, continuous, index, primaryProps, skipProps, step, tooltipProps } =
+    props;
+
+  console.log(props);
+
+  return (
+    <div className="bg-contrast-1 mx-auto w-full min-w-[300px] max-w-[340px] relative p-3 rounded" {...tooltipProps}>
+      {size - 1 !== index && (
+        <button {...skipProps} className="absolute top-0 right-0 p-5">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.0625 10L0 8.9375L3.9375 5L0 1.0625L1.0625 0L5 3.9375L8.9375 0L10 1.0625L6.0625 5L10 8.9375L8.9375 10L5 6.0625L1.0625 10Z" fill="white" />
+          </svg>
+        </button>
+      )}
+      <div className="absolute right-4 bottom-4 w-full">
+        {size - 1 !== index && (
+          <div className="flex justify-end gap-4">
+            <button disabled={index === 0} className="disabled:opacity-20" {...backProps}>
+              <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 10L0 5L5 0L6.0625 1.0625L2.125 5L6.0625 8.9375L5 10Z" fill="white" />
+              </svg>
+            </button>
+            {index + 1} / {size}
+            {continuous && (
+              <button disabled={index === size - 1} className="disabled:opacity-50" {...primaryProps}>
+                <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.875 5L0.9375 1.0625L2 0L7 5L2 10L0.9375 8.9375L4.875 5Z" fill="white" />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
+        {size - 1 === index && (
+          <div className="flex justify-end gap-4">
+            <button className="w-fit bg-contrast-2 hover:bg-contrast-1.5 px-2 py-1 text-sm rounded" {...skipProps}>
+              Close
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="content px-4 pt-4 pb-14">
+        {step.title && <h4 className={`mb-3 ${size - 1 === index ? '-mt-0.5' : ''}`}>{step.title}</h4>}
+        <div className="text-sm">{step.content}</div>
+      </div>
+    </div>
+  );
+}
+
 const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, entireAppList: unknown[][] }) => {
   const {
     tutorialMode,
@@ -297,7 +347,7 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
         return i;
       }
     }
-  
+
     return -1;
   }
 
@@ -369,6 +419,7 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
   return (
     <Joyride
       continuous
+      tooltipComponent={CustomTooltip}
       callback={handleJoyrideCallback}
       run={showOnboard}
       showProgress
@@ -385,14 +436,17 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
       hideCloseButton
       styles={{
         options: {
-          arrowColor: '#FAFAFF',
-          backgroundColor: '#FAFAFF',
+          arrowColor: '#17191C',
+          backgroundColor: '#17191C',
           primaryColor: '#7A17F9',
-          textColor: '#08090B',
+          textColor: '#D3D3D8',
           zIndex: 5,
         },
         beacon: {
           display: tutorialMode ? 'none' : 'block'
+        },
+        tooltip: {
+          transition: 'none',
         },
         tooltipTitle: {
           fontSize: 16,

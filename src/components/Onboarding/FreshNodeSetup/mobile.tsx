@@ -14,10 +14,10 @@ const MobileFreshNodeSetup: React.FC = () => {
         showingSeedPhrase,
         seedPhrase,
         seedPhraseWritten,
-        setSeedPhraseWritten,
         seedPhraseAccess,
-        setSeedPhraseAccess,
         toggleShowingSeedPhrase,
+        toggleSeedPhraseWritten,
+        toggleSeedPhraseAccess,
         copySeedPhrase,
         copiedSeedPhrase,
         continueFromSeedPhrase,
@@ -55,11 +55,16 @@ const MobileFreshNodeSetup: React.FC = () => {
                                 <div className="bg-black w-full h-full p-5 relative z-[60] flex flex-col gap-4">
                                     <div className="grow">
                                         <div className="grid grid-cols-12 gap-1 text-sm mb-8">
-                                            {seedPhrase?.map((word, index) => (
+                                            {seedPhrase && seedPhrase?.length > 4 && seedPhrase?.map((word, index) => (
                                                 <div key={index} className="text-sm col-span-6 bg-contrast-1 transition-all duration-300 px-3 py-2 w-full rounded flex items-center justify-start">
                                                     <span className="font-thin pr-3">{index + 1}.</span> <strong>{word}</strong>
                                                 </div>
                                             ))}
+                                            {seedPhrase && seedPhrase?.length < 4 && (
+                                                <div className="col-span-12 bg-contrast-1 transition-all duration-300 px-2 py-2 w-full rounded">
+                                                    <div>{seedPhrase}</div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                     <button className={buttonClassName} onClick={toggleShowingSeedPhrase}>Close</button>
@@ -70,12 +75,12 @@ const MobileFreshNodeSetup: React.FC = () => {
                     <div className="flex flex-col gap-3">
                         <div className="mb-2 flex flex-col gap-2">
                             <label className="relative text-sm flex items-center cursor-pointer">
-                                <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={() => setSeedPhraseWritten(!seedPhraseWritten)} />
+                                <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={toggleSeedPhraseWritten} />
                                 <div className="pointer-events-none absolute left-[3px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                                 I have written down my secret seed phrase.
                             </label>
                             <label className="relative text-sm flex items-start cursor-pointer">
-                                <input type="checkbox" className="peer mr-3 mt-1 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={() => setSeedPhraseAccess(!seedPhraseAccess)} />
+                                <input type="checkbox" className="peer mr-3 mt-1 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={toggleSeedPhraseAccess} />
                                 <div className="pointer-events-none absolute left-[3px] top-[7px] bg-black min-w-[10px] min-h-[10px] w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                                 <span className="flex-1">I understand I can access my seed phrase from the Security MiniDapp</span>
                             </label>
