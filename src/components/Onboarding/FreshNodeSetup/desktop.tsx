@@ -1,6 +1,6 @@
 import OnboardingWrapper from "../OnboardingWrapper";
 import OnboardingModal from "../OnboardingModal";
-import { blackButtonClassName, buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
+import { buttonClassName, greyButtonClassName, inputClassName, optionClassName } from "../styling";
 import OnboardingTitle from "../OnboardingTitle";
 import Info from "./info";
 import STEPS from "../steps";
