@@ -28,7 +28,6 @@ import Joyride, { TooltipRenderProps } from 'react-joyride';
 import { ACTIONS, EVENTS } from 'react-joyride';
 import { Step } from 'react-joyride';
 import { CallBackProps } from 'react-joyride';
-import { buttonClassName } from '../../components/Onboarding/styling';
 
 function Dashboard() {
   const {
@@ -212,14 +211,14 @@ function CustomTooltip(props: TooltipRenderProps) {
       <div className="absolute right-4 bottom-4 w-full">
         {size - 1 !== index && (
           <div className="flex justify-end gap-4">
-            <button disabled={index === 0} className="disabled:opacity-20" {...backProps}>
+            <button disabled={index === 0} className="outline-none disabled:opacity-20" {...backProps}>
               <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 10L0 5L5 0L6.0625 1.0625L2.125 5L6.0625 8.9375L5 10Z" fill="white" />
               </svg>
             </button>
             {index + 1} / {size}
             {continuous && (
-              <button disabled={index === size - 1} className="disabled:opacity-50" {...primaryProps}>
+              <button disabled={index === size - 1} className="outline-none disabled:opacity-50" {...primaryProps}>
                 <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.875 5L0.9375 1.0625L2 0L7 5L2 10L0.9375 8.9375L4.875 5Z" fill="white" />
                 </svg>
@@ -247,13 +246,12 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
   const {
     tutorialMode,
     showOnboard,
-    stepIndex,
     setTutorialMode,
     setShowOnboard,
-    setStepIndex,
     toggleFolder,
     folderStatus,
   } = useContext(appContext);
+  const [stepIndex, setStepIndex] = useState(0);
 
   const [onboard, _] = useState<Step[]>([
     {
@@ -409,7 +407,10 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
           }
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
+        if (folderStatus) {
+          await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
+        }
+
         setStepIndex(NEXT_STEP_INDEX);
       }
     },
@@ -436,17 +437,18 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
       hideCloseButton
       styles={{
         options: {
-          arrowColor: '#17191C',
-          backgroundColor: '#17191C',
+          arrowColor: '#17191c',
+          backgroundColor: '#FAFAFF',
           primaryColor: '#7A17F9',
-          textColor: '#D3D3D8',
+          textColor: '#08090B',
           zIndex: 5,
+          spotlightShadow: '0 0 0 rgba(0, 0, 0, 0)',
         },
         beacon: {
           display: tutorialMode ? 'none' : 'block'
         },
-        tooltip: {
-          transition: 'none',
+        spotlight: {
+          backgroundColor: 'none',
         },
         tooltipTitle: {
           fontSize: 16,
