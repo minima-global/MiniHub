@@ -169,7 +169,7 @@ const Onboarding = () => {
                         <MobileFreshNodeSetup />
                     </FreshNodeSetupProvider>
                     <RestoreFromPhraseProvider>
-                        <MobileRestoreFromPhrase step={step} setStep={setStep} />
+                        <MobileRestoreFromPhrase />
                     </RestoreFromPhraseProvider>
                     <RestoreFromBackupProvider>
                         <MobileRestoreFromBackup />

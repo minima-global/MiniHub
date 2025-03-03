@@ -7,12 +7,7 @@ import OnboardingBackButton from "../OnboardingBackButton";
 import { restoreFromPhraseContext } from "./_context";
 import { useContext } from "react";
 
-type ImportProps = {
-    step: number | string | null;
-    setStep: (step: number | string) => void;
-}
-
-const MobileRestoreFromPhrase: React.FC<ImportProps> = () => {
+const MobileRestoreFromPhrase: React.FC = () => {
     const {
         step,
         action,
