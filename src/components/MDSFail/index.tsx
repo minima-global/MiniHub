@@ -39,13 +39,13 @@ export const MDSFail: React.FC<PropsWithChildren> = () => {
             >
               <div className="relative z-[80] w-full max-w-[420px] px-5">
                 <animated.div style={style}>
-                  <div className="modal text-center text-white core-black-contrast-2 box-shadow-lg rounded p-6 lg:p-8 mb-6 mx-auto relative overflow-hidden">
+                  <div className="modal text-center text-white bg-contrast-1 box-shadow-lg rounded p-6 lg:p-8 mb-6 mx-auto relative overflow-hidden">
                     <h5 className="text-xl -mt-1 mb-4 font-bold">Connection failed</h5>
                     {!isMinimaBrowser && (
-                      <p className="mb-6">Your session is invalid, please click the button below to log in again.</p>
+                      <p className="mb-6 text-grey-80">Your session is invalid, please click the button below to log in again.</p>
                     )}
                     {isMinimaBrowser && (
-                      <p className="mb-6">
+                      <p className="mb-6 text-grey-80">
                         Your session is invalid, press the button below to open the title bar, then press the three
                         vertical dots and select refresh from the menu.
                       </p>

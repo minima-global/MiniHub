@@ -13,7 +13,7 @@ import MaximaProfile from '../MaximaProfile';
 const DashboardActionBar = () => {
   const navigate = useNavigate();
 
-  const { showSearch, setShowSearch } = useContext(appContext);
+  const { showSearch, setShowSearch, folderStatus, toggleFolderStatus } = useContext(appContext);
   const { appList, setShowInstall, query, setQuery } = useContext(appContext);
   const filteredAppList = appList.filter((i) => i.conf.name.toLowerCase().includes(query.toLowerCase()));
   const limitedAppList = query === '' ? [] : filteredAppList.slice(0, 5);
@@ -32,6 +32,13 @@ const DashboardActionBar = () => {
     setShowInstall(true);
   };
 
+  const goToPending = (e: React.MouseEvent<SVGSVGElement>) => {
+    e.stopPropagation();
+    (window as any).MDS.dapplink('Pending', function (msg: any) {
+      window.open(`${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`, '_blank');
+    });
+  };
+
   return (
     <div className="relative w-full pt-4 sm:pt-6 pb-2 px-8 lg:pt-10 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
       {showSearch && (
@@ -43,7 +50,7 @@ const DashboardActionBar = () => {
             <div className="relative mb-5">
               <input
                 type="text"
-                className="border-2 border-core-black-contrast-3 bg-transparent outline-none rounded w-full mx-auto py-3 px-4"
+                className="border-2 border-core-black-contrast-3 bg-black outline-none rounded w-full mx-auto py-3 px-4"
                 placeholder="Search"
                 value={query}
                 onChange={(evt) => setQuery(evt.target.value)}
@@ -80,7 +87,7 @@ const DashboardActionBar = () => {
             <div className="w-full flex-grow relative">
               <input
                 type="text"
-                className="w-full border-2 border-core-black-contrast-3 bg-transparent outline-none rounded mx-auto py-2 px-3"
+                className="w-full border-2 border-core-black-contrast-3 bg-black/50 outline-none rounded mx-auto py-2 px-3"
                 placeholder="Search"
                 value={query}
                 onChange={(evt) => setQuery(evt.target.value)}
@@ -106,12 +113,12 @@ const DashboardActionBar = () => {
         </div>
       )}
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
-        <div className="flex">
-          <div className="flex-grow">
+        <div className="flex grid grid-cols-12">
+          <div className="col-span-3 md:col-span-6">
             <MaximaProfile />
           </div>
 
-          <div className="col-span-6 flex items-center justify-end gap-4">
+          <div className="col-span-9 md:col-span-6 flex items-center justify-end gap-4">
             <svg
               onClick={openSearch}
               className="cursor-pointer"
@@ -136,6 +143,29 @@ const DashboardActionBar = () => {
                 fill="#E9E9EB"
               />
             </svg>
+
+            <svg onClick={goToPending} className="cursor-pointer w-[30px] h-[30px]" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <mask id="mask0_8367_39517" maskUnits="userSpaceOnUse" x="0" y="0" width="13" height="13">
+                <rect x="0.80957" y="0.410156" width="11.7423" height="11.7423" fill="white" />
+              </mask>
+              <g mask="url(#mask0_8367_39517)">
+                <path d="M3.01172 9.65011V8.91633H3.89618V5.26558C3.89618 4.60761 4.09927 4.02583 4.50544 3.52026C4.91152 3.01469 5.43291 2.69133 6.06961 2.55018V2.24537C6.06961 2.07551 6.12901 1.9311 6.24782 1.81213C6.36663 1.69323 6.51088 1.63379 6.68057 1.63379C6.85035 1.63379 6.9948 1.69323 7.11394 1.81213C7.23315 1.9311 7.29276 2.07551 7.29276 2.24537V2.55018C7.92946 2.69133 8.45085 3.01469 8.85693 3.52026C9.2631 4.02583 9.46619 4.60761 9.46619 5.26558V8.91633H10.3507V9.65011H3.01172ZM6.68033 11.0238C6.43692 11.0238 6.22882 10.9372 6.05603 10.764C5.88316 10.5908 5.79672 10.3826 5.79672 10.1394H7.56565C7.56565 10.3834 7.47897 10.5919 7.30561 10.7646C7.13224 10.9374 6.92382 11.0238 6.68033 11.0238Z" fill="#E9E9EB" />
+              </g>
+            </svg>
+
+            {folderStatus && (
+              <svg onClick={toggleFolderStatus} className="cursor-pointer w-[22px] h-[22px]" width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.0927734 3.79251V0.123047H3.76224V3.79251H0.0927734ZM0.0927734 8.4405V4.77104H3.76224V8.4405H0.0927734ZM4.74076 3.79251V0.123047H8.41023V3.79251H4.74076ZM4.74076 8.4405V4.77104H8.41023V8.4405H4.74076Z" fill="#E9E9EB" />
+              </svg>
+
+            )}
+
+            {!folderStatus && (
+              <svg onClick={toggleFolderStatus} className="cursor-pointer w-[22px] h-[22px]" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.05927 7.95124C0.812109 7.95124 0.602909 7.86562 0.431667 7.69438C0.260426 7.52313 0.174805 7.31393 0.174805 7.06677V1.49677C0.174805 1.24961 0.260426 1.04041 0.431667 0.869167C0.602909 0.697926 0.812109 0.612305 1.05927 0.612305H3.74544L4.72396 1.59083H8.58632C8.83348 1.59083 9.04268 1.67645 9.21392 1.84769C9.38517 2.01893 9.47079 2.22813 9.47079 2.47529V7.06677C9.47079 7.31393 9.38517 7.52313 9.21392 7.69438C9.04268 7.86562 8.83348 7.95124 8.58632 7.95124H1.05927Z" fill="#E9E9EB" />
+              </svg>
+            )}
+
             <svg
               className="cursor-pointer onboard_install"
               onClick={openInstallModal}

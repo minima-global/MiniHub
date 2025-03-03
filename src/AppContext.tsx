@@ -17,11 +17,14 @@ import * as utils from './utilities';
 import { AppData } from './types/app';
 import useFoldersTheme from './hooks/useFolderTheme';
 import { toast } from 'react-toastify';
+import { shouldShowOnboarding } from './components/Onboarding/utils';
+import { session } from './env';
 
 export const appContext = createContext({} as any);
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const loaded = useRef(false);
+  const [appReady, setAppReady] = useState(false);
 
   const [maximaName, setMaximaName] = useState('');
 
@@ -65,12 +68,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // show introduction
   const [showIntroduction, setShowIntroduction] = useState<null | boolean>(null);
-
-  // show onboard tour
-  const [showOnboard, setShowOnboard] = useState(false);
-
-  // show onboard tour
-  const [tutorialMode, setTutorialMode] = useState(false);
 
   // peers
   const [peersInfo, setPeersInfo] = useState(false);
@@ -132,6 +129,40 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showDeleteApp, setShowDeleteApp] = useState<any | false>(false);
   const [showUpdateApp, setShowUpdateApp] = useState<any | false>(false);
   const [mdsFail, setMDSFail] = useState<string | boolean>(false);
+  const [nodeRestored, setNodeRestored] = useState<boolean>(false);
+
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [bootstrapping, setBootstrapping] = useState(true);
+
+  /**
+   * Tutorial
+   */
+  const [showOnboard, setShowOnboard] = useState(false);
+  const [tutorialMode, setTutorialMode] = useState(false);
+
+  useEffect(() => {
+    if (appReady) {
+      shouldShowOnboarding().then((show) => {
+        if (show) {
+          MDS.cmd("keys", () => {
+            setShowOnboarding(true);
+            setBootstrapping(false);
+            // if (resp.response.total < 60) {
+            //   setShowOnboarding(true);
+            //   setBootstrapping(false);
+            // } else {
+            //   setShowOnboarding(false);
+            //   setBootstrapping(false);
+            // }
+          });
+        }
+
+        if (!show) {
+          setBootstrapping(false);
+        }
+      });
+    }
+  }, [appReady]);
 
   useEffect(() => {
     if (window.innerWidth < 568) {
@@ -196,14 +227,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         )
       );
 
-      // let apps = response.minidapps;
-
-      // if (sort === 'alphabetical') {
-      //   apps = apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name));
-      // } else if (sort === 'last_added') {
-      //   apps = apps.reverse();
-      // }
-
       setAppList([...apps.sort((a, b) => a.conf.name.localeCompare(b.conf.name))]);
 
       return true;
@@ -218,25 +241,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // init mds
   useEffect(() => {
-    const ls = localStorage.getItem(utils.getAppUID());
-    const firstTimeOpeningDapp = !ls;
     if (!loaded.current) {
       loaded.current = true;
 
       (window as any).MDS.init((evt: any) => {
         if (evt.event === 'inited') {
-          // if it is their first time
-          if (firstTimeOpeningDapp) {
-            setShowIntroduction(true);
-            localStorage.setItem(utils.getAppUID(), '1');
-          }
-
-          if (!firstTimeOpeningDapp) {
-            setShowIntroduction(false);
-            checkPeers();
-          }
+          setAppReady(true);
 
           getMaximaDetails();
+
           // check if app is in write mode and let the rest of the
           // app know if it is or isn't
           isWriteMode().then((appIsInWriteMode) => {
@@ -249,6 +262,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
               dateTime: blockInfo.date,
               timemilli: blockInfo.timemilli,
             });
+          }).catch(() => {
+            // do nothing, most likely the node has not been set up yet
           });
 
           status().then((response) => {
@@ -283,7 +298,13 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
 
         if (evt.event === 'MDSFAIL' || evt.event === 'MDS_SHUTDOWN') {
-          setMDSFail(true);
+          if (session.IS_RESTORING) {
+            if (evt.event === 'MDS_SHUTDOWN') {
+              setNodeRestored(true);
+            }
+          } else {
+            setMDSFail(true);
+          }
         }
       });
     }
@@ -540,12 +561,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     showIntroduction,
     setShowIntroduction,
 
-    // This will be just to track whether in tutorial Mode
-    tutorialMode,
-    setTutorialMode,
-    // Toggling onboard tutorial on/off
-    showOnboard,
-    setShowOnboard,
     maximaName,
     maximaIcon,
     setMaximaIcon,
@@ -556,6 +571,23 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     toggleFolder,
 
     shareApp,
+
+    appReady,
+    setAppReady,
+
+    showOnboarding,
+    setShowOnboarding,
+    bootstrapping,
+
+    nodeRestored,
+
+    /**
+     * Tutorial
+     */
+    showOnboard,
+    setShowOnboard,
+    tutorialMode,
+    setTutorialMode,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

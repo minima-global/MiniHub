@@ -48,7 +48,7 @@ export const onboardingContext = createContext<{
 });
 
 const Onboarding = () => {
-    const { appReady, showOnboarding } = useContext(appContext);
+    const { appReady, showOnboarding, setShowOnboarding } = useContext(appContext);
     const [step, setStep] = useState<number | string | null>(0);
     const [introductionStep, setIntroductionStep] = useState(0);
     const [prompt, setPrompt] = useState<Prompt>({

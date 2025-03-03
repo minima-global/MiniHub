@@ -5,6 +5,7 @@ import Button from '../../../../components/UI/Button';
 import FixedModal from '../../../../components/UI/FixedModal';
 import SlideScreen from '../../../../components/UI/SlideScreen';
 import { useNavigate } from 'react-router-dom';
+import BackButton from '../_BackButton';
 
 type AddConnectionsProps = {
   display: boolean;
@@ -74,24 +75,9 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
         </div>
       </FixedModal>
       <div className="flex flex-col h-full w-full bg-black">
-        <div className="pt-20 px-4 lg:px-0 w-full pb-6 flex flex-col bg-black">
+        <BackButton dismiss={dismiss} />
+        <div className="pt-16 px-4 lg:px-0 w-full pb-6 flex flex-col bg-black">
           <div className="max-w-xl mx-auto">
-            <div onClick={dismiss} className="sticky top-0 cursor-pointer flex items-center">
-              <svg
-                className="mt-0.5 mr-4"
-                width="8"
-                height="14"
-                viewBox="0 0 8 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.90017 13.1693L0.730957 7.00009L6.90017 0.830872L7.79631 1.72701L2.52324 7.00009L7.79631 12.2732L6.90017 13.1693Z"
-                  fill="#F9F9FA"
-                />
-              </svg>
-              Settings
-            </div>
             <div className="text-2xl mt-6 mb-6">Add connections</div>
             <p className="mb-4">To start transacting, you must connect to other users on the network.</p>
             <p className="mb-4">You may use auto-connect to connect via a centralised Minima server. </p>
@@ -104,12 +90,12 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               </ol>
               <p className="mb-2">Paste the list in the box below.</p>
               <div className="block mb-2">
-                <div className="core-black-contrast-2 p-4 rounded">
+                <div className="bg-contrast1 p-4 rounded">
                   <input
                     value={inputPeerList}
                     onChange={handleOnChange}
                     type="text"
-                    className="core-black-contrast w-full p-3 mb-5 outline-none placeholder-gray-500"
+                    className="bg-contrast2 w-full p-3 mb-5 outline-none placeholder-gray-500"
                     placeholder="Enter connections"
                   />
                   <Button onClick={importPeers} disabled={inputPeerList.length === 0 || importing}>
@@ -125,11 +111,11 @@ export function AddConnections({ display, dismiss }: AddConnectionsProps) {
               </div>
               <div className="block mb-8">
                 <p className="mb-6">Otherwise you can try this auto-connect feature:</p>
-                <div className="core-black-contrast-2 p-4 rounded">
+                <div className="bg-contrast1 p-4 rounded">
                   <button
                     disabled={loading}
                     onClick={handleAutoConnect}
-                    className={`w-full px-4 py-3.5 rounded font-bold bg-transparent text-white border border-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
+                    className={`bg-contrast2 w-full px-4 py-3.5 rounded font-bold bg-transparent text-white disabled:opacity-40 disabled:cursor-not-allowed ${loading && 'animate-pulse'}`}
                   >
                     {!loading && 'Use auto-connect'}
                     {loading && 'Finding peers...'}

@@ -63,7 +63,7 @@ const MaximaProfile = () => {
           window.open(`${(window as any).MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`, '_blank');
         });
       }}
-      className="grid grid-cols-[auto_1fr] w-max cursor-pointer"
+      className="flex w-max cursor-pointer"
     >
       <div className="my-auto">{renderIcon()}</div>
       <div className="flex flex-col">
@@ -75,7 +75,7 @@ const MaximaProfile = () => {
               <input
                 readOnly
                 value={address}
-                className={`text-xs text-neutral-300 cursor-pointer font-bold focus:outline-none bg-transparent truncate ml-2`}
+                className={`max-w-[100px] lg:max-w-full text-xs text-neutral-300 cursor-pointer font-bold focus:outline-none bg-transparent truncate ml-2`}
               />
             )}
             {copied && <p className={`text-xs text-teal-300 cursor-pointer font-bold truncate ml-2`}>Copied!</p>}

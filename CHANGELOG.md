@@ -1,5 +1,14 @@
 # Changelog
 
+##### [0.24.0] - 25 Feb 25
+
+- Implemented new onboarding flow
+
+##### [0.23.0] - 18 Feb 25
+
+- Added the ability to open the security app from the status bar when the node needs quick resync
+- Added a warning when updating a MiniDapp that the name does not match the existing one
+
 ##### [0.22.1] - 22 Jan 25
 
 - Fixed an issue where the Health app was appearing twice in the folder view
@@ -17,6 +26,10 @@
 - Fix block height loading state
 - Text content changes in Join the network and Add connections sections
 - You can now update MiniHUB in the update MiniDapp section
+
+##### [0.20.1] - 31 Oct 24
+
+- Updated terms and conditions
 
  ##### [0.20.0] - 09 Oct 24
 
