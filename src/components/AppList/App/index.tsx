@@ -86,7 +86,7 @@ const AppList = ({ data }) => {
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
-          className={`${data.conf.name === 'Dapp Store' ? 'dapp_store' : ''} ${
+          className={`app-grid__item ${data.conf.name === 'Dapp Store' ? 'dapp_store' : ''} ${
             data.conf.name === 'Pending' ? 'onboard_pending' : ''
           } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${
             data.conf.name === 'MaxContacts' ? 'folder_social' : ''

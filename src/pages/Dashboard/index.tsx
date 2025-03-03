@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
+import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { appContext } from '../../AppContext';
 import AppList from '../../components/AppList';
 import useAppList from '../../hooks/useAppList';
@@ -19,30 +19,241 @@ import MDSFail from '../../components/MDSFail';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import HasNoPeersModal from './HasNoPeersModal';
 import AddConnectionsLaterModal from './AddConnectionsLaterModal';
-import Joyride, { ACTIONS, CallBackProps, EVENTS, Step } from 'react-joyride';
 import Introduction from '../../components/Introduction';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-function findPageIndexContainingApp(name, apps) {
-  // Loop through each inner array
-  for (let i = 0; i < apps.length; i++) {
-    const innerArray = apps[i];
-    // Check if the inner array contains an object with the specified name
-    const foundObjectIndex = innerArray.findIndex((obj) => obj.conf.name === name);
-    // If found, return the index of the inner array
-    if (foundObjectIndex !== -1) {
-      return i;
-    }
-  }
-
-  return -1;
-}
+import NodeRestored from '../../components/NodeRestored';
+import Joyride, { TooltipRenderProps } from 'react-joyride';
+import { ACTIONS, EVENTS } from 'react-joyride';
+import { Step } from 'react-joyride';
+import { CallBackProps } from 'react-joyride';
 
 function Dashboard() {
-  // onboard tutorial content
+  const {
+    setRightMenu,
+    folderMenu,
+  } = useContext(appContext);
+  const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
+  // @ts-ignore
+  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage, dragDecelerationFriction: 0.8, speed: 20 }, [WheelGesturesPlugin()]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [hasPrevious, setHasPrevious] = useState(false);
+  const [hasNext, setHasNext] = useState(false);
+  const isDev = import.meta.env.MODE === 'development';
+
+  console.log(hasMoreThanOnePage)
+
+  /**
+   * Navigate to the next page
+   * @type {() => void}
+   */
+  const next = useCallback(() => {
+    if (!folderMenu) emblaApi?.scrollTo(selectedIndex + 1);
+  }, [emblaApi, selectedIndex]);
+
+  /**
+   * Navigate to the previous page
+   * @type {() => void}
+   */
+  const previous = useCallback(() => {
+    emblaApi?.scrollTo(selectedIndex - 1);
+  }, [emblaApi, selectedIndex]);
+
+  /**
+   * Store embla api values in state
+   */
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setHasNext(emblaApi.canScrollNext());
+    setHasPrevious(emblaApi.canScrollPrev());
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setSelectedIndex]);
+
+  /**
+   * Run callbacks if emblaApi has updated
+   */
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
+  /**
+   * Allows the user to control the slider based on the left and right keys
+   */
+  useEffect(() => {
+    const event = (evt) => {
+      if (evt.keyCode === 37 && hasPrevious) {
+        previous();
+      } else if (evt.keyCode === 39 && hasNext) {
+        next();
+      }
+    };
+
+    document.addEventListener('keyup', event);
+
+    return () => {
+      document.removeEventListener('keydown', event);
+    };
+  }, [hasNext, hasPrevious, next, previous]);
+
+  // disable right click on android
+  useEffect(() => {
+    if (window.navigator.userAgent.includes('Minima Browser')) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      Android.disableDefaultContextMenu();
+    }
+  }, []);
+
+  return (
+    <>
+      <Tutorial emblaApi={emblaApi} entireAppList={entireAppList} />
+      <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
+        <Introduction />
+        <AppIsInReadMode />
+        <InstallMiniDapp />
+        <Settings />
+        <Confirmation />
+        <DeleteMiniDapp />
+        <MobileRightMenu />
+        <Utilities />
+        <UpdateMiniDapp />
+        <HasNoPeersModal />
+        <AddConnectionsLaterModal />
+        <ToastContainer />
+
+        <MDSFail />
+        <NodeRestored />
+
+        <div
+          className="dashboard flex flex-col h-screen"
+          onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
+        >
+          <StatusBar />
+          <DashboardActionBar />
+          <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
+            <div className=" embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
+              <div className="flex items-start h-full">
+                {entireAppList.map((appList, index) => (
+                  <div
+                    key={`appList_${index}`}
+                    className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6"
+                  >
+                    <AppList data={appList} maxCount={maxCount} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Blur />
+          </div>
+          <div>
+            <div
+              className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${selectedIndex === 0 && !hasNext ? 'hidden' : ''
+                }`}
+            >
+              <div onClick={hasPrevious ? previous : undefined} className="hidden mr-4">
+                <div
+                  className={`mt-0.5 ${hasPrevious ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'}}`}
+                >
+                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {entireAppList &&
+                entireAppList.map((_page, index) => (
+                  <div key={`page_${index}`} onClick={() => emblaApi?.scrollTo(index)} className="cursor-pointer p-1.5">
+                    <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
+                  </div>
+                ))}
+              <div onClick={hasNext ? next : undefined} className="hidden ml-4">
+                <div
+                  className={`mt-0.5 text-core-grey-40 ${hasNext ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'
+                    }}`}
+                >
+                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <BadgeNotification />
+      </div>
+    </>
+  );
+}
+
+function CustomTooltip(props: TooltipRenderProps) {
+  const { backProps, size, continuous, index, primaryProps, skipProps, step, tooltipProps } =
+    props;
+
+  return (
+    <div className="bg-contrast-1 mx-auto w-full min-w-[300px] max-w-[340px] relative p-3 rounded" {...tooltipProps}>
+      {size - 1 !== index && (
+        <button {...skipProps} className="absolute top-0 right-0 p-5">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.0625 10L0 8.9375L3.9375 5L0 1.0625L1.0625 0L5 3.9375L8.9375 0L10 1.0625L6.0625 5L10 8.9375L8.9375 10L5 6.0625L1.0625 10Z" fill="white" />
+          </svg>
+        </button>
+      )}
+      <div className="absolute right-4 bottom-4 w-full">
+        {size - 1 !== index && (
+          <div className="flex justify-end gap-4">
+            <button disabled={index === 0} className="outline-none disabled:opacity-20" {...backProps}>
+              <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 10L0 5L5 0L6.0625 1.0625L2.125 5L6.0625 8.9375L5 10Z" fill="white" />
+              </svg>
+            </button>
+            {index + 1} / {size}
+            {continuous && (
+              <button disabled={index === size - 1} className="outline-none disabled:opacity-50" {...primaryProps}>
+                <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.875 5L0.9375 1.0625L2 0L7 5L2 10L0.9375 8.9375L4.875 5Z" fill="white" />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
+        {size - 1 === index && (
+          <div className="flex justify-end gap-4">
+            <button className="outline-nonew-fit bg-contrast-2 hover:bg-contrast-1.5 px-2 py-1 text-sm rounded" {...skipProps}>
+              Close
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="content px-4 pt-4 pb-14">
+        {step.title && <h4 className={`mb-3 ${size - 1 === index ? '-mt-0.5' : ''}`}>{step.title}</h4>}
+        <div className="text-sm">{step.content}</div>
+      </div>
+    </div>
+  );
+}
+
+const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, entireAppList: unknown[][] }) => {
+  const {
+    tutorialMode,
+    showOnboard,
+    stepIndex,
+    setTutorialMode,
+    setShowOnboard,
+    setStepIndex,
+    toggleFolder,
+    folderStatus,
+  } = useContext(appContext);
+
   const [onboard, _] = useState<Step[]>([
     {
       // 1
@@ -124,103 +335,54 @@ function Dashboard() {
     },
   ]);
 
-  const [stepIndex, setStepIndex] = useState(0);
-
-  const {
-    setRightMenu,
-    folderMenu,
-    showOnboard,
-    setShowOnboard,
-    tutorialMode,
-    setTutorialMode,
-    folderStatus,
-    toggleFolder,
-  } = useContext(appContext);
-  const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
-  // @ts-ignore
-  const [emblaRef, emblaApi] = useEmblaCarousel({ watchDrag: hasMoreThanOnePage }, [WheelGesturesPlugin()]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [hasPrevious, setHasPrevious] = useState(false);
-  const [hasNext, setHasNext] = useState(false);
-  const isDev = import.meta.env.MODE === 'development';
-
-  /**
-   * Navigate to the next page
-   * @type {() => void}
-   */
-  const next = useCallback(() => {
-    if (!folderMenu) emblaApi?.scrollTo(selectedIndex + 1);
-  }, [emblaApi, selectedIndex]);
-
-  /**
-   * Navigate to the previous page
-   * @type {() => void}
-   */
-  const previous = useCallback(() => {
-    emblaApi?.scrollTo(selectedIndex - 1);
-  }, [emblaApi, selectedIndex]);
-
-  /**
-   * Store embla api values in state
-   */
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setHasNext(emblaApi.canScrollNext());
-    setHasPrevious(emblaApi.canScrollPrev());
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi, setSelectedIndex]);
-
-  /**
-   * Run callbacks if emblaApi has updated
-   */
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-  }, [emblaApi, onSelect]);
-
-  /**
-   * Allows the user to control the slider based on the left and right keys
-   */
-  useEffect(() => {
-    const event = (evt) => {
-      if (evt.keyCode === 37 && hasPrevious) {
-        previous();
-      } else if (evt.keyCode === 39 && hasNext) {
-        next();
+  function findPageIndexContainingApp(name, apps) {
+    // Loop through each inner array
+    for (let i = 0; i < apps.length; i++) {
+      const innerArray = apps[i];
+      // Check if the inner array contains an object with the specified name
+      const foundObjectIndex = innerArray.findIndex((obj) => obj.conf.name === name);
+      // If found, return the index of the inner array
+      if (foundObjectIndex !== -1) {
+        return i;
       }
-    };
-
-    document.addEventListener('keyup', event);
-
-    return () => {
-      document.removeEventListener('keydown', event);
-    };
-  }, [hasNext, hasPrevious, next, previous]);
-
-  // disable right click on android
-  useEffect(() => {
-    if (window.navigator.userAgent.includes('Minima Browser')) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      Android.disableDefaultContextMenu();
     }
-  }, []);
+
+    return -1;
+  }
 
   const handleJoyrideCallback = useCallback(
     async (data: CallBackProps) => {
       const { action, index, type } = data;
 
-      if (([ACTIONS.CLOSE] as string[]).includes(action)) {        
+      // if (data.step.target) {
+      //   document.querySelectorAll('.app-grid__item')?.forEach((item) => {
+      //     item.classList.remove('!z-[1000]');
+      //     item.classList.remove('absolute');
+      //     item.classList.remove('top-0');
+      //     item.classList.remove('left-0');
+      //   });
+
+      //   if (document.querySelector(data.step.target as string)?.classList.contains('app-grid__item')) {
+      //     document.querySelector('#app-overlay-bg')?.classList.add('opacity-100');
+
+      //     document.querySelector(data.step.target as string)?.classList.add('!z-[1000]');
+      //     document.querySelector(data.step.target as string)?.classList.add('absolute');
+      //     document.querySelector(data.step.target as string)?.classList.add('top-0');
+      //     document.querySelector(data.step.target as string)?.classList.add('left-0');
+      //   } else {
+      //     document.querySelector('#app-overlay-bg')?.classList.remove('opacity-100');
+      //   }
+      // }
+
+      if (([ACTIONS.CLOSE] as string[]).includes(action)) {
         setTutorialMode(false);
       }
 
-      if (([EVENTS.TOUR_START, "tooltip"] as string[]).includes(type)) {        
+      if (([EVENTS.TOUR_START, "tooltip"] as string[]).includes(type)) {
         setTutorialMode(true);
       }
-      
-      if ((["beacon"] as string[]).includes(type)) {        
+
+      if ((["beacon"] as string[]).includes(type)) {
         setTutorialMode(false);
       }
 
@@ -274,122 +436,46 @@ function Dashboard() {
   );
 
   return (
-    <>
-      <Joyride
-        continuous
-        callback={handleJoyrideCallback}
-        run={showOnboard}
-        showProgress
-        showSkipButton
-        stepIndex={stepIndex}
-        steps={onboard}
-        floaterProps={{
-          styles: {
-            wrapper: {
-              zIndex: 50,
-            },
+    <Joyride
+      continuous
+      // tooltipComponent={CustomTooltip}
+      callback={handleJoyrideCallback}
+      run={showOnboard}
+      showProgress
+      showSkipButton
+      stepIndex={stepIndex}
+      steps={onboard}
+      floaterProps={{
+        styles: {
+          wrapper: {
+            zIndex: 50,
           },
-        }}       
-        hideCloseButton       
-        styles={{
-          options: {
-            arrowColor: '#FAFAFF',
-            backgroundColor: '#FAFAFF',
-            primaryColor: '#7A17F9',
-            textColor: '#08090B',
-            zIndex: 5,
-          },
-          beacon: {
-            display: tutorialMode ? 'none' : 'block'
-          },
-          tooltipTitle: {
-            fontSize: 16,
-            fontWeight: 800
-          },
-        }}
-      />
-      <div className="app bg overflow-hidden xl:overflow-visible custom-scrollbar">
-        <Introduction />
-        <AppIsInReadMode />
-        <InstallMiniDapp />
-        <Settings />
-        <Confirmation />
-        <DeleteMiniDapp />
-        <MobileRightMenu />
-        <Utilities />
-        <MDSFail />
-        <UpdateMiniDapp />
-        <HasNoPeersModal />
-        <AddConnectionsLaterModal />
-        <ToastContainer />
-
-        <div
-          className="dashboard flex flex-col h-screen"
-          onContextMenu={!isDev ? (evt) => evt.preventDefault() : undefined}
-        >
-          <StatusBar />
-          <DashboardActionBar />
-          <div className="flex-grow w-full max-w-[72rem] flex items-start mx-auto" onClick={() => setRightMenu(null)}>
-            <div className=" embla z-30 w-full h-full px-0 py-2 sm:px-3 lg:p-2" ref={emblaRef}>
-              <div className="flex items-start h-full">
-                {entireAppList.map((appList, index) => (
-                  <div
-                    key={`appList_${index}`}
-                    className="app-grid embla__slide w-full pt-1 sm:pt-2 lg:pt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6"
-                  >
-                    <AppList data={appList} maxCount={maxCount} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <Blur />
-          </div>
-          <div>
-            <div
-              className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${
-                selectedIndex === 0 && !hasNext ? 'hidden' : ''
-              }`}
-            >
-              <div onClick={hasPrevious ? previous : undefined} className="hidden mr-4">
-                <div
-                  className={`mt-0.5 ${hasPrevious ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'}}`}
-                >
-                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.23899 10L0 5L5.23899 0L6 0.726294L1.52203 5L6 9.27371L5.23899 10Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {entireAppList &&
-                entireAppList.map((_page, index) => (
-                  <div key={`page_${index}`} onClick={() => emblaApi?.scrollTo(index)} className="cursor-pointer p-1.5">
-                    <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
-                  </div>
-                ))}
-              <div onClick={hasNext ? next : undefined} className="hidden ml-4">
-                <div
-                  className={`mt-0.5 text-core-grey-40 ${
-                    hasNext ? 'cursor-pointer opacity-100' : 'opacity-50 cursor-not-allowed'
-                  }}`}
-                >
-                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M0.76101 10L6 5L0.76101 0L0 0.726294L4.47797 5L0 9.27371L0.76101 10Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <BadgeNotification />
-      </div>
-    </>
-  );
+        },
+      }}
+      hideCloseButton
+      styles={{
+        options: {
+          arrowColor: '#17191C',
+          backgroundColor: '#17191C',
+          primaryColor: '#7A17F9',
+          textColor: '#D3D3D8',
+          overlayColor: 'rgb(0, 0, 0, 0)',
+          spotlightShadow: 'none',
+          zIndex: 5,
+        },
+        beacon: {
+          display: tutorialMode ? 'none' : 'block'
+        },
+        spotlight: {
+          backgroundColor: 'none',
+        },
+        tooltipTitle: {
+          fontSize: 16,
+          fontWeight: 800
+        },
+      }}
+    />
+  )
 }
 
 export default Dashboard;
