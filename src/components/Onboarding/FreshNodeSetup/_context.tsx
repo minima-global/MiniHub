@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { appContext } from "../../../AppContext";
 import { onboardingContext, Step } from "..";
 import { addPeers } from "../../../lib";
-import { hasPeers } from "./_api";
+import { hasPeers, maximaSetName } from "./_api";
 import { hideOnboarding } from "../utils";
 import STEPS from "../steps";
 
@@ -26,10 +26,16 @@ const freshNodeContext = createContext<{
     toggleViewedSeedPhrase: () => void;
     toggleSeedPhraseWritten: () => void;
     toggleSeedPhraseAccess: () => void;
+    name: string;
+    handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setMaximaName: () => void;
+    error: string;
     goToConnectOptions: () => void;
     goToAddConnections: () => void;
     goToAutoConnect: () => void;
     goToSkipPeers: () => void;
+    goToSetName: () => void;
+    goToSkipTour: () => void;
     continueFromSeedPhrase: () => void;
     toggleShowingSeedPhrase: () => void;
     handlePeerListInfo: () => void;
@@ -56,10 +62,16 @@ const freshNodeContext = createContext<{
     toggleViewedSeedPhrase: () => { },
     toggleSeedPhraseWritten: () => { },
     toggleSeedPhraseAccess: () => { },
+    name: "",
+    handleName: () => { },
+    setMaximaName: () => { },
+    error: "",
     goToConnectOptions: () => { },
     goToAddConnections: () => { },
     goToAutoConnect: () => { },
     goToSkipPeers: () => { },
+    goToSetName: () => { },
+    goToSkipTour: () => { },
     copySeedPhrase: () => { },
     continueFromSeedPhrase: () => { },
     toggleShowingSeedPhrase: () => { },
@@ -71,7 +83,7 @@ const freshNodeContext = createContext<{
 });
 
 export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode }) => {
-    const { appReady, setShowOnboarding, autoConnectPeers, setShowOnboard } = useContext(appContext);
+    const { appReady, setShowOnboarding, autoConnectPeers, setShowOnboard, getMaximaDetails } = useContext(appContext);
     const { keysGenerated, setPrompt, step, setStep } = useContext(onboardingContext);
     const [seedPhrase, setSeedPhrase] = useState<string[] | null>(null);
     const [seedPhraseWritten, setSeedPhraseWritten] = useState(false);
@@ -82,6 +94,8 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
     const [showingSeedPhrase, setShowingSeedPhrase] = useState(false);
     const [viewedSeedPhrase, setViewedSeedPhrase] = useState(false);
     const [copiedSeedPhrase, setCopiedSeedPhrase] = useState(false);
+    const [name, setName] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (appReady && !seedPhrase) {
@@ -102,7 +116,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
     const connectToNetwork = async () => {
         try {
             await addPeers(peerList);
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+            setStep(STEPS.FRESH_NODE_SET_NAME);
         } catch {
             setPeerListError(true);
         }
@@ -111,7 +125,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
     const autoConnectToNetwork = async () => {
         try {
             await autoConnectPeers();
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+            setStep(STEPS.FRESH_NODE_SET_NAME);
         } catch {
             setAutoConnectError(true);
         }
@@ -127,7 +141,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
 
     const goToConnectOptions = async () => {
         if (await hasPeers()) {
-            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+            setStep(STEPS.FRESH_NODE_SET_NAME);
         } else {
             setStep(STEPS.FRESH_NODE_CONNECT_OPTIONS);
         }
@@ -141,9 +155,32 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
     }
 
-    const goToSkipPeers = () => {
-        setStep(STEPS.FRESH_NODE_SKIP);
+    const setMaximaName = async () => {
+        try {
+            setError("");
+            await maximaSetName(name);
+            await getMaximaDetails();
+            setStep(STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK);
+        } catch {
+            setError("Unable to set name, please try a different name.");
+        }
     }
+
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    }
+
+    const goToSetName = () => {
+        setStep(STEPS.FRESH_NODE_SET_NAME);
+    }
+
+    const goToSkipPeers = () => {
+        setStep(STEPS.FRESH_NODE_SKIP_PEERS);
+    }
+
+    const goToSkipTour = () => {
+        setStep(STEPS.FRESH_NODE_SKIP_TOUR);
+    };
 
     const completeOnboarding = async () => {
         hideOnboarding();
@@ -202,11 +239,17 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         /**
          * Actions
          */
+        name,
+        handleName,
+        setMaximaName,
+        error,
         peerListError,
         goToConnectOptions,
         goToAddConnections,
         goToAutoConnect,
         goToSkipPeers,
+        goToSetName,
+        goToSkipTour,
         continueFromSeedPhrase,
         copySeedPhrase,
         toggleShowingSeedPhrase,

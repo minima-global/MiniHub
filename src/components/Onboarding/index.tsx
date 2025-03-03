@@ -48,7 +48,7 @@ export const onboardingContext = createContext<{
 });
 
 const Onboarding = () => {
-    const { appReady, showOnboarding, setShowOnboarding } = useContext(appContext);
+    const { appReady, showOnboarding } = useContext(appContext);
     const [step, setStep] = useState<number | string | null>(0);
     const [introductionStep, setIntroductionStep] = useState(0);
     const [prompt, setPrompt] = useState<Prompt>({
@@ -111,7 +111,6 @@ const Onboarding = () => {
     const fullGradientOnSteps = [
         0,
         STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK,
-        STEPS.FRESH_NODE_SKIP
     ];
 
     const goToFreshNodeSetup = () => {

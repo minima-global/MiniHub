@@ -21,10 +21,15 @@ const MobileFreshNodeSetup: React.FC = () => {
         copySeedPhrase,
         copiedSeedPhrase,
         continueFromSeedPhrase,
+        name,
+        handleName,
+        setMaximaName,
+        error,
         goToConnectOptions,
         goToAddConnections,
         goToAutoConnect,
         goToSkipPeers,
+        goToSetName,
         peerList,
         setPeerList,
         handlePeerListInfo,
@@ -34,6 +39,8 @@ const MobileFreshNodeSetup: React.FC = () => {
         connectToNetwork,
         autoConnectToNetwork,
         completeOnboarding,
+        completeOnboardingButStartTour,
+        goToSkipTour,
     } = useContext(freshNodeContext);
 
     return (
@@ -201,29 +208,73 @@ const MobileFreshNodeSetup: React.FC = () => {
                     </div>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
+            <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP_PEERS}>
+                <MobileOnboardingContent>
+                    <div className="grow">
+                        <OnboardingBackButton />
+                        <OnboardingTitle title="Skipped joining the network" icon="CREATE_NEW_ACCOUNT" />
+                        <p>You need to add connections before you can make transactions. To add your connections later, visit Settings.</p>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <div onClick={goToSetName} className={buttonClassName}>
+                            I'll do it later
+                        </div>
+                        <button onClick={goToConnectOptions} className={greyButtonClassName}>
+                            Add connections now
+                        </button>
+                    </div>
+                </MobileOnboardingContent>
+            </MobileOnboardingWrapper>
+            <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_SET_NAME}>
+                <MobileOnboardingContent>
+                    <div className="grow">
+                        <OnboardingBackButton />
+                        <OnboardingTitle title="What shall we call you?" icon="CREATE_NEW_ACCOUNT" />
+                        <input value={name} onChange={handleName} className={inputClassName} placeholder="Enter a name" />
+                        {error && (
+                            <div className={`${error ? 'opacity-100' : 'opacity-0 h-0'} w-full text-left transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                {error}
+                            </div>
+                        )}
+                    </div>
+                    <button disabled={name === ''} onClick={setMaximaName} className={`${buttonClassName} w-full`}>
+                        Set Maxima name
+                    </button>
+                </MobileOnboardingContent>
+            </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
                 <MobileOnboardingContent>
-                    <div className="grow w-full h-full flex items-center justify-center text-center text-white w-full">
-                        <div>
-                            <h1 className="text-[28px] mb-10 leading-[36px]">Welcome<br />to the network</h1>
-                            <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
-                                Let's go
-                            </div>
+                    <div className="grow">
+                        <h1 className="text-[24px] leading-[34px] font-bold mb-8">Welcome to Minima{name ? `, ${name}` : ""}.</h1>
+                        <div className="mb-10 text-left space-y-4">
+                            <div>Before you get started, there are some important things you need to know:</div>
+                            <div>🌍 &nbsp;I am not like other blockchains, I run entirely on your device. I don’t rely on centralized servers or third-parties. I am directly connected to the Minima blockchain and by keeping me running, you help make Minima more decentralized.</div>
+                            <div>⛓️ &nbsp;I create, receive, and share transactions with other users. When you transact, I immediately send your transaction to other Minima nodes to be processed. Every node, including me, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
+                            <div>🔄 &nbsp;To transact, I need to stay in sync with the latest block. If I go offline, I will try to catch up when I reconnect. If I am offline for too long and do not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
+                            <div>📍 &nbsp;Check my latest block number in the top right corner. If I am not up to date, a warning will appear there.</div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <div onClick={completeOnboardingButStartTour} className={buttonClassName}>
+                            Start tour
+                        </div>
+                        <div onClick={goToSkipTour} className={greyButtonClassName}>
+                            Skip tour
                         </div>
                     </div>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
-            <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP}>
+            <MobileOnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP_TOUR}>
                 <MobileOnboardingContent>
-                    <div className="grow px-6 w-full h-full flex items-center justify-center text-center text-white w-full">
-                        <div>
-                            <h1 className="text-2xl font-bold mb-8">Welcome to the network</h1>
-                            <div className="mb-10">
-                                <p>You need to add connections before you can make transactions. To add your connections later, visit Settings.</p>
-                            </div>
-                            <div onClick={completeOnboarding} className={buttonClassName}>
-                                I'll do it later
-                            </div>
+                    <div className="grow">
+                        <h1 className="text-2xl font-bold mb-6">All set!</h1>
+                        <div className="mb-10 space-y-4">
+                            <div>You can replay the tour from the Settings at any time.</div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <div onClick={completeOnboarding} className={buttonClassName}>
+                            Let's go
                         </div>
                     </div>
                 </MobileOnboardingContent>

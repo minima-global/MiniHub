@@ -22,6 +22,10 @@ const FreshNodeSetup: React.FC = () => {
         seedPhraseAccess,
         copySeedPhrase,
         continueFromSeedPhrase,
+        name,
+        handleName,
+        setMaximaName,
+        error,
         connectToNetwork,
         autoConnectToNetwork,
         completeOnboarding,
@@ -33,6 +37,8 @@ const FreshNodeSetup: React.FC = () => {
         goToAddConnections,
         goToAutoConnect,
         goToSkipPeers,
+        goToSkipTour,
+        goToSetName,
         handlePeerListInfo,
         completeOnboardingButStartTour,
     } = useContext(freshNodeContext);
@@ -54,7 +60,7 @@ const FreshNodeSetup: React.FC = () => {
                         ))}
                         {seedPhrase && seedPhrase?.length < 4 && (
                             <div className="col-span-12 bg-contrast-1 transition-all duration-300 px-2 py-2 w-full rounded">
-                                <div>{showingSeedPhrase ? seedPhrase : <div className="block w-full h-full min-h-[20px] rounded bg-contrast-2"/>}</div>
+                                <div>{showingSeedPhrase ? seedPhrase : <div className="block w-full h-full min-h-[20px] rounded bg-contrast-2" />}</div>
                             </div>
                         )}
                     </div>
@@ -176,39 +182,80 @@ const FreshNodeSetup: React.FC = () => {
                     </div>
                 </OnboardingModal>
             </OnboardingWrapper>
-            <OnboardingWrapper display={step === "x"}>
-                <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
-                    <div>
-                        <h1 className="text-white text-xl lg:text-4xl mb-10">Welcome to the network</h1>
-                        <div className="flex flex-col gap-3">
-                            <div onClick={completeOnboarding} className={`${buttonClassName} !max-w-[240px] mx-auto`}>
-                                Let's go
-                            </div>
-                            <div onClick={completeOnboardingButStartTour} className={blackButtonClassName}>
-                                Start tour
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP_PEERS}>
+                <OnboardingModal display={true} width="max-w-[520px]">
+                    <OnboardingTitle title="Skipped joining the network" icon="CREATE_NEW_ACCOUNT" />
+                    <p className="mb-9 text-left">You can add connections later from the Settings.</p>
+                    <div className="flex flex-col gap-3">
+                        <button onClick={goToSetName} className={`${buttonClassName} w-full`}>
+                            I'll do it later
+                        </button>
+                        <button onClick={goToConnectOptions} className={greyButtonClassName}>
+                            Add connections now
+                        </button>
+                    </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SET_NAME}>
+                <OnboardingModal display={true} width="max-w-[520px]">
+                    <OnboardingTitle title="What should we call you?" icon="CREATE_NEW_ACCOUNT" />
+                    <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
+                        <div className="w-full">
+                            <div className="flex flex-col gap-6">
+                                <input value={name} onChange={handleName} className={inputClassName} placeholder="Enter a name" />
+                                {error && (
+                                    <div className={`${error ? 'opacity-100' : 'opacity-0 h-0'} w-full text-left transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                        {error}
+                                    </div>
+                                )}
+                                <button disabled={name === ''} onClick={setMaximaName} className={`${buttonClassName} w-full`}>
+                                    Set Maxima name
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
-                <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
-                    <div>
-                        <h1 className="text-2xl font-bold mb-8">Welcome to the network</h1>
-                        <div className="mb-10">
-                            <p>You need to add connections before you can make transactions.</p>
-                            <p>To add your connections later, visit Settings.</p>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <div onClick={completeOnboarding} className={buttonClassName}>
-                                I'll do it later
+                <OnboardingModal display={true} width="max-w-[520px]">
+                    <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
+                        <div>
+                            <h1 className="text-[24px] leading-[34px] font-bold mb-8">Welcome to Minima{name ? `, ${name}` : ""}.</h1>
+                            <div className="mb-10 text-left space-y-4">
+                                <div>Before you get started, there are some important things you need to know:</div>
+                                <div>🌍 &nbsp;I am not like other blockchains, I run entirely on your device. I don’t rely on centralized servers or third-parties. I am directly connected to the Minima blockchain and by keeping me running, you help make Minima more decentralized.</div>
+                                <div>⛓️ &nbsp;I create, receive, and share transactions with other users. When you transact, I immediately send your transaction to other Minima nodes to be processed. Every node, including me, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
+                                <div>🔄 &nbsp;To transact, I need to stay in sync with the latest block. If I go offline, I will try to catch up when I reconnect. If I am offline for too long and do not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
+                                <div>📍 &nbsp;Check my latest block number in the top right corner. If I am not up to date, a warning will appear there.</div>
                             </div>
-                            <div onClick={completeOnboardingButStartTour} className={blackButtonClassName}>
-                                Start tour
+                            <div className="flex flex-col gap-3">
+                                <div onClick={completeOnboardingButStartTour} className={buttonClassName}>
+                                    Start tour
+                                </div>
+                                <div onClick={goToSkipTour} className={greyButtonClassName}>
+                                    Skip tour
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </OnboardingModal>
+            </OnboardingWrapper>
+            <OnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP_TOUR}>
+                <OnboardingModal display={true} width="max-w-[520px]">
+                    <div className="w-full h-full text-center">
+                        <div>
+                            <h1 className="text-2xl font-bold mb-6">All set!</h1>
+                            <div className="mb-10 space-y-4">
+                                <div>You can replay the tour from the Settings at any time.</div>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <div onClick={completeOnboarding} className={buttonClassName}>
+                                    Let's go
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </OnboardingModal>
             </OnboardingWrapper>
         </div>
     )

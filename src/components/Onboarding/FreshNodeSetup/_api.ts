@@ -9,3 +9,15 @@ export const hasPeers = (): Promise<boolean> => {
         });
     });
 };
+
+export const maximaSetName = (name: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+        MDS.cmd(`maxima action:setname name:${name}`, (response: any) => {
+            if (response.status) {
+                resolve(true);
+            }
+
+            resolve(false);
+        });
+    });
+};
