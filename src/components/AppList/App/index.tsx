@@ -86,7 +86,7 @@ const AppList = ({ data }) => {
         <div
           onClick={() => (rightMenu ? setRightMenu(null) : null)}
           onContextMenu={isInstalledApp ? handleOnContextMenu : undefined}
-          className={`${data.conf.name === 'Dapp Store' ? 'dapp_store' : ''} ${
+          className={`app-grid__item relative top-0 left-0 ${data.conf.name === 'Dapp Store' ? 'dapp_store' : ''} ${
             data.conf.name === 'Pending' ? 'onboard_pending' : ''
           } ${data.conf.name === 'Security' ? 'onboard_security' : ''} ${
             data.conf.name === 'MaxContacts' ? 'folder_social' : ''
@@ -111,6 +111,7 @@ const AppList = ({ data }) => {
           />
           <span className="appLabel">{displayDAppName(data.conf.name)}</span>
         </div>
+
         {/* Desktop right click context menu */}
         <div
           className={`menu hidden lg:block absolute inset-x-0 left-18 text-left z-40 transition-all origin-top ${
@@ -206,6 +207,7 @@ const AppList = ({ data }) => {
           </div>
         </div>
       </div>
+
       {/* Background blur for dismissing right click context menu */}
       {rightMenu === data.uid && <div className="w-full h-full fixed left-0 top-0 z-30" onClick={dismiss} />}
     </div>

@@ -50,6 +50,11 @@ body {
   overflow: hidden;
 }
 
+.body-black-overlay {
+  background: black;
+  transition: background 0.3s ease;
+}
+
 .bg-preview {
   background-position: 70% !important;
 }

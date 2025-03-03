@@ -188,7 +188,7 @@ function Dashboard() {
           </div>
         </div>
         <BadgeNotification />
-      </div>
+      </div >
     </>
   );
 }
@@ -196,8 +196,6 @@ function Dashboard() {
 function CustomTooltip(props: TooltipRenderProps) {
   const { backProps, size, continuous, index, primaryProps, skipProps, step, tooltipProps } =
     props;
-
-  console.log(props);
 
   return (
     <div className="bg-contrast-1 mx-auto w-full min-w-[300px] max-w-[340px] relative p-3 rounded" {...tooltipProps}>
@@ -353,12 +351,32 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
     async (data: CallBackProps) => {
       const { action, index, type } = data;
 
+      if (document.querySelector(data.step.target as string)
+        && document.querySelector(data.step.target as string)?.classList.contains('app-grid__item')) {
+        document.querySelectorAll('.app-grid__item').forEach((item) => {
+          item.classList.remove('!z-[110]');
+        });
+
+        document.querySelector(data.step.target as string)?.classList.add('!z-[110]');
+
+      } else {
+        document.getElementById('tour-overlay-1')?.classList.add('hidden');
+        document.getElementById('tour-overlay-1')?.classList.add('pointer-events-none');
+      }
+
       if (([ACTIONS.CLOSE] as string[]).includes(action)) {
         setTutorialMode(false);
+        document.body.classList.remove('body-black-overlay');
+      }
+
+      if (([ACTIONS.SKIP] as string[]).includes(action)) {
+        setTutorialMode(false);
+        document.body.classList.remove('body-black-overlay');
       }
 
       if (([EVENTS.TOUR_START, "tooltip"] as string[]).includes(type)) {
         setTutorialMode(true);
+        document.body.classList.add('body-black-overlay');
       }
 
       if ((["beacon"] as string[]).includes(type)) {
@@ -370,7 +388,6 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
         setShowOnboard(false);
         setStepIndex(0);
       }
-
 
       const USING_FOLDERS = folderStatus;
       await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
@@ -403,12 +420,8 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
 
           if (typeof indexToAppNameMapping[index] === 'string') {
             const pageIndex = findPageIndexContainingApp(indexToAppNameMapping[index], entireAppList);
-            emblaApi?.scrollTo(pageIndex);
+            emblaApi?.scrollTo(pageIndex, true);
           }
-        }
-
-        if (folderStatus) {
-          await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure toggleFolder completes
         }
 
         setStepIndex(NEXT_STEP_INDEX);
@@ -435,20 +448,21 @@ const Tutorial = ({ emblaApi, entireAppList }: { emblaApi?: EmblaCarouselType, e
         },
       }}
       hideCloseButton
+      spotlightClicks={false}
       styles={{
         options: {
           arrowColor: '#17191c',
           backgroundColor: '#FAFAFF',
           primaryColor: '#7A17F9',
           textColor: '#08090B',
-          zIndex: 5,
-          spotlightShadow: '0 0 0 rgba(0, 0, 0, 0)',
+          overlayColor: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 50,
+        },
+        spotlight: {
+          // backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         beacon: {
           display: tutorialMode ? 'none' : 'block'
-        },
-        spotlight: {
-          backgroundColor: 'none',
         },
         tooltipTitle: {
           fontSize: 16,
