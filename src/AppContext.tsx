@@ -144,16 +144,16 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (appReady) {
       shouldShowOnboarding().then((show) => {
         if (show) {
-          MDS.cmd("keys", () => {
-            setShowOnboarding(true);
-            setBootstrapping(false);
-            // if (resp.response.total < 60) {
-            //   setShowOnboarding(true);
-            //   setBootstrapping(false);
-            // } else {
-            //   setShowOnboarding(false);
-            //   setBootstrapping(false);
-            // }
+          MDS.cmd("keys", (resp) => {
+            // setShowOnboarding(true);
+            // setBootstrapping(false);
+            if (resp.response.total < 60) {
+              setShowOnboarding(true);
+              setBootstrapping(false);
+            } else {
+              setShowOnboarding(false);
+              setBootstrapping(false);
+            }
           });
         }
 
