@@ -4,12 +4,14 @@ import { session } from "../../../env";
 import { hideOnboarding, resetOnboarding } from "../utils";
 import { getPath, restoreFromBackup, uploadBackup } from "./_api";
 import STEPS from "../steps";
+import { ping } from "../RestoreFromPhrase/_api";
 
 export const restoreFromBackupContext = createContext<{
     isLoading: boolean;
     step: Step;
     keysGenerated: boolean;
     error: string | null;
+    resetError: () => void;
     file: File | null;
     setFile: (file: File | null) => void;
     showPassword: boolean;
@@ -26,17 +28,18 @@ export const restoreFromBackupContext = createContext<{
      * Gotos
      */
     goToSelectFile: () => void;
-    goToKeyUses: () => void;
-    goToRecoverWithMegaNodeOptions: () => void;
+    goToKeyUses: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    goToRecoverWithMegaNodeOptions: (e: React.MouseEvent<HTMLButtonElement>) => void;
     goToRecoverWithMegaNodeManually: () => void;
     goToRecoverWithMegaNodeAutoConnect: () => void;
-    manuallyConnectAndRestore: () => void;
+    manuallyConnectAndRestore: (e: React.FormEvent<HTMLButtonElement>) => void;
     autoConnectAndRestore: () => void;
 }>({
     isLoading: false,
     step: null,
     keysGenerated: false,
     error: null,
+    resetError: () => { },
     file: null,
     setFile: () => { },
     showPassword: false,
@@ -108,12 +111,14 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
     }
 
-    const goToKeyUses = () => {
+    const goToKeyUses = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setError("");
         setStep(STEPS.RESTORE_FROM_BACKUP_KEY_USES);
     }
 
-    const goToRecoverWithMegaNodeOptions = () => {
+    const goToRecoverWithMegaNodeOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS);
     };
 
@@ -125,8 +130,19 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
     };
 
-    const manuallyConnectAndRestore = async () => {
-        restore(ip);
+    const manuallyConnectAndRestore = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const pingTest = await ping(ip);
+
+        if (pingTest.response.valid === false) {
+            setIsLoading(false);
+            return setError("Unable to restore from Mega node. Please try again.");
+        }
+
+        if (pingTest.response.valid) {
+            restore(ip);
+        }
     }
 
     const autoConnectAndRestore = async () => {
@@ -145,6 +161,10 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         setIp(e.target.value);
     }
 
+    const resetError = () => {
+        setError("");
+    }
+
     const disableIfNotIPAndHost = !/^(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}:\d+)$/.test(ip);
 
     const value = {
@@ -152,6 +172,7 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         step,
         keysGenerated,
         error,
+        resetError,
         file,
         setFile,
         showPassword,

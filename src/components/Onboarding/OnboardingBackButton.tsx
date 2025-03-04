@@ -28,14 +28,18 @@ const BACKWARD_STEPS: Record<string | number, string | number> = {
     [STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT]: STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS,
 }
 
-const OnboardingBackButton = () => {
+const OnboardingBackButton = ({ onClick }: { onClick: () => void }) => {
     const { step, setStep } = useContext(onboardingContext);
 
     const previousStep = useCallback(() => {
+        if (onClick) {
+            onClick();
+        }
+
         if (step && BACKWARD_STEPS[step]) {
             setStep(BACKWARD_STEPS[step]);
         }
-    }, [step, setStep]);
+    }, [step, setStep, onClick]);
 
     const showBackButton = useMemo(() => {
         const backButtonSteps = [

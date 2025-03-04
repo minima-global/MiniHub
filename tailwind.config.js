@@ -18,7 +18,10 @@ export default {
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
+        statusRed: "#FF627E",
         b: '#3f3cbb',
+        grey20: '#E9E9EB',
+        grey40: '#D3D3D8',
         grey80: '#A7A7B0',
         'grey-80': 'hsla(240, 5%, 67%, 1)',
         'orange': 'hsla(25, 100%, 59%, 1)',

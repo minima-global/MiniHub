@@ -28,7 +28,7 @@ const freshNodeContext = createContext<{
     toggleSeedPhraseAccess: () => void;
     name: string;
     handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    setMaximaName: () => void;
+    setMaximaName: (e: React.FormEvent<HTMLFormElement>) => void;
     error: string;
     goToConnectOptions: () => void;
     goToAddConnections: () => void;
@@ -39,7 +39,7 @@ const freshNodeContext = createContext<{
     continueFromSeedPhrase: () => void;
     toggleShowingSeedPhrase: () => void;
     handlePeerListInfo: () => void;
-    connectToNetwork: () => void;
+    connectToNetwork: (e: React.FormEvent<HTMLButtonElement>) => void;
     autoConnectToNetwork: () => void;
     completeOnboarding: () => void;
     completeOnboardingButStartTour: () => void;
@@ -113,7 +113,9 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         }
     }, [copiedSeedPhrase]);
 
-    const connectToNetwork = async () => {
+    const connectToNetwork = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         try {
             await addPeers(peerList);
             setStep(STEPS.FRESH_NODE_SET_NAME);
@@ -155,7 +157,9 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
     }
 
-    const setMaximaName = async () => {
+    const setMaximaName = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         try {
             setError("");
             await maximaSetName(name);

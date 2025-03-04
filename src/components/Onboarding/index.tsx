@@ -16,6 +16,7 @@ import MobileRestoreFromPhrase from "./RestoreFromPhrase/mobile";
 import { FreshNodeSetupProvider } from "./FreshNodeSetup/_context";
 import { RestoreFromBackupProvider } from "./RestoreFromBackup/_context";
 import { RestoreFromPhraseProvider } from "./RestoreFromPhrase/_context";
+import { resetOnboarding } from "./utils";
 
 export type Step = number | string | null;
 export type Prompt = {
@@ -59,6 +60,19 @@ const Onboarding = () => {
     const [backButton, setBackButton] = useState<BackButton>(null);
     const [keysGenerated, setKeysGenerated] = useState<boolean>(false);
     const [isTestMode, setIsTestMode] = useState<boolean>(false);
+
+    useEffect(() => {
+        const event = (event: CustomEvent) => {
+            if (event.type === "onboarding:reset") {
+                resetOnboarding().then(() => {
+                    window.location.reload();
+                });
+            }
+        }
+
+        window.addEventListener("onboarding:reset", event as EventListener);
+        return () => window.removeEventListener("onboarding:reset", event as EventListener);
+    }, []);
 
     useEffect(() => {
         if (appReady) {

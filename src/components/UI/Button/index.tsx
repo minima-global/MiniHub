@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type ButtonProps = {
   variant?: 'primary' | 'secondary';
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   loading?: boolean;
   type?: "submit" | "reset" | "button";

@@ -33,6 +33,13 @@ export function Settings() {
   const [showShareConnections, setShowShareConnections] = useState(false);
   const [showShareConnectionsNav, _setShowShareConnectionsNav] = useState(true);
 
+  const performResetOnboarding = () => {
+    navigate('/');
+    setTimeout(() => {
+      window.dispatchEvent(new Event("onboarding:reset"));
+    }, 250);
+  }
+
   /**
    * Show share connections nav only if user has a peer list
    */
@@ -283,16 +290,38 @@ export function Settings() {
               className="relative bg-contrast1 p-3 rounded cursor-pointer flex items-center gap-4"
             >
               <div className="flex items-center gap-4">
-                <MenuButton>
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className="w-[40px] h-[40px] border border-statusRed bg-contrast2 rounded-md flex items-center justify-center">
+                  <svg className="text-statusRed" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M8 10V0H10V10H8ZM9 18C7.76667 18 6.60417 17.7625 5.5125 17.2875C4.42083 16.8125 3.46667 16.1667 2.65 15.35C1.83333 14.5333 1.1875 13.5792 0.7125 12.4875C0.2375 11.3958 0 10.2333 0 9C0 7.66667 0.275 6.40833 0.825 5.225C1.375 4.04167 2.15 3.01667 3.15 2.15L4.55 3.55C3.75 4.21667 3.125 5.025 2.675 5.975C2.225 6.925 2 7.93333 2 9C2 10.9333 2.68333 12.5833 4.05 13.95C5.41667 15.3167 7.06667 16 9 16C10.95 16 12.6042 15.3167 13.9625 13.95C15.3208 12.5833 16 10.9333 16 9C16 7.93333 15.7792 6.925 15.3375 5.975C14.8958 5.025 14.2667 4.21667 13.45 3.55L14.85 2.15C15.85 3.01667 16.625 4.04167 17.175 5.225C17.725 6.40833 18 7.66667 18 9C18 10.2333 17.7625 11.3958 17.2875 12.4875C16.8125 13.5792 16.1708 14.5333 15.3625 15.35C14.5542 16.1667 13.6042 16.8125 12.5125 17.2875C11.4208 17.7625 10.25 18 9 18Z"
-                      fill="currentColor"
+                      fill="white"
                     />
+                  </svg>
+                </div>
+              </div>
+              Shutdown node
+              <div className="absolute right-0 top-0 h-full px-5 flex items-center">
+                <svg className="text-grey80" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.04984 5.99995L1.37504 11.6501L0.500244 10.7501L5.24984 5.99995L0.500244 1.24975L1.40024 0.349747L7.04984 5.99995Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div
+              onClick={performResetOnboarding}
+              className="relative bg-contrast1 p-3 rounded cursor-pointer flex items-center gap-4"
+            >
+              <div className="flex items-center gap-4">
+                <MenuButton>
+                  <svg width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.76925 12.3652L5.7155 11.3115L7.65775 9.3385C5.62058 9.068 3.91833 8.53433 2.551 7.7375C1.18367 6.94067 0.5 6.02817 0.5 5C0.5 3.7705 1.41767 2.71317 3.253 1.828C5.08817 0.942667 7.33717 0.5 10 0.5C12.6628 0.5 14.9118 0.942667 16.747 1.828C18.5823 2.71317 19.5 3.7705 19.5 5C19.5 5.8795 18.9955 6.68592 17.9865 7.41925C16.9775 8.15258 15.6487 8.70642 14 9.08075V7.55C15.2833 7.21667 16.2708 6.80417 16.9625 6.3125C17.6542 5.82083 18 5.38333 18 5C18 4.4475 17.2875 3.80933 15.8625 3.0855C14.4375 2.36183 12.4833 2 10 2C7.51667 2 5.5625 2.36183 4.1375 3.0855C2.7125 3.80933 2 4.4475 2 5C2 5.4385 2.48908 5.94492 3.46725 6.51925C4.44558 7.09358 5.75008 7.51283 7.38075 7.777L5.7155 6.1115L6.76925 5.05775L10.423 8.7115L6.76925 12.3652Z" fill="#D3D3D8"/>
                   </svg>
                 </MenuButton>
               </div>
-              Shutdown node
+              Reset onboarding
               <div className="absolute right-0 top-0 h-full px-5 flex items-center">
                 <svg className="text-grey80" width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -311,20 +340,20 @@ export function Settings() {
 }
 
 const MenuButton: React.FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <div className="w-[40px] h-[40px] text-statusBlue bg-contrast2 border border-contrast4 rounded-md flex items-center justify-center">
-      {children}
-    </div>
-  )
+  // return (
+  //   <div className="w-[40px] h-[40px] text-statusBlue bg-contrast2 border border-contrast4 rounded-md flex items-center justify-center">
+  //     {children}
+  //   </div>
+  // )
+
+  // return (
+  //   <div className="w-[40px] h-[40px] bg-statusBlue text-black bg-contrast2 rounded-md flex items-center justify-center">
+  //     {children}
+  //   </div>
+  // )
 
   return (
-    <div className="w-[40px] h-[40px] bg-statusBlue text-black bg-contrast2 rounded-md flex items-center justify-center">
-      {children}
-    </div>
-  )
-
-  return (
-    <div className="w-[40px] h-[40px] border border-statusBlue bg-contrast2 rounded-md flex items-center justify-center">
+    <div className="w-[40px] h-[40px] border border-statusBlue text-grey40 bg-contrast2 rounded-md flex items-center justify-center">
       {children}
     </div>
   )

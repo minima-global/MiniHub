@@ -17,6 +17,7 @@ const MobileRestoreFromBackup: React.FC = () => {
          */
         keysGenerated,
         error,
+        resetError,
         file,
         setFile,
         showPassword,
@@ -116,51 +117,55 @@ const MobileRestoreFromBackup: React.FC = () => {
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_PASSWORD}>
                 <MobileOnboardingContent>
-                    <div className="grow">
-                        <OnboardingBackButton />
-                        <OnboardingTitle title="Enter Backup Password" icon="RESTORE_FROM_BACKUP" />
-                        <div className="text-white w-full max-w-2xl">
-                            <p className="mb-4">Enter the password you used when creating your backup.</p>
-                            <p className="italic mb-8 text-sm">Keep the field empty if you did not set one.</p>
-                            <div className="mb-8 flex gap-3">
-                                <input type={showPassword ? 'text' : 'password'} value={backupFilePassword} onChange={handleBackupFilePassword} className={inputClassName} placeholder="Enter password" />
-                                <div onClick={() => setShowPassword(!showPassword)} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded flex grow items-center justify-center h-[52px]">
-                                    {showPassword && (
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                                    )}
-                                    {!showPassword && (
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
-                                    )}
+                    <form className="grow h-full flex flex-col">
+                        <div className="grow">
+                            <OnboardingBackButton onClick={resetError} />
+                            <OnboardingTitle title="Enter Backup Password" icon="RESTORE_FROM_BACKUP" />
+                            <div className="text-white w-full max-w-2xl">
+                                <p className="mb-4">Enter the password you used when creating your backup.</p>
+                                <p className="italic mb-8 text-sm">Keep the field empty if you did not set one.</p>
+                                <div className="mb-8 flex gap-3">
+                                    <input type={showPassword ? 'text' : 'password'} value={backupFilePassword} onChange={handleBackupFilePassword} className={inputClassName} placeholder="Enter password" />
+                                    <div onClick={() => setShowPassword(!showPassword)} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded flex grow items-center justify-center h-[52px]">
+                                        {showPassword && (
+                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                                        )}
+                                        {!showPassword && (
+                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        <div onClick={goToKeyUses} className={buttonClassName}>
-                            Continue
+                        <div className="flex flex-col gap-3">
+                            <button type="submit" onClick={goToKeyUses} className={buttonClassName}>
+                                Continue
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_KEY_USES}>
                 <MobileOnboardingContent>
-                    <div className="grow">
-                        <OnboardingBackButton />
-                        <OnboardingTitle title="Key uses" icon="RESTORE_FROM_SEED_PHRASE" />
-                        <div className="text-white w-full max-w-2xl">
-                            <p className="mb-4 text-sm">
-                                This number should be <strong>higher than the total times your node has generated a signature</strong>. A signature is created each time you spend from a wallet address, including all transactions, consolidating, and splitting coins. Some transactions may involve multiple signatures.
-                            </p>
-                            <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
-                            <div className="mb-8">
-                                <label className="block mb-3">Enter the number of times you have signed with your keys</label>
-                                <input type="number" value={keyUses} onChange={handleKeyUses} className={inputClassName} placeholder="Enter number of keys" />
+                    <form className="grow h-full flex flex-col">
+                        <div className="grow">
+                            <OnboardingBackButton />
+                            <OnboardingTitle title="Key uses" icon="RESTORE_FROM_SEED_PHRASE" />
+                            <div className="text-white w-full max-w-2xl">
+                                <p className="mb-4 text-sm">
+                                    This number should be <strong>higher than the total times your node has generated a signature</strong>. A signature is created each time you spend from a wallet address, including all transactions, consolidating, and splitting coins. Some transactions may involve multiple signatures.
+                                </p>
+                                <p className="mb-8 text-sm italic">If unsure, use the default value provided if you believe you have not generated more than 1,000 signatures.</p>
+                                <div className="mb-8">
+                                    <label className="block mb-3">Enter the number of times you have signed with your keys</label>
+                                    <input type="number" value={keyUses} onChange={handleKeyUses} className={inputClassName} placeholder="Enter number of keys" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div onClick={goToRecoverWithMegaNodeOptions} className={buttonClassName}>
-                        Continue
-                    </div>
+                        <button type="submit" onClick={goToRecoverWithMegaNodeOptions} className={buttonClassName}>
+                            Continue
+                        </button>
+                    </form>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS}>
@@ -187,25 +192,31 @@ const MobileRestoreFromBackup: React.FC = () => {
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_MANUALLY}>
                 <MobileOnboardingContent>
-                    <div className="grow">
-                        <OnboardingBackButton />
-                        <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
-                        <div className="text-white w-full max-w-2xl">
-                            <div className="mb-6">
-                                <label className="mb-3 block">
-                                    Please enter the url:port or ip:port of a Mega node.
-                                </label>
-                                <input type="text" value={ip} onChange={handleIp} placeholder="" className={inputClassName} />
+                    <form className="grow h-full flex flex-col">
+                        <div className="grow">
+                            <OnboardingBackButton />
+                            <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_BACKUP" />
+                            <div className="text-white w-full max-w-2xl">
+                                <div className="mb-6">
+                                    <label className="mb-3 block">
+                                        Please enter the url:port or ip:port of a Mega node.
+                                    </label>
+                                    <input type="text" value={ip} onChange={handleIp} placeholder="" className={inputClassName} />
+                                    {error && (
+                                        <div className={`mt-4 mb-6 ${error ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                            {error}
+                                        </div>
+                                    )}
+                                </div>
+                                <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                             </div>
-                            <p className="mb-6">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         </div>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        {error && <div className="mt-6 text-red-500 font-bold text-xs">{error}</div>}
-                        <button disabled={isLoading || disableIfNotIPAndHost} onClick={manuallyConnectAndRestore} className={buttonClassName}>
-                            Restore
-                        </button>
-                    </div>
+                        <div className="flex flex-col gap-3">
+                            <button type="submit" disabled={isLoading || disableIfNotIPAndHost} onClick={manuallyConnectAndRestore} className={buttonClassName}>
+                                Restore
+                            </button>
+                        </div>
+                    </form>
                 </MobileOnboardingContent>
             </MobileOnboardingWrapper>
             <MobileOnboardingWrapper display={step === STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT}>

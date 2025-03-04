@@ -142,12 +142,21 @@ export const RestoreFromPhraseProvider = ({ children }: { children: React.ReactN
 
     const [ip, setIp] = useState('');
 
-    const restoreFromIp = async () => {
+    const restoreFromIp = async (evt: React.MouseEvent<HTMLButtonElement>) => {
+        evt.preventDefault();
+
         try {
             let resp;
             setError("");
             setIsLoading(true);
             const pingTest = await ping(ip);
+
+            if (pingTest.response.valid === false) {
+                session.IS_RESTORING = false;
+                resetOnboarding();
+                setIsLoading(false);
+                return setError("Unable to restore from Mega node. Please try again.");
+            }
 
             if (pingTest.response.valid) {
                 setStep(STEPS.IMPORT_SEED_PHRASE_RESTORING_FROM_PHRASE);
@@ -292,15 +301,18 @@ export const RestoreFromPhraseProvider = ({ children }: { children: React.ReactN
         setStep(STEPS.IMPORT_SEED_PHRASE_ENTER_CUSTOM_PHRASE);
     };
 
-    const goToNumberOfKeys = () => {
+    const goToNumberOfKeys = (evt: React.MouseEvent<HTMLButtonElement>) => {
+        evt.preventDefault();
         setStep(STEPS.IMPORT_SEED_PHRASE_NUMBER_OF_KEYS);
     };
 
-    const goToKeyUses = () => {
+    const goToKeyUses = (evt: React.MouseEvent<HTMLButtonElement>) => {
+        evt.preventDefault();
         setStep(STEPS.IMPORT_SEED_PHRASE_KEY_USES);
     };
 
-    const goToRecoverWithMegaNodeOptions = () => {
+    const goToRecoverWithMegaNodeOptions = (evt: React.MouseEvent<HTMLButtonElement>) => {
+        evt.preventDefault();
         setStep(STEPS.IMPORT_SEED_PHRASE_RECOVER_WITH_MEGA_NODE_OPTIONS);
     };
 

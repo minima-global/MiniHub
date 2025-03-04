@@ -66,12 +66,22 @@ const FreshNodeSetup: React.FC = () => {
                     </div>
                     <div className="mb-8 flex flex-col gap-2">
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={toggleSeedPhraseWritten} />
+                            <div className="relative flex items-center gap-2 mr-3">
+                                <input type="checkbox" className="peer rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-2 border-grey checked:border-orange transition-all duration-150 checked:opacity-100" checked={seedPhraseWritten} onChange={toggleSeedPhraseWritten} />
+                                {seedPhraseWritten && (
+                                    <svg className="absolute mx-auto w-full px-[2px] text-orange" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                )}
+                            </div>
                             <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I have written down my secret seed phrase.
                         </label>
                         <label className="relative text-sm flex items-center cursor-pointer">
-                            <input type="checkbox" className="peer mr-3 rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-grey checked:bg-white checked:text-white transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={toggleSeedPhraseAccess} />
+                            <div className="relative flex items-center gap-2 mr-3">
+                                <input type="checkbox" className="peer rounded-sm inline-block min-w-4 min-h-4 h-4 w-4 appearance-none border border-2 border-grey checked:border-orange transition-all duration-150 checked:opacity-100" checked={seedPhraseAccess} onChange={toggleSeedPhraseAccess} />
+                                {seedPhraseAccess && (
+                                    <svg className="absolute mx-auto w-full px-[2px] text-orange" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                                )}
+                            </div>
                             <div className="pointer-events-none absolute left-[3px] bg-black w-[10px] h-[10px] bg-orange border border-black/20 rounded-sm opacity-0 peer-checked:opacity-100 transition-all duration-150" />
                             I understand I can access my seed phrase from the Security MiniDapp
                         </label>
@@ -86,7 +96,7 @@ const FreshNodeSetup: React.FC = () => {
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_LOADING_FOR_KEYS}>
-                <OnboardingModal display={true} width="max-w-[572px]">
+                <OnboardingModal display={true} width="max-w-[440px]">
                     {!keysGenerated && (
                         <div className="block flex items-center justify-center mb-6">
                             <img src="./icons/loader3.gif" className="w-[50px] h-[50px]" alt="Loading" />
@@ -99,7 +109,7 @@ const FreshNodeSetup: React.FC = () => {
                             </svg>
                         </div>
                     )}
-                    <div className="text-center text-white mb-8">
+                    <div className="text-center text-white mb-8 max-w-[240px] mx-auto">
                         {!keysGenerated ? "Your node is generating keys. This may take a few minutes." : "Your node has successfully generated its keys."}
                     </div>
                     <button onClick={goToConnectOptions} className={buttonClassName}>
@@ -132,7 +142,7 @@ const FreshNodeSetup: React.FC = () => {
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_ADD_CONNECTIONS}>
                 <OnboardingModal display={true}>
                     <OnboardingTitle title="Join the network" icon="CREATE_NEW_ACCOUNT" />
-                    <div className="text-left text-white w-full max-w-2xl">
+                    <form className="text-left text-white w-full max-w-2xl">
                         <div className="w-full">
                             <div className="flex flex-col gap-4">
                                 <p>Ask another Minima user to:</p>
@@ -147,7 +157,7 @@ const FreshNodeSetup: React.FC = () => {
                                         <div onClick={handlePeerListInfo} className="cursor-pointer absolute top-0 right-0 w-25 h-full flex items-center justify-end pr-4"><Info /></div>
                                     </div>
                                 </div>
-                                <button onClick={connectToNetwork} disabled={peerList === ''} className={buttonClassName}>
+                                <button type="submit" disabled={peerList === ''} onClick={connectToNetwork} className={buttonClassName}>
                                     Add connections
                                 </button>
                                 {peerListError && (
@@ -157,7 +167,7 @@ const FreshNodeSetup: React.FC = () => {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_AUTO_CONNECT}>
@@ -197,9 +207,9 @@ const FreshNodeSetup: React.FC = () => {
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_SET_NAME}>
-                <OnboardingModal display={true} width="max-w-[520px]">
+                <OnboardingModal display={true} width="max-w-[480px]">
                     <OnboardingTitle title="What should we call you?" icon="CREATE_NEW_ACCOUNT" />
-                    <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
+                    <form className="w-full h-full flex items-center justify-center text-center text-white w-full">
                         <div className="w-full">
                             <div className="flex flex-col gap-6">
                                 <input value={name} onChange={handleName} className={inputClassName} placeholder="Enter a name" />
@@ -208,25 +218,25 @@ const FreshNodeSetup: React.FC = () => {
                                         {error}
                                     </div>
                                 )}
-                                <button disabled={name === ''} onClick={setMaximaName} className={`${buttonClassName} w-full`}>
+                                <button type="submit" disabled={name === ''} onClick={setMaximaName} className={`${buttonClassName} w-full`}>
                                     Set Maxima name
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_WELCOME_TO_THE_NETWORK}>
                 <OnboardingModal display={true} width="max-w-[520px]">
                     <div className="w-full h-full flex items-center justify-center text-center text-white w-full">
                         <div>
-                            <h1 className="text-[24px] leading-[34px] font-bold mb-8">Welcome to Minima{name ? `, ${name}` : ""}.</h1>
+                            <h1 className="text-[24px] text-left leading-[34px] font-bold mb-8">Welcome to Minima{name ? `, ${name}` : ""}.</h1>
                             <div className="mb-10 text-left space-y-4">
                                 <div>Before you get started, there are some important things you need to know:</div>
-                                <div>🌍 &nbsp;I am not like other blockchains, I run entirely on your device. I don’t rely on centralized servers or third-parties. I am directly connected to the Minima blockchain and by keeping me running, you help make Minima more decentralized.</div>
-                                <div>⛓️ &nbsp;I create, receive, and share transactions with other users. When you transact, I immediately send your transaction to other Minima nodes to be processed. Every node, including me, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
-                                <div>🔄 &nbsp;To transact, I need to stay in sync with the latest block. If I go offline, I will try to catch up when I reconnect. If I am offline for too long and do not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
-                                <div>📍 &nbsp;Check my latest block number in the top right corner. If I am not up to date, a warning will appear there.</div>
+                                <div>🌍 &nbsp;Minima is not like any other blockchain—it runs entirely on your device without relying on centralized servers or third parties. Your device connects directly to the Minima blockchain, and by keeping it running, you help make Minima more decentralized.</div>
+                                <div>⛓️ &nbsp;Your device creates, receives, and shares transactions with other users. When you transact, your device immediately sends your transaction to other Minima nodes to be processed. Every node, including yours, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
+                                <div>🔄 &nbsp;To transact, your device needs to stay in sync with the latest block. If it goes offline, it will attempt to catch up when reconnected. If your device is offline for too long and does not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
+                                <div>📍 &nbsp;Check your device's latest block number in the top right corner. If it is not up to date, a warning will appear there.</div>
                             </div>
                             <div className="flex flex-col gap-3">
                                 <div onClick={completeOnboardingButStartTour} className={buttonClassName}>
@@ -241,11 +251,11 @@ const FreshNodeSetup: React.FC = () => {
                 </OnboardingModal>
             </OnboardingWrapper>
             <OnboardingWrapper display={step === STEPS.FRESH_NODE_SKIP_TOUR}>
-                <OnboardingModal display={true} width="max-w-[520px]">
+                <OnboardingModal display={true} width="max-w-[400px]">
                     <div className="w-full h-full text-center">
                         <div>
                             <h1 className="text-2xl font-bold mb-6">All set!</h1>
-                            <div className="mb-10 space-y-4">
+                            <div className="mb-10 space-y-4 max-w-[260px] mx-auto">
                                 <div>You can replay the tour from the Settings at any time.</div>
                             </div>
                             <div className="flex flex-col gap-3">
