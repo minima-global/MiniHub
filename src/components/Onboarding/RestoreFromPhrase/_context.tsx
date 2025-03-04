@@ -40,17 +40,17 @@ export const restoreFromPhraseContext = createContext<{
     handleKeyUsesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     ip: string;
     handleIpChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    restoreFromIp: () => void;
+    restoreFromIp: (e: React.MouseEvent<HTMLButtonElement>) => void;
     autoConnectAndRestore: () => void;
     /**
      * Gotos
      */
-    goToKeyUses: () => void;
-    goToNumberOfKeys: () => void;
+    goToKeyUses: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    goToNumberOfKeys: (e: React.MouseEvent<HTMLButtonElement>) => void;
     goToRestoreFromPhrase: () => void;
     goToRestoreFromSecretKey: () => void;
     goToRestoreFromCustomPhrase: () => void;
-    goToRecoverWithMegaNodeOptions: () => void;
+    goToRecoverWithMegaNodeOptions: (e: React.MouseEvent<HTMLButtonElement>) => void;
     goToRecoverWithMegaNodeManually: () => void;
     goToRecoverWithMegaNodeAutoConnect: () => void;
     /**

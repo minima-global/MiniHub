@@ -28,8 +28,8 @@ export const restoreFromBackupContext = createContext<{
      * Gotos
      */
     goToSelectFile: () => void;
-    goToKeyUses: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    goToRecoverWithMegaNodeOptions: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    goToKeyUses: (e: React.FormEvent<HTMLButtonElement>) => void;
+    goToRecoverWithMegaNodeOptions: (e: React.FormEvent<HTMLButtonElement>) => void;
     goToRecoverWithMegaNodeManually: () => void;
     goToRecoverWithMegaNodeAutoConnect: () => void;
     manuallyConnectAndRestore: (e: React.FormEvent<HTMLButtonElement>) => void;
@@ -111,13 +111,13 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         setStep(STEPS.RESTORE_FROM_BACKUP_SELECT_FILE);
     }
 
-    const goToKeyUses = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const goToKeyUses = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setError("");
         setStep(STEPS.RESTORE_FROM_BACKUP_KEY_USES);
     }
 
-    const goToRecoverWithMegaNodeOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const goToRecoverWithMegaNodeOptions = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS);
     };
@@ -130,7 +130,7 @@ export const RestoreFromBackupProvider = ({ children }: { children: React.ReactN
         setStep(STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT);
     };
 
-    const manuallyConnectAndRestore = async (e: React.FormEvent<HTMLFormElement>) => {
+    const manuallyConnectAndRestore = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         const pingTest = await ping(ip);

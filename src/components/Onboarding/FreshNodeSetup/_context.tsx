@@ -28,7 +28,7 @@ const freshNodeContext = createContext<{
     toggleSeedPhraseAccess: () => void;
     name: string;
     handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    setMaximaName: (e: React.FormEvent<HTMLFormElement>) => void;
+    setMaximaName: (e: React.FormEvent<HTMLButtonElement>) => void;
     error: string;
     goToConnectOptions: () => void;
     goToAddConnections: () => void;
@@ -113,7 +113,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         }
     }, [copiedSeedPhrase]);
 
-    const connectToNetwork = async (e: React.FormEvent<HTMLFormElement>) => {
+    const connectToNetwork = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         try {
@@ -157,7 +157,7 @@ export const FreshNodeSetupProvider = ({ children }: { children: React.ReactNode
         setStep(STEPS.FRESH_NODE_AUTO_CONNECT);
     }
 
-    const setMaximaName = async (e: React.FormEvent<HTMLFormElement>) => {
+    const setMaximaName = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         try {

@@ -28,7 +28,7 @@ const BACKWARD_STEPS: Record<string | number, string | number> = {
     [STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_AUTO_CONNECT]: STEPS.RESTORE_FROM_BACKUP_RECOVER_WITH_MEGA_NODE_OPTIONS,
 }
 
-const OnboardingBackButton = ({ onClick }: { onClick: () => void }) => {
+const OnboardingBackButton = ({ onClick }: { onClick?: () => void }) => {
     const { step, setStep } = useContext(onboardingContext);
 
     const previousStep = useCallback(() => {
