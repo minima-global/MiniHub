@@ -1,6 +1,6 @@
 export const resync = (ip: string, phrase: string, keys: number, keyuses: number, useAnyPhrase: boolean = false) => {
     return new Promise((resolve) => {
-        MDS.cmd(`megammrsync action:resync host:${ip.trim()} phrase:${phrase} keys:${keys} keyuses:${keyuses} anyphrase:${useAnyPhrase ? "true" : "false"}`, (resp) => {
+        MDS.cmd(`megammrsync action:resync host:${ip.trim()} phrase:"${phrase}" keys:${keys} keyuses:${keyuses} anyphrase:${useAnyPhrase ? "true" : "false"}`, (resp) => {
             resolve(resp);
         });
     });
