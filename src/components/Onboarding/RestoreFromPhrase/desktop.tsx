@@ -113,7 +113,7 @@ const RestoreFromPhrase: React.FC = () => {
                                 <input id="phrase-4" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFour} onChange={(e) => setSecretKeyFour(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
                                 <span className="text-white opacity-50 font-bold">-</span>
                                 <input id="phrase-5" type={showSecretKey ? 'text' : 'password'} maxLength={4} value={secretKeyFive} onChange={(e) => setSecretKeyFive(e.target.value)} onPaste={onSecretKeyPaste} onKeyUp={handleSecretKeyKeyUp} className="bg-contrast-1 text-xl font-bold text-center w-full p-3 outline-none placeholder-gray-500" />
-                                <div onClick={toggleShowSecretKey} className="bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded w-full ml-2 flex grow items-center justify-center h-[52px]">
+                                <div onClick={toggleShowSecretKey} className="cursor-pointer bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded w-full ml-2 flex grow items-center justify-center h-[52px]">
                                     {showSecretKey && (
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                     )}
@@ -136,7 +136,7 @@ const RestoreFromPhrase: React.FC = () => {
                         <p className="mb-8">Please review your entry carefully before continuing</p>
                         <div className="mb-8 flex gap-4">
                             <input type={showCustomPhrase ? 'text' : 'password'} value={customPhrase} onChange={handleCustomPhraseChange} className={inputClassName} placeholder="Enter your custom phrase" />
-                            <div onClick={toggleShowCustomPhrase} className="w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded ml-2 flex grow items-center justify-center h-[52px]">
+                            <div onClick={toggleShowCustomPhrase} className="cursor-pointer w-[80px] bg-contrast-2 hover:bg-contrast-3 active:scale-[99%] rounded ml-2 flex grow items-center justify-center h-[52px]">
                                 {showCustomPhrase && (
                                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                 )}

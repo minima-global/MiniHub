@@ -1,8 +1,9 @@
 # Changelog
 
-##### [0.24.0] - 25 Feb 25
+##### [0.24.0] - 04 Mar 25
 
 - Implemented new onboarding flow
+- Minor UI changes to the settings page
 
 ##### [0.23.0] - 18 Feb 25
 
