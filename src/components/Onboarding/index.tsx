@@ -65,6 +65,7 @@ const Onboarding = () => {
         const event = (event: CustomEvent) => {
             if (event.type === "onboarding:reset") {
                 resetOnboarding().then(() => {
+                    localStorage.setItem("onboarding:reset", "true");
                     window.location.reload();
                 });
             }

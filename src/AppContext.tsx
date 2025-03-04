@@ -145,8 +145,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       shouldShowOnboarding().then((show) => {
         if (show) {
           MDS.cmd("keys", (resp) => {
-            // setShowOnboarding(true);
-            // setBootstrapping(false);
+            /**
+             * Debug purposes! Allows user to start onboarding even if they generated keys
+             */
+            if (localStorage.getItem("onboarding:reset")) {
+              localStorage.removeItem("onboarding:reset");
+              setShowOnboarding(true);
+              return setBootstrapping(false);
+            }
+  
             if (resp.response.total < 60) {
               setShowOnboarding(true);
               setBootstrapping(false);
