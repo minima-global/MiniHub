@@ -139,29 +139,42 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
    */
   const [showOnboard, setShowOnboard] = useState(false);
   const [tutorialMode, setTutorialMode] = useState(false);
+  const [isTestNode, setIsTestNode] = useState(false);
 
   useEffect(() => {
     if (appReady) {
       shouldShowOnboarding().then((show) => {
         if (show) {
-          MDS.cmd("keys", (resp) => {
-            /**
-             * Debug purposes! Allows user to start onboarding even if they generated keys
-             */
-            if (localStorage.getItem("onboarding:reset")) {
-              localStorage.removeItem("onboarding:reset");
-              setShowOnboarding(true);
-              return setBootstrapping(false);
-            }
-  
-            if (resp.response.total < 60) {
-              setShowOnboarding(true);
-              setBootstrapping(false);
-            } else {
-              setShowOnboarding(false);
-              setBootstrapping(false);
-            }
-          });
+          MDS.cmd("status", function (msg) {
+            const isTestNode = msg.response.version.includes("-TEST");
+            setIsTestNode(isTestNode);
+
+            MDS.cmd("keys", (resp) => {
+              /**
+               * Debug purposes! Allows user to start onboarding even if they have generated keys
+               */
+              if (localStorage.getItem("onboarding:reset")) {
+                localStorage.removeItem("onboarding:reset");
+                setShowOnboarding(true);
+                return setBootstrapping(false);
+              }
+
+              if (isTestNode) {
+                setShowOnboarding(false);
+                setBootstrapping(false);
+
+                return;
+              }
+
+              if (resp.response.total < 60) {
+                setShowOnboarding(true);
+                setBootstrapping(false);
+              } else {
+                setShowOnboarding(false);
+                setBootstrapping(false);
+              }
+            });
+          })
         }
 
         if (!show) {
@@ -595,6 +608,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setShowOnboard,
     tutorialMode,
     setTutorialMode,
+
+    isTestNode,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

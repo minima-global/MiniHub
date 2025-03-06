@@ -193,6 +193,11 @@ const RestoreFromPhrase: React.FC = () => {
                     <OnboardingTitle title="Connect to a Mega node" icon="RESTORE_FROM_SEED_PHRASE" />
                     <div className="text-white w-full max-w-2xl">
                         <p className="mb-8">To import your {action === 'phrase' && 'seed phrase'}{action === 'secret' && 'secret key'}{action === 'custom' && 'custom phrase'}, you will need to connect to a Mega node to restore your coins and join the network.</p>
+                        {error && (
+                            <div className={`mt-4 mb-6 ${error ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                {error}
+                            </div>
+                        )}
                         <div className="flex flex-col gap-3">
                             <button disabled={isLoading} onClick={goToRecoverWithMegaNodeManually} className={optionClassName}>
                                 Enter manually
@@ -213,7 +218,11 @@ const RestoreFromPhrase: React.FC = () => {
                                 Please enter the url:port or ip:port of a Mega node.
                             </label>
                             <input type="text" value={ip} onChange={handleIpChange} placeholder="" className={inputClassName} />
-                            {error && <div className="mt-6 text-red-500 font-bold text-xs">{error}</div>}
+                            {error && (
+                                <div className={`mt-4 mb-6 ${error ? 'opacity-100' : 'opacity-0 h-0'} transition-opacity duration-300 mx-auto text-red-500 font-bold text-[13px] border border-red-600/50 rounded px-3 py-2 bg-red-500/[5%]`}>
+                                    {error}
+                                </div>
+                            )}
                         </div>
                         <p className="mb-8">The node will shutdown once the restore has completed. Please restart the node to access your restored node.</p>
                         <div className="flex flex-col gap-3">

@@ -263,10 +263,10 @@ const MobileFreshNodeSetup: React.FC = () => {
                         <h1 className="text-[24px] leading-[34px] font-bold mb-8">Welcome to Minima{name ? `, ${name}` : ""}.</h1>
                         <div className="mb-10 text-left space-y-4">
                             <div>Before you get started, there are some important things you need to know:</div>
-                            <div>🌍 &nbsp;I am not like other blockchains, I run entirely on your device. I don’t rely on centralized servers or third-parties. I am directly connected to the Minima blockchain and by keeping me running, you help make Minima more decentralized.</div>
-                            <div>⛓️ &nbsp;I create, receive, and share transactions with other users. When you transact, I immediately send your transaction to other Minima nodes to be processed. Every node, including me, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
-                            <div>🔄 &nbsp;To transact, I need to stay in sync with the latest block. If I go offline, I will try to catch up when I reconnect. If I am offline for too long and do not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
-                            <div>📍 &nbsp;Check my latest block number in the top right corner. If I am not up to date, a warning will appear there.</div>
+                            <div>🌍 &nbsp;Minima is not like any other blockchain—it runs entirely on your device without relying on centralized servers or third parties. Your device connects directly to the Minima blockchain, and by keeping it running, you help make Minima more decentralized.</div>
+                            <div>⛓️ &nbsp;Your device creates, receives, and shares transactions with other users. When you transact, your device immediately sends your transaction to other Minima nodes to be processed. Every node, including yours, has an equal chance of finding the next block: no miners, no validators, true peer-to-peer consensus.</div>
+                            <div>🔄 &nbsp;To transact, your device needs to stay in sync with the latest block. If it goes offline, it will attempt to catch up when reconnected. If your device is offline for too long and does not sync automatically, you will need to run a QuickSync from the Security MiniDapp before transacting.</div>
+                            <div>📍 &nbsp;Check your device's latest block number in the top right corner. If it is not up to date, a warning will appear there.</div>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">

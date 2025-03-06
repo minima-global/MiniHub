@@ -40,7 +40,7 @@ const DashboardActionBar = () => {
   };
 
   return (
-    <div className="relative w-full pt-4 sm:pt-6 pb-2 px-8 lg:pt-10 lg:pb-4 lg:max-w-[72rem] lg:px-16 lg:mx-auto">
+    <div className="relative w-full pt-4 pb-4 sm:pt-6 sm:pb-3 px-8 lg:pt-10 lg:pb-4 lg:max-w-[72rem] lg:px-14 xl:px-16 lg:mx-auto">
       {showSearch && (
         <div className="flex flex-col lg:hidden mt-14 z-40 fixed w-full h-full top-0 left-0 z-10 text-center">
           <div className="bg-black w-full p-5">
@@ -114,72 +114,74 @@ const DashboardActionBar = () => {
       )}
       <div className={showSearch ? 'opacity-0' : 'opacity-100'}>
         <div className="flex grid grid-cols-12">
-          <div className="col-span-3 md:col-span-6">
-            <MaximaProfile />
-          </div> 
-
-          <div className="col-span-9 md:col-span-6 flex items-center justify-end gap-4">
-            <svg
-              onClick={openSearch}
-              className="cursor-pointer"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M18.3913 10.6957C18.3913 14.9458 14.9459 18.3913 10.6957 18.3913C6.44546 18.3913 3 14.9458 3 10.6957C3 6.44546 6.44546 3 10.6957 3C14.9459 3 18.3913 6.44546 18.3913 10.6957Z"
-                stroke="#E9E9EB"
-                strokeWidth="2"
-                strokeMiterlimit="10"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M16.2929 16.2929C16.6834 15.9024 17.3166 15.9024 17.7071 16.2929L21.7071 20.2929C22.0976 20.6834 22.0976 21.3166 21.7071 21.7071C21.3166 22.0976 20.6834 22.0976 20.2929 21.7071L16.2929 17.7071C15.9024 17.3166 15.9024 16.6834 16.2929 16.2929Z"
-                fill="#E9E9EB"
-              />
-            </svg>
-
-            <svg onClick={goToPending} className="cursor-pointer w-[30px] h-[30px]" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <mask id="mask0_8367_39517" maskUnits="userSpaceOnUse" x="0" y="0" width="13" height="13">
-                <rect x="0.80957" y="0.410156" width="11.7423" height="11.7423" fill="white" />
-              </mask>
-              <g mask="url(#mask0_8367_39517)">
-                <path d="M3.01172 9.65011V8.91633H3.89618V5.26558C3.89618 4.60761 4.09927 4.02583 4.50544 3.52026C4.91152 3.01469 5.43291 2.69133 6.06961 2.55018V2.24537C6.06961 2.07551 6.12901 1.9311 6.24782 1.81213C6.36663 1.69323 6.51088 1.63379 6.68057 1.63379C6.85035 1.63379 6.9948 1.69323 7.11394 1.81213C7.23315 1.9311 7.29276 2.07551 7.29276 2.24537V2.55018C7.92946 2.69133 8.45085 3.01469 8.85693 3.52026C9.2631 4.02583 9.46619 4.60761 9.46619 5.26558V8.91633H10.3507V9.65011H3.01172ZM6.68033 11.0238C6.43692 11.0238 6.22882 10.9372 6.05603 10.764C5.88316 10.5908 5.79672 10.3826 5.79672 10.1394H7.56565C7.56565 10.3834 7.47897 10.5919 7.30561 10.7646C7.13224 10.9374 6.92382 11.0238 6.68033 11.0238Z" fill="#E9E9EB" />
-              </g>
-            </svg>
-
-            {folderStatus && (
-              <svg onClick={toggleFolderStatus} className="cursor-pointer w-[22px] h-[22px]" width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.0927734 3.79251V0.123047H3.76224V3.79251H0.0927734ZM0.0927734 8.4405V4.77104H3.76224V8.4405H0.0927734ZM4.74076 3.79251V0.123047H8.41023V3.79251H4.74076ZM4.74076 8.4405V4.77104H8.41023V8.4405H4.74076Z" fill="#E9E9EB" />
+          <div className="col-span-12 flex">
+            <div className="grow">
+              <MaximaProfile />
+            </div>
+            <div className="flex items-center justify-end gap-3.5">
+              <svg
+                onClick={openSearch}
+                className="cursor-pointer w-[20px] h-[20px] lg:w-[24px] lg:h-[24px]"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.3913 10.6957C18.3913 14.9458 14.9459 18.3913 10.6957 18.3913C6.44546 18.3913 3 14.9458 3 10.6957C3 6.44546 6.44546 3 10.6957 3C14.9459 3 18.3913 6.44546 18.3913 10.6957Z"
+                  stroke="#E9E9EB"
+                  strokeWidth="2"
+                  strokeMiterlimit="10"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M16.2929 16.2929C16.6834 15.9024 17.3166 15.9024 17.7071 16.2929L21.7071 20.2929C22.0976 20.6834 22.0976 21.3166 21.7071 21.7071C21.3166 22.0976 20.6834 22.0976 20.2929 21.7071L16.2929 17.7071C15.9024 17.3166 15.9024 16.6834 16.2929 16.2929Z"
+                  fill="#E9E9EB"
+                />
               </svg>
 
-            )}
-
-            {!folderStatus && (
-              <svg onClick={toggleFolderStatus} className="cursor-pointer w-[22px] h-[22px]" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1.05927 7.95124C0.812109 7.95124 0.602909 7.86562 0.431667 7.69438C0.260426 7.52313 0.174805 7.31393 0.174805 7.06677V1.49677C0.174805 1.24961 0.260426 1.04041 0.431667 0.869167C0.602909 0.697926 0.812109 0.612305 1.05927 0.612305H3.74544L4.72396 1.59083H8.58632C8.83348 1.59083 9.04268 1.67645 9.21392 1.84769C9.38517 2.01893 9.47079 2.22813 9.47079 2.47529V7.06677C9.47079 7.31393 9.38517 7.52313 9.21392 7.69438C9.04268 7.86562 8.83348 7.95124 8.58632 7.95124H1.05927Z" fill="#E9E9EB" />
+              <svg onClick={goToPending} className="cursor-pointer w-[26px] h-[26px] lg:w-[30px] lg:h-[30px]"
+                width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <mask id="mask0_8367_39517" maskUnits="userSpaceOnUse" x="0" y="0" width="13" height="13">
+                  <rect x="0.80957" y="0.410156" width="11.7423" height="11.7423" fill="white" />
+                </mask>
+                <g mask="url(#mask0_8367_39517)">
+                  <path d="M3.01172 9.65011V8.91633H3.89618V5.26558C3.89618 4.60761 4.09927 4.02583 4.50544 3.52026C4.91152 3.01469 5.43291 2.69133 6.06961 2.55018V2.24537C6.06961 2.07551 6.12901 1.9311 6.24782 1.81213C6.36663 1.69323 6.51088 1.63379 6.68057 1.63379C6.85035 1.63379 6.9948 1.69323 7.11394 1.81213C7.23315 1.9311 7.29276 2.07551 7.29276 2.24537V2.55018C7.92946 2.69133 8.45085 3.01469 8.85693 3.52026C9.2631 4.02583 9.46619 4.60761 9.46619 5.26558V8.91633H10.3507V9.65011H3.01172ZM6.68033 11.0238C6.43692 11.0238 6.22882 10.9372 6.05603 10.764C5.88316 10.5908 5.79672 10.3826 5.79672 10.1394H7.56565C7.56565 10.3834 7.47897 10.5919 7.30561 10.7646C7.13224 10.9374 6.92382 11.0238 6.68033 11.0238Z" fill="#E9E9EB" />
+                </g>
               </svg>
-            )}
 
-            <svg
-              className="cursor-pointer onboard_install"
-              onClick={openInstallModal}
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.88892 20V11.1111H0V8.88892H8.88892V0H11.1111V8.88892H20V11.1111H11.1111V20H8.88892Z"
-                fill="#E9E9EB"
-              />
-            </svg>
+              {folderStatus && (
+                <svg onClick={toggleFolderStatus} className="cursor-pointer w-[18px] h-[18px] lg:w-[22px] lg:h-[22px]" width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.0927734 3.79251V0.123047H3.76224V3.79251H0.0927734ZM0.0927734 8.4405V4.77104H3.76224V8.4405H0.0927734ZM4.74076 3.79251V0.123047H8.41023V3.79251H4.74076ZM4.74076 8.4405V4.77104H8.41023V8.4405H4.74076Z" fill="#E9E9EB" />
+                </svg>
+
+              )}
+
+              {!folderStatus && (
+                <svg onClick={toggleFolderStatus} className="cursor-pointer w-[18px] h-[18px] lg:w-[22px] lg:h-[22px]" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.05927 7.95124C0.812109 7.95124 0.602909 7.86562 0.431667 7.69438C0.260426 7.52313 0.174805 7.31393 0.174805 7.06677V1.49677C0.174805 1.24961 0.260426 1.04041 0.431667 0.869167C0.602909 0.697926 0.812109 0.612305 1.05927 0.612305H3.74544L4.72396 1.59083H8.58632C8.83348 1.59083 9.04268 1.67645 9.21392 1.84769C9.38517 2.01893 9.47079 2.22813 9.47079 2.47529V7.06677C9.47079 7.31393 9.38517 7.52313 9.21392 7.69438C9.04268 7.86562 8.83348 7.95124 8.58632 7.95124H1.05927Z" fill="#E9E9EB" />
+                </svg>
+              )}
+
+              <svg
+                className="cursor-pointer onboard_install w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
+                onClick={openInstallModal}
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.88892 20V11.1111H0V8.88892H8.88892V0H11.1111V8.88892H20V11.1111H11.1111V20H8.88892Z"
+                  fill="#E9E9EB"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
