@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.24.1] - 07 Mar 25
+
+- Tweaked the Maxima Profile size when on mobile so it doesn't clash with the buttons on the dashboard
+
 ##### [0.24.0] - 04 Mar 25
 
 - Implemented new onboarding flow
