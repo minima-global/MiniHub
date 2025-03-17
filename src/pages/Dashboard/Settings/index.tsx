@@ -5,14 +5,13 @@ import ShutdownNode from './ShutdownNode';
 import { appContext } from '../../../AppContext';
 import BatteryOptimisation from './BatteryOptimisation';
 import FullScreen from '../../../components/UI/FullScreen';
-import InScreenTitleBar from '../../../components/InScreenStatusBar';
 import DesktopConnect from './DesktopConnect';
 import UpdateMiniHub from './UpdateMiniHub';
 import { useNavigate } from 'react-router-dom';
 import ShareConnections from './ShareConnections';
-import { peers } from '../../../lib';
 import Folders from './Folders';
 import TermsAndConditions from './TermsAndConditions';
+import { peers } from '../../../lib';
 
 export function Settings() {
   const navigate = useNavigate();
@@ -34,20 +33,20 @@ export function Settings() {
   const [showBatteryOptimisation, setShowBatteryOptimisation] = useState(false);
   const [showUpdateMiniHub, setShowUpdateMinHub] = useState(false);
   const [showShareConnections, setShowShareConnections] = useState(false);
-  const [showShareConnectionsNav, setShowShareConnectionsNav] = useState(true);
+  const [showShareConnectionsNav, setShowShareConnectionsNav] = useState(false);
 
   /**
    * Show share connections nav only if user has a peer list
    */
-  // useEffect(() => {
-  //   if (display && loaded) {
-  //     peers().then((response) => {
-  //       if (response['peerslist'] && response['peerslist'] !== '') {
-  //         setShowShareConnectionsNav(true);
-  //       }
-  //     });
-  //   }
-  // }, [display, loaded]);
+  useEffect(() => {
+    if (display && loaded) {
+      peers().then((response) => {
+        if (response['peerslist'] && response['peerslist'] !== '') {
+          setShowShareConnectionsNav(true);
+        }
+      });
+    }
+  }, [display, loaded]);
 
   const dismiss = () => {
     navigate('/');
