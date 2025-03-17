@@ -2,11 +2,15 @@ import { useContext } from 'react';
 import { appContext } from '../../AppContext';
 
 const Blur = () => {
-  const { rightMenu, setRightMenu } = useContext(appContext);
+  const { rightMenu, setRightMenu, folderStatus } = useContext(appContext);
 
   const dismiss = () => {
     setRightMenu(false);
   };
+
+  if (folderStatus) {
+    return null;
+  }
 
   return (
     <div

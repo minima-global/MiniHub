@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AppList = ({ data }) => {
   const navigate = useNavigate();
-  const { setShowDeleteApp,  setShowUpdateApp, toggleFolder,  tutorialMode } =
+  const { setShowDeleteApp,  setShowUpdateApp, toggleFolder,  tutorialMode, folderStatus } =
     useContext(appContext);
   const { isMobile, rightMenu, setRightMenu, setAppToWriteMode, setAppToReadMode } = useContext(appContext);
 
@@ -92,9 +92,9 @@ const AppList = ({ data }) => {
             data.conf.name === 'MaxContacts' ? 'folder_social' : ''
           } ${
             data.conf.name === 'Settings' ? 'onboard_settings' : data.conf.name === 'Wallet' ? 'onboard_wallet' : ''
-          } item w-full z-30 ${
-            rightMenu && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''
-          } ${rightMenu && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
+          } item w-full z-30
+          ${rightMenu && !folderStatus && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''}
+          ${rightMenu && folderStatus && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
         >
           <img
             alt="app_icon"

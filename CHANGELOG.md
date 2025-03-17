@@ -1,5 +1,15 @@
 # Changelog
 
+##### [0.24.2] - 17 Mar 25
+
+- Removed new onboarding flow
+- The z-index of the details when right clicking on a MiniDapp now appears correctly in folder view
+- Added the settings, pending app and folder shortcut toggles on the dashboard
+
+##### [0.23.1] - 14 Mar 25
+
+- Added the ability to open the settings from the status bar
+
 ##### [0.23.0] - 18 Feb 25
 
 - Added the ability to open the security app from the status bar when the node needs quick resync
