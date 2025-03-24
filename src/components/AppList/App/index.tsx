@@ -94,7 +94,7 @@ const AppList = ({ data }) => {
             data.conf.name === 'Settings' ? 'onboard_settings' : data.conf.name === 'Wallet' ? 'onboard_wallet' : ''
           } item w-full z-30
           ${rightMenu && !folderStatus && rightMenu.uid !== data.uid ? 'blur-md lg:blur-md lg:opacity-20 !opacity-0' : ''}
-          ${rightMenu && folderStatus && rightMenu.uid === data.uid ? 'blur-md opacity-20 lg:blur-none lg:opacity-100' : ''}`}
+          ${rightMenu && folderStatus && rightMenu.uid === data.uid ? 'opacity-100 lg:opacity-100' : ''}`}
         >
           <img
             alt="app_icon"

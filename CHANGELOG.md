@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.24.3] - 24 Mar 25
+
+- Fixed an issue where the right click menu was overlaying the modals on mobile
+
 ##### [0.24.2] - 17 Mar 25
 
 - Removed new onboarding flow
