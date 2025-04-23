@@ -26,8 +26,8 @@ export function Confirm() {
       {transition((style, display) => (
         <div>
           {display && (
-            <div className="mx-auto absolute w-full h-full z-[70] flex items-center justify-center text-black">
-              <div className="relative z-[70] w-full max-w-md px-5">
+            <div className="mx-auto absolute w-full h-full z-[110] flex items-center justify-center text-black">
+              <div className="relative z-[110] w-full max-w-md px-5">
                 <animated.div
                   style={style}
                   className="modal text-white core-black-contrast-2 box-shadow-lg rounded p-8 mx-auto relative overflow-hidden"

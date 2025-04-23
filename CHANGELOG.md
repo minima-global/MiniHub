@@ -1,5 +1,9 @@
 # Changelog
 
+##### [0.24.4] - 23 Apr 25
+
+- Fixed an issue where the confirmation modal was appearing behind the right click menu on a specific resolution
+
 ##### [0.24.3] - 24 Mar 25
 
 - Fixed an issue where the right click menu was overlaying the modals on mobile
