@@ -194,6 +194,10 @@ export function status() {
   return promisfyMds('status');
 }
 
+export function keys() {
+  return promisfyMds('keys');
+}
+
 export function peers() {
   return promisfyMds('peers max:5');
 }

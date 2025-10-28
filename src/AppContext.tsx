@@ -5,6 +5,7 @@ import {
   block,
   getRandomElements,
   isWriteMode,
+  keys,
   mds,
   mdsActionPermission,
   peers,
@@ -41,6 +42,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // desktop / or / mobile
   const [mode, setMode] = useState('desktop');
+
+  // key uses
+  const [numerOfKeyUses, setNumerOfKeyUses] = useState(null);
 
   // controls the sort type for apps shown on the home screen
   const [sort, setSort] = useState('alphabetical');
@@ -243,6 +247,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             setAppIsInWriteMode(appIsInWriteMode);
           });
 
+          keys().then((response) => {
+            if (response.maxuses) {
+              setNumerOfKeyUses(response.maxuses + 1);
+            }
+          });
+
           block().then((blockInfo) => {
             setBlockInfo({
               blockHeight: blockInfo.block,
@@ -271,6 +281,12 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
               locked: response.locked,
               noBlocksYet: response.chain.time === 'NO BLOCKS YET',
             });
+          });
+
+          keys().then((response) => {
+            if (response.maxuses) {
+              setNumerOfKeyUses(response.maxuses + 1);
+            }
           });
         }
 
@@ -556,6 +572,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     toggleFolder,
 
     shareApp,
+
+    numerOfKeyUses,
   };
 
   return <appContext.Provider value={value}>{children}</appContext.Provider>;

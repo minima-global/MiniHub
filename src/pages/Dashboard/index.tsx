@@ -135,6 +135,7 @@ function Dashboard() {
     setTutorialMode,
     folderStatus,
     toggleFolder,
+    numerOfKeyUses,
   } = useContext(appContext);
   const { maxCount, hasMoreThanOnePage, entireAppList } = useAppList();
   // @ts-ignore
@@ -344,6 +345,7 @@ function Dashboard() {
             </div>
             <Blur />
           </div>
+
           <div>
             <div
               className={`flex gap-1 items-center justify-center pb-16 lg:pb-24 ${
@@ -369,6 +371,7 @@ function Dashboard() {
                     <div className={`dot ${index === selectedIndex ? 'dot--active' : ''}`} />
                   </div>
                 ))}
+
               <div onClick={hasNext ? next : undefined} className="hidden ml-4">
                 <div
                   className={`mt-0.5 text-core-grey-40 ${
@@ -387,6 +390,23 @@ function Dashboard() {
           </div>
         </div>
         <BadgeNotification />
+
+        {numerOfKeyUses && (
+          <div className="absolute bottom-0 left-0 right-0 flex justify-end text-sm text-core-grey-40">
+            <div className="relative group m-4 w-fit">
+              <div
+                className="border-[2px] border-blue-500 rounded-full p-1 px-3 font-bold text-xs"
+              >
+                Key uses: <strong>{numerOfKeyUses}</strong>
+              </div>
+              <div
+                className="absolute bottom-full right-0 mb-2 p-2 bg-gray-800 bg-opacity-[60%] text-white text-xs rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none w-max max-w-xs text-center z-50"
+              >
+                This number will be incremented every time the node is unlocked to sign a transaction. Please use this number if you perform a resync or restoring your node.
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

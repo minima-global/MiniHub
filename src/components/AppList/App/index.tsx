@@ -80,7 +80,7 @@ const AppList = ({ data }) => {
   const isInstalledApp = data.conf.permission;
 
   return (
-    <div className="app-grid__icon mb-4 sm:mb-6 lg:mb-8">
+    <div className="app-grid__icon mb-4 sm:mb-4 lg:mb-8">
       <div className="relative">
         {/* App icon */}
         <div
